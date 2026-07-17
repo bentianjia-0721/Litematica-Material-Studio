@@ -1,0 +1,7 @@
+node_modules
+dist
+coverage
+output
+.playwright-cli
+src/data/minecraft/java
+package-lock.json

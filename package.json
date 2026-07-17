@@ -1,0 +1,57 @@
+{
+  "name": "litematica-material-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "npm run typecheck && vite build",
+    "preview": "vite preview",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "research:litematica-versions": "tsx scripts/research-litematica-versions.ts",
+    "update:minecraft-data": "tsx scripts/update-minecraft-data.ts",
+    "validate:version-data": "tsx scripts/validate-version-data.ts"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "idb": "^8.0.3",
+    "jszip": "^3.10.1",
+    "pako": "^3.0.1",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^26.1.1",
+    "@types/pako": "^2.0.4",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.3",
+    "@vitest/coverage-v8": "^4.1.10",
+    "eslint": "^10.7.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "fake-indexeddb": "^6.2.5",
+    "globals": "^17.7.0",
+    "jsdom": "^29.1.1",
+    "minecraft-data": "^3.111.0",
+    "prettier": "^3.9.5",
+    "tsx": "^4.23.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.64.0",
+    "vite": "^8.1.5",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.111.0"
+  }
+}

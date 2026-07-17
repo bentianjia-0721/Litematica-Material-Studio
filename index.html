@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="在浏览器本地解析 Litematica 投影并生成可编辑材料清单与 Excel。"
+    />
+    <meta name="theme-color" content="#08110e" />
+    <link rel="canonical" href="https://litematica.bentianjia.com/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Litematica Material Studio</title>
+  </head>
+  <body>
+    <div id="root">
+      <main
+        style="
+          min-height: 100vh;
+          box-sizing: border-box;
+          display: grid;
+          place-content: center;
+          gap: 12px;
+          padding: 32px;
+          background: #08110e;
+          color: #eef8f3;
+          font:
+            16px/1.7 system-ui,
+            sans-serif;
+          text-align: center;
+        "
+      >
+        <h1 style="margin: 0; font-size: clamp(24px, 5vw, 42px)">请通过本地服务器启动</h1>
+        <p style="max-width: 640px; margin: 0; color: #a9c2b6">
+          Vite 应用不能直接双击 index.html 运行。请双击项目根目录的 start-local.cmd，或在终端运行
+          npm run dev。
+        </p>
+      </main>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

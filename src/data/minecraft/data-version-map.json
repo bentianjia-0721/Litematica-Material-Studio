@@ -1,0 +1,5751 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-16T13:43:18.735Z",
+  "sourceUrls": [
+    "https://github.com/PrismarineJS/minecraft-data/blob/master/data/pc/common/protocolVersions.json",
+    "https://github.com/PrismarineJS/minecraft-data",
+    "https://www.npmjs.com/package/minecraft-data/v/3.111.0"
+  ],
+  "entries": [
+    {
+      "minecraftVersion": "26.2",
+      "dataVersion": 4903,
+      "protocolVersion": 776,
+      "majorVersion": "26.2",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "26.2-rc-2",
+      "dataVersion": 4902,
+      "protocolVersion": 1073742146,
+      "majorVersion": "26.2-rc-2",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.2-rc-1",
+      "dataVersion": 4901,
+      "protocolVersion": 1073742145,
+      "majorVersion": "26.2-rc-1",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.2-pre-6",
+      "dataVersion": 4900,
+      "protocolVersion": 1073742144,
+      "majorVersion": "26.2-pre-6",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.2-pre-5",
+      "dataVersion": 4898,
+      "protocolVersion": 1073742143,
+      "majorVersion": "26.2-pre-5",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.2-pre-4",
+      "dataVersion": 4897,
+      "protocolVersion": 1073742142,
+      "majorVersion": "26.2-pre-4",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.2-pre-3",
+      "dataVersion": 4896,
+      "protocolVersion": 1073742141,
+      "majorVersion": "26.2-pre-3",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.2-pre-2",
+      "dataVersion": 4895,
+      "protocolVersion": 1073742140,
+      "majorVersion": "26.2-pre-2",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.2-pre-1",
+      "dataVersion": 4894,
+      "protocolVersion": 1073742139,
+      "majorVersion": "26.2-pre-1",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.2-snapshot-8",
+      "dataVersion": 4893,
+      "protocolVersion": 1073742138,
+      "majorVersion": "26.2-snapshot-8",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.2-snapshot-7",
+      "dataVersion": 4891,
+      "protocolVersion": 1073742137,
+      "majorVersion": "26.2-snapshot-7",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.2-snapshot-6",
+      "dataVersion": 4890,
+      "protocolVersion": 1073742136,
+      "majorVersion": "26.2-snapshot-6",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.2-snapshot-5",
+      "dataVersion": 4889,
+      "protocolVersion": 1073742135,
+      "majorVersion": "26.2-snapshot-5",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.2-snapshot-4",
+      "dataVersion": 4887,
+      "protocolVersion": 1073742134,
+      "majorVersion": "26.2-snapshot-4",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.2-snapshot-3",
+      "dataVersion": 4886,
+      "protocolVersion": 1073742133,
+      "majorVersion": "26.2-snapshot-3",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.2-snapshot-2",
+      "dataVersion": 4884,
+      "protocolVersion": 1073742132,
+      "majorVersion": "26.2-snapshot-2",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1.2",
+      "dataVersion": 4790,
+      "protocolVersion": 775,
+      "majorVersion": "26.1",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "26.1.2-rc-1",
+      "dataVersion": 4789,
+      "protocolVersion": 1073742131,
+      "majorVersion": "26.1",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.2-snapshot-1",
+      "dataVersion": 4883,
+      "protocolVersion": 1073742130,
+      "majorVersion": "26.2-snapshot-1",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26w14a",
+      "dataVersion": 5000,
+      "protocolVersion": 1073742129,
+      "majorVersion": "26.1",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1.1",
+      "dataVersion": 4788,
+      "protocolVersion": 775,
+      "majorVersion": "26.1",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "26.1.1-rc-1",
+      "dataVersion": 4787,
+      "protocolVersion": 1073742128,
+      "majorVersion": "26.1",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1",
+      "dataVersion": 4786,
+      "protocolVersion": 775,
+      "majorVersion": "26.1",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "26.1-rc-3",
+      "dataVersion": 4785,
+      "protocolVersion": 1073742127,
+      "majorVersion": "26.1-rc-3",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-rc-2",
+      "dataVersion": 4784,
+      "protocolVersion": 1073742126,
+      "majorVersion": "26.1-rc-2",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-rc-1",
+      "dataVersion": 4783,
+      "protocolVersion": 1073742125,
+      "majorVersion": "26.1-rc-1",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-pre-3",
+      "dataVersion": 4782,
+      "protocolVersion": 1073742124,
+      "majorVersion": "26.1-pre-3",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-pre-2",
+      "dataVersion": 4781,
+      "protocolVersion": 1073742123,
+      "majorVersion": "26.1-pre-2",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-pre-1",
+      "dataVersion": 4780,
+      "protocolVersion": 1073742122,
+      "majorVersion": "26.1-pre-1",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-snapshot-11",
+      "dataVersion": 4779,
+      "protocolVersion": 1073742121,
+      "majorVersion": "26.1-snapshot-11",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-snapshot-10",
+      "dataVersion": 4778,
+      "protocolVersion": 1073742120,
+      "majorVersion": "26.1-snapshot-10",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-snapshot-9",
+      "dataVersion": 4777,
+      "protocolVersion": 1073742119,
+      "majorVersion": "26.1-snapshot-9",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-snapshot-8",
+      "dataVersion": 4776,
+      "protocolVersion": 1073742118,
+      "majorVersion": "26.1-snapshot-8",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-snapshot-7",
+      "dataVersion": 4775,
+      "protocolVersion": 1073742117,
+      "majorVersion": "26.1-snapshot-7",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-snapshot-6",
+      "dataVersion": 4774,
+      "protocolVersion": 1073742116,
+      "majorVersion": "26.1-snapshot-6",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-snapshot-5",
+      "dataVersion": 4770,
+      "protocolVersion": 1073742115,
+      "majorVersion": "26.1-snapshot-5",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-snapshot-4",
+      "dataVersion": 4768,
+      "protocolVersion": 1073742114,
+      "majorVersion": "26.1-snapshot-4",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-snapshot-3",
+      "dataVersion": 4767,
+      "protocolVersion": 1073742113,
+      "majorVersion": "26.1-snapshot-3",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-snapshot-2",
+      "dataVersion": 4765,
+      "protocolVersion": 1073742112,
+      "majorVersion": "26.1-snapshot-2",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "26.1-snapshot-1",
+      "dataVersion": 4764,
+      "protocolVersion": 1073742111,
+      "majorVersion": "26.1-snapshot-1",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.11",
+      "dataVersion": 4671,
+      "protocolVersion": 774,
+      "majorVersion": "1.21",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.21.11-rc3",
+      "dataVersion": 4670,
+      "protocolVersion": 1073742110,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.11-rc2",
+      "dataVersion": 4669,
+      "protocolVersion": 1073742109,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.11-rc1",
+      "dataVersion": 4668,
+      "protocolVersion": 1073742108,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.11-pre5",
+      "dataVersion": 4667,
+      "protocolVersion": 1073742107,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.11-pre4",
+      "dataVersion": 4666,
+      "protocolVersion": 1073742106,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.11-pre3",
+      "dataVersion": 4665,
+      "protocolVersion": 1073742105,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.11-pre2",
+      "dataVersion": 4664,
+      "protocolVersion": 1073742104,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.11-pre1",
+      "dataVersion": 4663,
+      "protocolVersion": 1073742103,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w46a",
+      "dataVersion": 4662,
+      "protocolVersion": 1073742102,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w45a",
+      "dataVersion": 4660,
+      "protocolVersion": 1073742101,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w44a",
+      "dataVersion": 4659,
+      "protocolVersion": 1073742100,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w43a",
+      "dataVersion": 4655,
+      "protocolVersion": 1073742099,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w42a",
+      "dataVersion": 4654,
+      "protocolVersion": 1073742098,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w41a",
+      "dataVersion": 4653,
+      "protocolVersion": 1073742097,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.10",
+      "dataVersion": 4556,
+      "protocolVersion": 773,
+      "majorVersion": "1.21",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.21.10-rc1",
+      "dataVersion": 4555,
+      "protocolVersion": 1073742098,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.9",
+      "dataVersion": 4554,
+      "protocolVersion": 773,
+      "majorVersion": "1.21",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.21.9-rc1",
+      "dataVersion": 4553,
+      "protocolVersion": 1073742097,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.9-pre4",
+      "dataVersion": 4552,
+      "protocolVersion": 1073742096,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.9-pre3",
+      "dataVersion": 4551,
+      "protocolVersion": 1073742095,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.9-pre2",
+      "dataVersion": 4550,
+      "protocolVersion": 1073742094,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.9-pre1",
+      "dataVersion": 4549,
+      "protocolVersion": 1073742093,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w37a",
+      "dataVersion": 4547,
+      "protocolVersion": 1073742092,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w36b",
+      "dataVersion": 4546,
+      "protocolVersion": 1073742091,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w36a",
+      "dataVersion": 4545,
+      "protocolVersion": 1073742090,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w35a",
+      "dataVersion": 4542,
+      "protocolVersion": 1073742089,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w34b",
+      "dataVersion": 4540,
+      "protocolVersion": 1073742088,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w34a",
+      "dataVersion": 4539,
+      "protocolVersion": 1073742087,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w33a",
+      "dataVersion": 4538,
+      "protocolVersion": 1073742086,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w32a",
+      "dataVersion": 4536,
+      "protocolVersion": 1073742085,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w31a",
+      "dataVersion": 4534,
+      "protocolVersion": 1073742084,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.8",
+      "dataVersion": 4440,
+      "protocolVersion": 772,
+      "majorVersion": "1.21",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.21.8-rc1",
+      "dataVersion": 4439,
+      "protocolVersion": 1073742083,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.7",
+      "dataVersion": 4438,
+      "protocolVersion": 772,
+      "majorVersion": "1.21",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.21.7-rc2",
+      "dataVersion": 4437,
+      "protocolVersion": 1073742082,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.7-rc1",
+      "dataVersion": 4436,
+      "protocolVersion": 1073742081,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.6",
+      "dataVersion": 4435,
+      "protocolVersion": 771,
+      "majorVersion": "1.21",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.21.6-rc1",
+      "dataVersion": 4434,
+      "protocolVersion": 1073742080,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.6-pre4",
+      "dataVersion": 4433,
+      "protocolVersion": 1073742079,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.6-pre3",
+      "dataVersion": 4432,
+      "protocolVersion": 1073742078,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.6-pre2",
+      "dataVersion": 4431,
+      "protocolVersion": 1073742077,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.6-pre1",
+      "dataVersion": 4430,
+      "protocolVersion": 1073742076,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w21a",
+      "dataVersion": 4429,
+      "protocolVersion": 1073742075,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w20a",
+      "dataVersion": 4428,
+      "protocolVersion": 1073742074,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w19a",
+      "dataVersion": 4427,
+      "protocolVersion": 1073742073,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w18a",
+      "dataVersion": 4426,
+      "protocolVersion": 1073742072,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w17a",
+      "dataVersion": 4425,
+      "protocolVersion": 1073742071,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w16a",
+      "dataVersion": 4423,
+      "protocolVersion": 1073742070,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w15a",
+      "dataVersion": 4422,
+      "protocolVersion": 1073742069,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w14craftmine",
+      "dataVersion": 4323,
+      "protocolVersion": 1073742068,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.5",
+      "dataVersion": 4325,
+      "protocolVersion": 770,
+      "majorVersion": "1.21",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.21.5-rc2",
+      "dataVersion": 4324,
+      "protocolVersion": 1073742067,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.5-rc1",
+      "dataVersion": 4323,
+      "protocolVersion": 1073742066,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.5-pre3",
+      "dataVersion": 4322,
+      "protocolVersion": 1073742065,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.5-pre2",
+      "dataVersion": 4321,
+      "protocolVersion": 1073742064,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.5-pre1",
+      "dataVersion": 4320,
+      "protocolVersion": 1073742063,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w10a",
+      "dataVersion": 4319,
+      "protocolVersion": 1073742062,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w09b",
+      "dataVersion": 4318,
+      "protocolVersion": 1073742061,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w09a",
+      "dataVersion": 4317,
+      "protocolVersion": 1073742060,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w08a",
+      "dataVersion": 4316,
+      "protocolVersion": 1073742059,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w07a",
+      "dataVersion": 4315,
+      "protocolVersion": 1073742058,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w06a",
+      "dataVersion": 4313,
+      "protocolVersion": 1073742057,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w05a",
+      "dataVersion": 4310,
+      "protocolVersion": 1073742056,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w04a",
+      "dataVersion": 4308,
+      "protocolVersion": 1073742055,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w03a",
+      "dataVersion": 4304,
+      "protocolVersion": 1073742054,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "25w02a",
+      "dataVersion": 4298,
+      "protocolVersion": 1073742053,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.4",
+      "dataVersion": 4189,
+      "protocolVersion": 769,
+      "majorVersion": "1.21",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.21.4-rc3",
+      "dataVersion": 4188,
+      "protocolVersion": 1073742052,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.4-rc2",
+      "dataVersion": 4186,
+      "protocolVersion": 1073742051,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.4-rc1",
+      "dataVersion": 4184,
+      "protocolVersion": 1073742050,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.4-pre3",
+      "dataVersion": 4183,
+      "protocolVersion": 1073742049,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.4-pre2",
+      "dataVersion": 4182,
+      "protocolVersion": 1073742048,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.4-pre1",
+      "dataVersion": 4179,
+      "protocolVersion": 1073742047,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w46a",
+      "dataVersion": 4178,
+      "protocolVersion": 1073742046,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w45a",
+      "dataVersion": 4177,
+      "protocolVersion": 1073742045,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w44a",
+      "dataVersion": 4174,
+      "protocolVersion": 1073742044,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.3",
+      "dataVersion": 4082,
+      "protocolVersion": 768,
+      "majorVersion": "1.21",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.21.2",
+      "dataVersion": 4080,
+      "protocolVersion": 768,
+      "majorVersion": "1.21",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.21.2-rc2",
+      "dataVersion": 4079,
+      "protocolVersion": 1073742043,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.2-rc1",
+      "dataVersion": 4078,
+      "protocolVersion": 1073742042,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.2-pre5",
+      "dataVersion": 4077,
+      "protocolVersion": 1073742041,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.2-pre4",
+      "dataVersion": 4076,
+      "protocolVersion": 1073742040,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.2-pre3",
+      "dataVersion": 4075,
+      "protocolVersion": 1073742039,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.2-pre2",
+      "dataVersion": 4074,
+      "protocolVersion": 1073742038,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.2-pre1",
+      "dataVersion": 4073,
+      "protocolVersion": 1073742037,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w40a",
+      "dataVersion": 4072,
+      "protocolVersion": 1073742036,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w39a",
+      "dataVersion": 4069,
+      "protocolVersion": 1073742035,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w38a",
+      "dataVersion": 4066,
+      "protocolVersion": 1073742034,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w37a",
+      "dataVersion": 4065,
+      "protocolVersion": 1073742033,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w36a",
+      "dataVersion": 4063,
+      "protocolVersion": 1073742032,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w35a",
+      "dataVersion": 4062,
+      "protocolVersion": 1073742031,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w34a",
+      "dataVersion": 4060,
+      "protocolVersion": 1073742030,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w33a",
+      "dataVersion": 4058,
+      "protocolVersion": 1073742029,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21.1",
+      "dataVersion": 3955,
+      "protocolVersion": 767,
+      "majorVersion": "1.21",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.21.1-rc1",
+      "dataVersion": 3954,
+      "protocolVersion": 1073742028,
+      "majorVersion": "1.21",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21",
+      "dataVersion": 3953,
+      "protocolVersion": 767,
+      "majorVersion": "1.21",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.21-rc1",
+      "dataVersion": 3952,
+      "protocolVersion": 1073742027,
+      "majorVersion": "1.21-rc1",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21-pre4",
+      "dataVersion": 3951,
+      "protocolVersion": 1073742026,
+      "majorVersion": "1.21-pre4",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21-pre3",
+      "dataVersion": 3950,
+      "protocolVersion": 1073742025,
+      "majorVersion": "1.21-pre3",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21-pre2",
+      "dataVersion": 3949,
+      "protocolVersion": 1073742024,
+      "majorVersion": "1.21-pre2",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.21-pre1",
+      "dataVersion": 3948,
+      "protocolVersion": 1073742023,
+      "majorVersion": "1.21-pre1",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w21b",
+      "dataVersion": 3947,
+      "protocolVersion": 1073742022,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w21a",
+      "dataVersion": 3946,
+      "protocolVersion": 1073742021,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w20a",
+      "dataVersion": 3944,
+      "protocolVersion": 1073742020,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w19b",
+      "dataVersion": 3942,
+      "protocolVersion": 1073742019,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w19a",
+      "dataVersion": 3941,
+      "protocolVersion": 1073742018,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w18a",
+      "dataVersion": 3940,
+      "protocolVersion": 1073742017,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.6",
+      "dataVersion": 3839,
+      "protocolVersion": 766,
+      "majorVersion": "1.20",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.20.6-rc1",
+      "dataVersion": 3838,
+      "protocolVersion": 1073742016,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.5",
+      "dataVersion": 3837,
+      "protocolVersion": 766,
+      "majorVersion": "1.20",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.20.5-rc3",
+      "dataVersion": 3836,
+      "protocolVersion": 1073742015,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.5-rc2",
+      "dataVersion": 3835,
+      "protocolVersion": 1073742014,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.5-rc1",
+      "dataVersion": 3834,
+      "protocolVersion": 1073742013,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.5-pre4",
+      "dataVersion": 3832,
+      "protocolVersion": 1073742012,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.5-pre3",
+      "dataVersion": 3831,
+      "protocolVersion": 1073742011,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.5-pre2",
+      "dataVersion": 3830,
+      "protocolVersion": 1073742010,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.5-pre1",
+      "dataVersion": 3829,
+      "protocolVersion": 1073742009,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w14a",
+      "dataVersion": 3827,
+      "protocolVersion": 1073742008,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w14potato",
+      "dataVersion": 3824,
+      "protocolVersion": 1073742007,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w13a",
+      "dataVersion": 3826,
+      "protocolVersion": 1073742006,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w12a",
+      "dataVersion": 3824,
+      "protocolVersion": 1073742005,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w11a",
+      "dataVersion": 3823,
+      "protocolVersion": 1073742004,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w10a",
+      "dataVersion": 3821,
+      "protocolVersion": 1073742003,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w09a",
+      "dataVersion": 3819,
+      "protocolVersion": 1073742002,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w07a",
+      "dataVersion": 3817,
+      "protocolVersion": 1073742001,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w06a",
+      "dataVersion": 3815,
+      "protocolVersion": 1073742000,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w05b",
+      "dataVersion": 3811,
+      "protocolVersion": 1073741999,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w05a",
+      "dataVersion": 3809,
+      "protocolVersion": 1073741997,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w04a",
+      "dataVersion": 3806,
+      "protocolVersion": 1073741997,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w03b",
+      "dataVersion": 3805,
+      "protocolVersion": 1073741996,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "24w03a",
+      "dataVersion": 3804,
+      "protocolVersion": 1073741995,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "23w51b",
+      "dataVersion": 3802,
+      "protocolVersion": 1073741994,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.4",
+      "dataVersion": 3700,
+      "protocolVersion": 765,
+      "majorVersion": "1.20",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.20.4-rc1",
+      "dataVersion": 3699,
+      "protocolVersion": 1073741993,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.3",
+      "dataVersion": 3698,
+      "protocolVersion": 765,
+      "majorVersion": "1.20",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.20.3-rc1",
+      "dataVersion": 3697,
+      "protocolVersion": 1073741992,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.3-pre4",
+      "dataVersion": 3696,
+      "protocolVersion": 1073741991,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.3-pre3",
+      "dataVersion": 3695,
+      "protocolVersion": 1073741990,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.3-pre2",
+      "dataVersion": 3694,
+      "protocolVersion": 1073741989,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.3-pre1",
+      "dataVersion": 3693,
+      "protocolVersion": 1073741988,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "23w46a",
+      "dataVersion": 3691,
+      "protocolVersion": 1073741987,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "23w45a",
+      "dataVersion": 3690,
+      "protocolVersion": 1073741986,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "23w44a",
+      "dataVersion": 3688,
+      "protocolVersion": 1073741985,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "23w43b",
+      "dataVersion": 3687,
+      "protocolVersion": 1073741984,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "23w43a",
+      "dataVersion": 3686,
+      "protocolVersion": 1073741983,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "23w42a",
+      "dataVersion": 3684,
+      "protocolVersion": 1073741981,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "23w41a",
+      "dataVersion": 3681,
+      "protocolVersion": 1073741980,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "23w40a",
+      "dataVersion": 3679,
+      "protocolVersion": 1073741978,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.2",
+      "dataVersion": 3578,
+      "protocolVersion": 764,
+      "majorVersion": "1.20",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.20.2-rc2",
+      "dataVersion": 3577,
+      "protocolVersion": 1073741977,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.2-rc1",
+      "dataVersion": 3576,
+      "protocolVersion": 1073741976,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.2-pre4",
+      "dataVersion": 3575,
+      "protocolVersion": 1073741975,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.2-pre3",
+      "dataVersion": 3574,
+      "protocolVersion": 1073741974,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.2-pre2",
+      "dataVersion": 3573,
+      "protocolVersion": 1073741973,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.2-pre1",
+      "dataVersion": 3572,
+      "protocolVersion": 1073741972,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "23w35a",
+      "dataVersion": 3571,
+      "protocolVersion": 1073741971,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "23w33a",
+      "dataVersion": 3570,
+      "protocolVersion": 1073741970,
+      "majorVersion": "1.20",
+      "releaseType": "snapshot"
+    },
+    {
+      "minecraftVersion": "1.20.1",
+      "dataVersion": 3465,
+      "protocolVersion": 763,
+      "majorVersion": "1.20",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.20",
+      "dataVersion": 3463,
+      "protocolVersion": 763,
+      "majorVersion": "1.20",
+      "releaseType": "release"
+    },
+    {
+      "minecraftVersion": "1.19.4",
+      "dataVersion": 3337,
+      "protocolVersion": 762,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "23w03a",
+      "dataVersion": 3320,
+      "protocolVersion": 1073741939,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.3",
+      "dataVersion": 3218,
+      "protocolVersion": 761,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.3-rc3",
+      "dataVersion": 3217,
+      "protocolVersion": 1073741938,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.3-rc2",
+      "dataVersion": 3216,
+      "protocolVersion": 1073741937,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.3-rc1",
+      "dataVersion": 3215,
+      "protocolVersion": 1073741936,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.3-pre3",
+      "dataVersion": 3213,
+      "protocolVersion": 1073741935,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.3-pre2",
+      "dataVersion": 3212,
+      "protocolVersion": 1073741934,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.3-pre1",
+      "dataVersion": 3211,
+      "protocolVersion": 1073741933,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w46a",
+      "dataVersion": 3210,
+      "protocolVersion": 1073741932,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w45a",
+      "dataVersion": 3208,
+      "protocolVersion": 1073741931,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w44a",
+      "dataVersion": 3207,
+      "protocolVersion": 1073741930,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w43a",
+      "dataVersion": 3206,
+      "protocolVersion": 1073741929,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w42a",
+      "dataVersion": 3205,
+      "protocolVersion": 1073741928,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.2",
+      "dataVersion": 3120,
+      "protocolVersion": 760,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.2-rc2",
+      "dataVersion": 3119,
+      "protocolVersion": 1073741927,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.2-rc1",
+      "dataVersion": 3118,
+      "protocolVersion": 1073741926,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.1",
+      "dataVersion": 3117,
+      "protocolVersion": 760,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.1-rc3",
+      "dataVersion": 3116,
+      "protocolVersion": 1073741925,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.1-rc2",
+      "dataVersion": 3115,
+      "protocolVersion": 1073741924,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.1-pre6",
+      "dataVersion": 3114,
+      "protocolVersion": 1073741923,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.1-pre5",
+      "dataVersion": 3113,
+      "protocolVersion": 1073741922,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.1-pre4",
+      "dataVersion": 3112,
+      "protocolVersion": 1073741921,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.1-pre3",
+      "dataVersion": 3111,
+      "protocolVersion": 1073741920,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.1-pre2",
+      "dataVersion": 3110,
+      "protocolVersion": 1073741919,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.1-rc1",
+      "dataVersion": 3109,
+      "protocolVersion": 1073741918,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19.1-pre1",
+      "dataVersion": 3107,
+      "protocolVersion": 1073741917,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w24a",
+      "dataVersion": 3106,
+      "protocolVersion": 1073741916,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19",
+      "dataVersion": 3105,
+      "protocolVersion": 759,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19-rc2",
+      "dataVersion": 3104,
+      "protocolVersion": 1073741915,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19-rc1",
+      "dataVersion": 3103,
+      "protocolVersion": 1073741914,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19-pre5",
+      "dataVersion": 3102,
+      "protocolVersion": 1073741913,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19-pre4",
+      "dataVersion": 3101,
+      "protocolVersion": 1073741912,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19-pre3",
+      "dataVersion": 3100,
+      "protocolVersion": 1073741911,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19-pre2",
+      "dataVersion": 3099,
+      "protocolVersion": 1073741910,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.19-pre1",
+      "dataVersion": 3098,
+      "protocolVersion": 1073741909,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w19a",
+      "dataVersion": 3096,
+      "protocolVersion": 1073741908,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w18a",
+      "dataVersion": 3095,
+      "protocolVersion": 1073741907,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w17a",
+      "dataVersion": 3093,
+      "protocolVersion": 1073741906,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w16b",
+      "dataVersion": 3092,
+      "protocolVersion": 1073741905,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w16a",
+      "dataVersion": 3091,
+      "protocolVersion": 1073741904,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w15a",
+      "dataVersion": 3089,
+      "protocolVersion": 1073741903,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w14a",
+      "dataVersion": 3088,
+      "protocolVersion": 1073741902,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w13oneblockatatime",
+      "dataVersion": 3076,
+      "protocolVersion": 1073741901,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w13a",
+      "dataVersion": 3085,
+      "protocolVersion": 1073741900,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w12a",
+      "dataVersion": 3082,
+      "protocolVersion": 1073741899,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w11a",
+      "dataVersion": 3080,
+      "protocolVersion": 1073741898,
+      "majorVersion": "1.19",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18.2",
+      "dataVersion": 2975,
+      "protocolVersion": 758,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18.2-rc1",
+      "dataVersion": 2974,
+      "protocolVersion": 1073741897,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18.2-pre3",
+      "dataVersion": 2973,
+      "protocolVersion": 1073741896,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18.2-pre2",
+      "dataVersion": 2972,
+      "protocolVersion": 1073741895,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18.2-pre1",
+      "dataVersion": 2971,
+      "protocolVersion": 1073741894,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w07a",
+      "dataVersion": 2969,
+      "protocolVersion": 1073741892,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w06a",
+      "dataVersion": 2968,
+      "protocolVersion": 1073741891,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w05a",
+      "dataVersion": 2967,
+      "protocolVersion": 1073741890,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "22w03a",
+      "dataVersion": 2966,
+      "protocolVersion": 1073741889,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18.1",
+      "dataVersion": 2865,
+      "protocolVersion": 757,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18.1-rc3",
+      "dataVersion": 2864,
+      "protocolVersion": 1073741888,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18.1-rc2",
+      "dataVersion": 2863,
+      "protocolVersion": 1073741887,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18.1-rc1",
+      "dataVersion": 2862,
+      "protocolVersion": 1073741886,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18.1-pre1",
+      "dataVersion": 2861,
+      "protocolVersion": 1073741885,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18",
+      "dataVersion": 2860,
+      "protocolVersion": 757,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18-rc4",
+      "dataVersion": 2859,
+      "protocolVersion": 1073741884,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18-rc3",
+      "dataVersion": 2858,
+      "protocolVersion": 1073741883,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18-rc2",
+      "dataVersion": 2857,
+      "protocolVersion": 1073741882,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18-rc1",
+      "dataVersion": 2856,
+      "protocolVersion": 1073741881,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18-pre8",
+      "dataVersion": 2855,
+      "protocolVersion": 1073741880,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18-pre7",
+      "dataVersion": 2854,
+      "protocolVersion": 1073741879,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18-pre6",
+      "dataVersion": 2853,
+      "protocolVersion": 1073741878,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18-pre5",
+      "dataVersion": 2851,
+      "protocolVersion": 1073741877,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18-pre4",
+      "dataVersion": 2850,
+      "protocolVersion": 1073741876,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18-pre3",
+      "dataVersion": 2849,
+      "protocolVersion": 1073741875,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18-pre2",
+      "dataVersion": 2848,
+      "protocolVersion": 1073741874,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.18-pre1",
+      "dataVersion": 2847,
+      "protocolVersion": 1073741873,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w44a",
+      "dataVersion": 2845,
+      "protocolVersion": 1073741872,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w43a",
+      "dataVersion": 2844,
+      "protocolVersion": 1073741871,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w42a",
+      "dataVersion": 2840,
+      "protocolVersion": 1073741870,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w41a",
+      "dataVersion": 2839,
+      "protocolVersion": 1073741869,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w40a",
+      "dataVersion": 2838,
+      "protocolVersion": 1073741868,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w39a",
+      "dataVersion": 2836,
+      "protocolVersion": 1073741867,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w38a",
+      "dataVersion": 2835,
+      "protocolVersion": 1073741866,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w37a",
+      "dataVersion": 2834,
+      "protocolVersion": 1073741865,
+      "majorVersion": "1.18",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.17.1",
+      "dataVersion": 2730,
+      "protocolVersion": 756,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.17.1-rc2",
+      "dataVersion": 2729,
+      "protocolVersion": 1073741864,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.17.1-rc1",
+      "dataVersion": 2728,
+      "protocolVersion": 1073741863,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.17.1-pre3",
+      "dataVersion": 2727,
+      "protocolVersion": 1073741862,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.17.1-pre2",
+      "dataVersion": 2726,
+      "protocolVersion": 1073741861,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.17.1-pre1",
+      "dataVersion": 2725,
+      "protocolVersion": 1073741860,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.17",
+      "dataVersion": 2724,
+      "protocolVersion": 755,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.17-rc2",
+      "dataVersion": 2723,
+      "protocolVersion": 1073741859,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.17-rc1",
+      "dataVersion": 2722,
+      "protocolVersion": 1073741858,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.17-pre5",
+      "dataVersion": 2721,
+      "protocolVersion": 1073741857,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.17-pre4",
+      "dataVersion": 2720,
+      "protocolVersion": 1073741856,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.17-pre3",
+      "dataVersion": 2719,
+      "protocolVersion": 1073741855,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.17-pre2",
+      "dataVersion": 2718,
+      "protocolVersion": 1073741854,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.17-pre1",
+      "dataVersion": 2716,
+      "protocolVersion": 1073741853,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w20a",
+      "dataVersion": 2715,
+      "protocolVersion": 1073741852,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w19a",
+      "dataVersion": 2714,
+      "protocolVersion": 1073741851,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w18a",
+      "dataVersion": 2713,
+      "protocolVersion": 1073741850,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w17a",
+      "dataVersion": 2712,
+      "protocolVersion": 1073741849,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w16a",
+      "dataVersion": 2711,
+      "protocolVersion": 1073741847,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w15a",
+      "dataVersion": 2709,
+      "protocolVersion": 1073741846,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w14a",
+      "dataVersion": 2706,
+      "protocolVersion": 1073741845,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w13a",
+      "dataVersion": 2705,
+      "protocolVersion": 1073741844,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w11a",
+      "dataVersion": 2703,
+      "protocolVersion": 1073741843,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w10a",
+      "dataVersion": 2699,
+      "protocolVersion": 1073741842,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w08b",
+      "dataVersion": 2698,
+      "protocolVersion": 1073741841,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w08a",
+      "dataVersion": 2697,
+      "protocolVersion": 1073741840,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w07a",
+      "dataVersion": 2695,
+      "protocolVersion": 1073741839,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w06a",
+      "dataVersion": 2694,
+      "protocolVersion": 1073741838,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w05b",
+      "dataVersion": 2692,
+      "protocolVersion": 1073741837,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w05a",
+      "dataVersion": 2690,
+      "protocolVersion": 1073741836,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "21w03a",
+      "dataVersion": 2689,
+      "protocolVersion": 1073741835,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16.5",
+      "dataVersion": 2586,
+      "protocolVersion": 754,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16.5-rc1",
+      "dataVersion": 2585,
+      "protocolVersion": 1073741834,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w51a",
+      "dataVersion": 2687,
+      "protocolVersion": 1073741833,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w49a",
+      "dataVersion": 2685,
+      "protocolVersion": 1073741832,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w48a",
+      "dataVersion": 2683,
+      "protocolVersion": 1073741831,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w46a",
+      "dataVersion": 2682,
+      "protocolVersion": 1073741830,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w45a",
+      "dataVersion": 2681,
+      "protocolVersion": 1073741829,
+      "majorVersion": "1.17",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16.4",
+      "dataVersion": 2584,
+      "protocolVersion": 754,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16.4-rc1",
+      "dataVersion": 2583,
+      "protocolVersion": 1073741827,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16.4-pre2",
+      "dataVersion": 2582,
+      "protocolVersion": 1073741826,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16.4-pre1",
+      "dataVersion": 2581,
+      "protocolVersion": 1073741825,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16.3",
+      "dataVersion": 2580,
+      "protocolVersion": 753,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16.3-rc1",
+      "dataVersion": 2579,
+      "protocolVersion": 752,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16.2",
+      "dataVersion": 2578,
+      "protocolVersion": 751,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16.2-rc2",
+      "dataVersion": 2577,
+      "protocolVersion": 750,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16.2-rc1",
+      "dataVersion": 2576,
+      "protocolVersion": 749,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16.2-pre3",
+      "dataVersion": 2575,
+      "protocolVersion": 748,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16.2-pre2",
+      "dataVersion": 2574,
+      "protocolVersion": 746,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16.2-pre1",
+      "dataVersion": 2573,
+      "protocolVersion": 744,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w30a",
+      "dataVersion": 2572,
+      "protocolVersion": 743,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w29a",
+      "dataVersion": 2571,
+      "protocolVersion": 741,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w28a",
+      "dataVersion": 2570,
+      "protocolVersion": 740,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w27a",
+      "dataVersion": 2569,
+      "protocolVersion": 738,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16.1",
+      "dataVersion": 2567,
+      "protocolVersion": 736,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16",
+      "dataVersion": 2566,
+      "protocolVersion": 735,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16-rc1",
+      "dataVersion": 2565,
+      "protocolVersion": 734,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16-pre8",
+      "dataVersion": 2564,
+      "protocolVersion": 733,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16-pre7",
+      "dataVersion": 2563,
+      "protocolVersion": 732,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16-pre6",
+      "dataVersion": 2562,
+      "protocolVersion": 730,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16-pre5",
+      "dataVersion": 2561,
+      "protocolVersion": 729,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16-pre4",
+      "dataVersion": 2560,
+      "protocolVersion": 727,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16-pre3",
+      "dataVersion": 2559,
+      "protocolVersion": 725,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16-pre2",
+      "dataVersion": 2557,
+      "protocolVersion": 722,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.16-pre1",
+      "dataVersion": 2556,
+      "protocolVersion": 721,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w22a",
+      "dataVersion": 2555,
+      "protocolVersion": 719,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w21a",
+      "dataVersion": 2554,
+      "protocolVersion": 718,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w20b",
+      "dataVersion": 2537,
+      "protocolVersion": 717,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w20a",
+      "dataVersion": 2536,
+      "protocolVersion": 716,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w19a",
+      "dataVersion": 2534,
+      "protocolVersion": 715,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w18a",
+      "dataVersion": 2532,
+      "protocolVersion": 714,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w17a",
+      "dataVersion": 2529,
+      "protocolVersion": 713,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w16a",
+      "dataVersion": 2526,
+      "protocolVersion": 712,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w15a",
+      "dataVersion": 2525,
+      "protocolVersion": 711,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w14a",
+      "dataVersion": 2524,
+      "protocolVersion": 710,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w14infinite",
+      "dataVersion": 2522,
+      "protocolVersion": 709,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w13b",
+      "dataVersion": 2521,
+      "protocolVersion": 709,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w13a",
+      "dataVersion": 2520,
+      "protocolVersion": 708,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w12a",
+      "dataVersion": 2515,
+      "protocolVersion": 707,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w11a",
+      "dataVersion": 2513,
+      "protocolVersion": 706,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w10a",
+      "dataVersion": 2512,
+      "protocolVersion": 705,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w09a",
+      "dataVersion": 2510,
+      "protocolVersion": 704,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w08a",
+      "dataVersion": 2507,
+      "protocolVersion": 703,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w07a",
+      "dataVersion": 2506,
+      "protocolVersion": 702,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "20w06a",
+      "dataVersion": 2504,
+      "protocolVersion": 701,
+      "majorVersion": "1.16",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.15.2",
+      "dataVersion": 2230,
+      "protocolVersion": 578,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.15.2-pre2",
+      "dataVersion": 2229,
+      "protocolVersion": 577,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.15.2-pre1",
+      "dataVersion": 2228,
+      "protocolVersion": 576,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.15.1",
+      "dataVersion": 2227,
+      "protocolVersion": 575,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.15.1-pre1",
+      "dataVersion": 2226,
+      "protocolVersion": 574,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.15",
+      "dataVersion": 2225,
+      "protocolVersion": 573,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.15-pre7",
+      "dataVersion": 2224,
+      "protocolVersion": 572,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.15-pre6",
+      "dataVersion": 2223,
+      "protocolVersion": 571,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.15-pre5",
+      "dataVersion": 2222,
+      "protocolVersion": 570,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.15-pre4",
+      "dataVersion": 2221,
+      "protocolVersion": 569,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.15-pre3",
+      "dataVersion": 2220,
+      "protocolVersion": 567,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.15-pre2",
+      "dataVersion": 2219,
+      "protocolVersion": 566,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.15-pre1",
+      "dataVersion": 2218,
+      "protocolVersion": 565,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w46b",
+      "dataVersion": 2217,
+      "protocolVersion": 564,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w46a",
+      "dataVersion": 2216,
+      "protocolVersion": 563,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w45b",
+      "dataVersion": 2215,
+      "protocolVersion": 562,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w45a",
+      "dataVersion": 2214,
+      "protocolVersion": 561,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w44a",
+      "dataVersion": 2213,
+      "protocolVersion": 560,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w42a",
+      "dataVersion": 2212,
+      "protocolVersion": 559,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w41a",
+      "dataVersion": 2210,
+      "protocolVersion": 558,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w40a",
+      "dataVersion": 2208,
+      "protocolVersion": 557,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w39a",
+      "dataVersion": 2207,
+      "protocolVersion": 556,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w38b",
+      "dataVersion": 2206,
+      "protocolVersion": 555,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w38a",
+      "dataVersion": 2205,
+      "protocolVersion": 554,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w37a",
+      "dataVersion": 2204,
+      "protocolVersion": 553,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w36a",
+      "dataVersion": 2203,
+      "protocolVersion": 552,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w35a",
+      "dataVersion": 2201,
+      "protocolVersion": 551,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w34a",
+      "dataVersion": 2200,
+      "protocolVersion": 550,
+      "majorVersion": "1.15",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.4",
+      "dataVersion": 1976,
+      "protocolVersion": 498,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.4-pre7",
+      "dataVersion": 1975,
+      "protocolVersion": 497,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.4-pre6",
+      "dataVersion": 1974,
+      "protocolVersion": 496,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.4-pre5",
+      "dataVersion": 1973,
+      "protocolVersion": 495,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.4-pre4",
+      "dataVersion": 1972,
+      "protocolVersion": 494,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.4-pre3",
+      "dataVersion": 1971,
+      "protocolVersion": 493,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.4-pre2",
+      "dataVersion": 1970,
+      "protocolVersion": 492,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.4-pre1",
+      "dataVersion": 1969,
+      "protocolVersion": 491,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.3",
+      "dataVersion": 1968,
+      "protocolVersion": 490,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.3-pre4",
+      "dataVersion": 1967,
+      "protocolVersion": 489,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.3-pre3",
+      "dataVersion": 1966,
+      "protocolVersion": 488,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.3-pre2",
+      "dataVersion": 1965,
+      "protocolVersion": 487,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.3-pre1",
+      "dataVersion": 1964,
+      "protocolVersion": 486,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.2",
+      "dataVersion": 1963,
+      "protocolVersion": 485,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.2-pre4",
+      "dataVersion": 1962,
+      "protocolVersion": 484,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.2-pre3",
+      "dataVersion": 1960,
+      "protocolVersion": 483,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.2-pre2",
+      "dataVersion": 1959,
+      "protocolVersion": 482,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.2-pre1",
+      "dataVersion": 1958,
+      "protocolVersion": 481,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.1",
+      "dataVersion": 1957,
+      "protocolVersion": 480,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.1-pre2",
+      "dataVersion": 1956,
+      "protocolVersion": 479,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14.1-pre1",
+      "dataVersion": 1955,
+      "protocolVersion": 478,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14",
+      "dataVersion": 1952,
+      "protocolVersion": 477,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14-pre5",
+      "dataVersion": 1951,
+      "protocolVersion": 476,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14-pre4",
+      "dataVersion": 1950,
+      "protocolVersion": 475,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14-pre3",
+      "dataVersion": 1949,
+      "protocolVersion": 474,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14-pre2",
+      "dataVersion": 1948,
+      "protocolVersion": 473,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.14-pre1",
+      "dataVersion": 1947,
+      "protocolVersion": 472,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w14b",
+      "dataVersion": 1945,
+      "protocolVersion": 471,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w14a",
+      "dataVersion": 1944,
+      "protocolVersion": 470,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w13b",
+      "dataVersion": 1943,
+      "protocolVersion": 469,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w13a",
+      "dataVersion": 1942,
+      "protocolVersion": 468,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w12b",
+      "dataVersion": 1941,
+      "protocolVersion": 467,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w12a",
+      "dataVersion": 1940,
+      "protocolVersion": 466,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w11b",
+      "dataVersion": 1938,
+      "protocolVersion": 465,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w11a",
+      "dataVersion": 1937,
+      "protocolVersion": 464,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w09a",
+      "dataVersion": 1935,
+      "protocolVersion": 463,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w08b",
+      "dataVersion": 1934,
+      "protocolVersion": 462,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w08a",
+      "dataVersion": 1933,
+      "protocolVersion": 461,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w07a",
+      "dataVersion": 1932,
+      "protocolVersion": 460,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w06a",
+      "dataVersion": 1931,
+      "protocolVersion": 459,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w05a",
+      "dataVersion": 1930,
+      "protocolVersion": 458,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w04b",
+      "dataVersion": 1927,
+      "protocolVersion": 457,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w04a",
+      "dataVersion": 1926,
+      "protocolVersion": 456,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w03c",
+      "dataVersion": 1924,
+      "protocolVersion": 455,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w03b",
+      "dataVersion": 1923,
+      "protocolVersion": 454,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w03a",
+      "dataVersion": 1922,
+      "protocolVersion": 453,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "19w02a",
+      "dataVersion": 1921,
+      "protocolVersion": 452,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w50a",
+      "dataVersion": 1919,
+      "protocolVersion": 451,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w49a",
+      "dataVersion": 1916,
+      "protocolVersion": 450,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w48b",
+      "dataVersion": 1915,
+      "protocolVersion": 449,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w48a",
+      "dataVersion": 1914,
+      "protocolVersion": 448,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w47b",
+      "dataVersion": 1913,
+      "protocolVersion": 447,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w47a",
+      "dataVersion": 1912,
+      "protocolVersion": 446,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w46a",
+      "dataVersion": 1910,
+      "protocolVersion": 445,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w45a",
+      "dataVersion": 1908,
+      "protocolVersion": 444,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w44a",
+      "dataVersion": 1907,
+      "protocolVersion": 443,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w43c",
+      "dataVersion": 1903,
+      "protocolVersion": 442,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w43b",
+      "dataVersion": 1902,
+      "protocolVersion": 441,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w43a",
+      "dataVersion": 1902,
+      "protocolVersion": 441,
+      "majorVersion": "1.14",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13.2",
+      "dataVersion": 1631,
+      "protocolVersion": 404,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13.2-pre2",
+      "dataVersion": 1630,
+      "protocolVersion": 403,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13.2-pre1",
+      "dataVersion": 1629,
+      "protocolVersion": 402,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13.1",
+      "dataVersion": 1628,
+      "protocolVersion": 401,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13.1-pre2",
+      "dataVersion": 1627,
+      "protocolVersion": 400,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13.1-pre1",
+      "dataVersion": 1626,
+      "protocolVersion": 399,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w33a",
+      "dataVersion": 1625,
+      "protocolVersion": 398,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w32a",
+      "dataVersion": 1623,
+      "protocolVersion": 397,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w31a",
+      "dataVersion": 1622,
+      "protocolVersion": 396,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w30b",
+      "dataVersion": 1621,
+      "protocolVersion": 395,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w30a",
+      "dataVersion": 1620,
+      "protocolVersion": 394,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13",
+      "dataVersion": 1519,
+      "protocolVersion": 393,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13-pre10",
+      "dataVersion": 1518,
+      "protocolVersion": 392,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13-pre9",
+      "dataVersion": 1517,
+      "protocolVersion": 391,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13-pre8",
+      "dataVersion": 1516,
+      "protocolVersion": 390,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13-pre7",
+      "dataVersion": 1513,
+      "protocolVersion": 389,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13-pre6",
+      "dataVersion": 1512,
+      "protocolVersion": 388,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13-pre5",
+      "dataVersion": 1511,
+      "protocolVersion": 387,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13-pre4",
+      "dataVersion": 1504,
+      "protocolVersion": 386,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13-pre3",
+      "dataVersion": 1503,
+      "protocolVersion": 385,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13-pre2",
+      "dataVersion": 1502,
+      "protocolVersion": 384,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.13-pre1",
+      "dataVersion": 1501,
+      "protocolVersion": 383,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w22c",
+      "dataVersion": 1499,
+      "protocolVersion": 382,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w22b",
+      "dataVersion": 1498,
+      "protocolVersion": 381,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w22a",
+      "dataVersion": 1497,
+      "protocolVersion": 380,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w21b",
+      "dataVersion": 1496,
+      "protocolVersion": 379,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w21a",
+      "dataVersion": 1495,
+      "protocolVersion": 378,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w20c",
+      "dataVersion": 1493,
+      "protocolVersion": 377,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w20b",
+      "dataVersion": 1491,
+      "protocolVersion": 376,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w20a",
+      "dataVersion": 1489,
+      "protocolVersion": 375,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w19b",
+      "dataVersion": 1485,
+      "protocolVersion": 374,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w19a",
+      "dataVersion": 1484,
+      "protocolVersion": 373,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w16a",
+      "dataVersion": 1483,
+      "protocolVersion": 372,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w15a",
+      "dataVersion": 1482,
+      "protocolVersion": 371,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w14b",
+      "dataVersion": 1481,
+      "protocolVersion": 370,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w14a",
+      "dataVersion": 1479,
+      "protocolVersion": 369,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w11a",
+      "dataVersion": 1478,
+      "protocolVersion": 368,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w10d",
+      "dataVersion": 1477,
+      "protocolVersion": 367,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w10c",
+      "dataVersion": 1476,
+      "protocolVersion": 366,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w10b",
+      "dataVersion": 1474,
+      "protocolVersion": 365,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w10a",
+      "dataVersion": 1473,
+      "protocolVersion": 364,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w09a",
+      "dataVersion": 1472,
+      "protocolVersion": 363,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w08b",
+      "dataVersion": 1471,
+      "protocolVersion": 362,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w08a",
+      "dataVersion": 1470,
+      "protocolVersion": 361,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w07c",
+      "dataVersion": 1469,
+      "protocolVersion": 360,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w07b",
+      "dataVersion": 1468,
+      "protocolVersion": 359,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w07a",
+      "dataVersion": 1467,
+      "protocolVersion": 358,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w06a",
+      "dataVersion": 1466,
+      "protocolVersion": 357,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w05a",
+      "dataVersion": 1464,
+      "protocolVersion": 356,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w03b",
+      "dataVersion": 1463,
+      "protocolVersion": 355,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w03a",
+      "dataVersion": 1462,
+      "protocolVersion": 354,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w02a",
+      "dataVersion": 1461,
+      "protocolVersion": 353,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "18w01a",
+      "dataVersion": 1459,
+      "protocolVersion": 352,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w50a",
+      "dataVersion": 1457,
+      "protocolVersion": 351,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w49b",
+      "dataVersion": 1455,
+      "protocolVersion": 350,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w49a",
+      "dataVersion": 1454,
+      "protocolVersion": 349,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w48a",
+      "dataVersion": 1453,
+      "protocolVersion": 348,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w47b",
+      "dataVersion": 1452,
+      "protocolVersion": 347,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w47a",
+      "dataVersion": 1451,
+      "protocolVersion": 346,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w46a",
+      "dataVersion": 1449,
+      "protocolVersion": 345,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w45b",
+      "dataVersion": 1448,
+      "protocolVersion": 344,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w45a",
+      "dataVersion": 1447,
+      "protocolVersion": 343,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w43b",
+      "dataVersion": 1445,
+      "protocolVersion": 342,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w43a",
+      "dataVersion": 1444,
+      "protocolVersion": 341,
+      "majorVersion": "1.13",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.12.2",
+      "dataVersion": 1343,
+      "protocolVersion": 340,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.12.2-pre2",
+      "dataVersion": 1342,
+      "protocolVersion": 339,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.12.2-pre1",
+      "dataVersion": 1341,
+      "protocolVersion": 339,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.12.1",
+      "dataVersion": 1241,
+      "protocolVersion": 338,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.12.1-pre1",
+      "dataVersion": 1240,
+      "protocolVersion": 337,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w31a",
+      "dataVersion": 1239,
+      "protocolVersion": 336,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.12",
+      "dataVersion": 1139,
+      "protocolVersion": 335,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.12-pre7",
+      "dataVersion": 1138,
+      "protocolVersion": 334,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.12-pre6",
+      "dataVersion": 1137,
+      "protocolVersion": 333,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.12-pre5",
+      "dataVersion": 1136,
+      "protocolVersion": 332,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.12-pre4",
+      "dataVersion": 1135,
+      "protocolVersion": 331,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.12-pre3",
+      "dataVersion": 1134,
+      "protocolVersion": 330,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.12-pre2",
+      "dataVersion": 1133,
+      "protocolVersion": 329,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.12-pre1",
+      "dataVersion": 1132,
+      "protocolVersion": 328,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w18b",
+      "dataVersion": 1131,
+      "protocolVersion": 327,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w18a",
+      "dataVersion": 1130,
+      "protocolVersion": 326,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w17b",
+      "dataVersion": 1129,
+      "protocolVersion": 325,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w17a",
+      "dataVersion": 1128,
+      "protocolVersion": 324,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w16b",
+      "dataVersion": 1127,
+      "protocolVersion": 323,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w16a",
+      "dataVersion": 1126,
+      "protocolVersion": 322,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w15a",
+      "dataVersion": 1125,
+      "protocolVersion": 321,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w14a",
+      "dataVersion": 1124,
+      "protocolVersion": 320,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w13b",
+      "dataVersion": 1123,
+      "protocolVersion": 319,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w13a",
+      "dataVersion": 1122,
+      "protocolVersion": 318,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "17w06a",
+      "dataVersion": 1022,
+      "protocolVersion": 317,
+      "majorVersion": "1.12",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.11.2",
+      "dataVersion": 922,
+      "protocolVersion": 316,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.11.1",
+      "dataVersion": 921,
+      "protocolVersion": 316,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w50a",
+      "dataVersion": 920,
+      "protocolVersion": 316,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.11",
+      "dataVersion": 819,
+      "protocolVersion": 315,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.11-pre1",
+      "dataVersion": 818,
+      "protocolVersion": 314,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w44a",
+      "dataVersion": 817,
+      "protocolVersion": 313,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w43a",
+      "dataVersion": 817,
+      "protocolVersion": 313,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w42a",
+      "dataVersion": 815,
+      "protocolVersion": 312,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w41a",
+      "dataVersion": 814,
+      "protocolVersion": 311,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w40a",
+      "dataVersion": 813,
+      "protocolVersion": 310,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w39c",
+      "dataVersion": 812,
+      "protocolVersion": 309,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w39b",
+      "dataVersion": 811,
+      "protocolVersion": 308,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w39a",
+      "dataVersion": 809,
+      "protocolVersion": 307,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w38a",
+      "dataVersion": 807,
+      "protocolVersion": 306,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w36a",
+      "dataVersion": 805,
+      "protocolVersion": 305,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w35a",
+      "dataVersion": 803,
+      "protocolVersion": 304,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w33a",
+      "dataVersion": 802,
+      "protocolVersion": 303,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w32b",
+      "dataVersion": 801,
+      "protocolVersion": 302,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w32a",
+      "dataVersion": 800,
+      "protocolVersion": 301,
+      "majorVersion": "1.11",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.10.2",
+      "dataVersion": 512,
+      "protocolVersion": 210,
+      "majorVersion": "1.10",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.10.1",
+      "dataVersion": 511,
+      "protocolVersion": 210,
+      "majorVersion": "1.10",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.10",
+      "dataVersion": 510,
+      "protocolVersion": 210,
+      "majorVersion": "1.10",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.10-pre2",
+      "dataVersion": 507,
+      "protocolVersion": 205,
+      "majorVersion": "1.10",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.10-pre1",
+      "dataVersion": 506,
+      "protocolVersion": 204,
+      "majorVersion": "1.10",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w21b",
+      "dataVersion": 504,
+      "protocolVersion": 203,
+      "majorVersion": "1.10",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w21a",
+      "dataVersion": 503,
+      "protocolVersion": 202,
+      "majorVersion": "1.10",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w20a",
+      "dataVersion": 501,
+      "protocolVersion": 201,
+      "majorVersion": "1.10",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.9.4",
+      "dataVersion": 184,
+      "protocolVersion": 110,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.9.3",
+      "dataVersion": 183,
+      "protocolVersion": 110,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.9.3-pre3",
+      "dataVersion": 182,
+      "protocolVersion": 110,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.9.3-pre2",
+      "dataVersion": 181,
+      "protocolVersion": 110,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.9.3-pre1",
+      "dataVersion": 180,
+      "protocolVersion": 109,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w15b",
+      "dataVersion": 179,
+      "protocolVersion": 109,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w15a",
+      "dataVersion": 178,
+      "protocolVersion": 109,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w14a",
+      "dataVersion": 177,
+      "protocolVersion": 109,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.9.2",
+      "dataVersion": 176,
+      "protocolVersion": 109,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.9.1",
+      "dataVersion": 175,
+      "protocolVersion": 108,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.9.1-pre3",
+      "dataVersion": 172,
+      "protocolVersion": 108,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.9.1-pre2",
+      "dataVersion": 171,
+      "protocolVersion": 108,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.9.1-pre1",
+      "dataVersion": 170,
+      "protocolVersion": 107,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.9",
+      "dataVersion": 169,
+      "protocolVersion": 107,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.9-pre4",
+      "dataVersion": 168,
+      "protocolVersion": 106,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.9-pre3",
+      "dataVersion": 167,
+      "protocolVersion": 105,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.9-pre2",
+      "dataVersion": 165,
+      "protocolVersion": 104,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.9-pre1",
+      "dataVersion": 164,
+      "protocolVersion": 103,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w07b",
+      "dataVersion": 163,
+      "protocolVersion": 102,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w07a",
+      "dataVersion": 162,
+      "protocolVersion": 101,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w06a",
+      "dataVersion": 161,
+      "protocolVersion": 100,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w05b",
+      "dataVersion": 160,
+      "protocolVersion": 99,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w05a",
+      "dataVersion": 159,
+      "protocolVersion": 98,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w04a",
+      "dataVersion": 158,
+      "protocolVersion": 97,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w03a",
+      "dataVersion": 157,
+      "protocolVersion": 96,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "16w02a",
+      "dataVersion": 156,
+      "protocolVersion": 95,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w51b",
+      "dataVersion": 155,
+      "protocolVersion": 94,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w51a",
+      "dataVersion": 154,
+      "protocolVersion": 93,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w50a",
+      "dataVersion": 153,
+      "protocolVersion": 92,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w49b",
+      "dataVersion": 152,
+      "protocolVersion": 91,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w49a",
+      "dataVersion": 151,
+      "protocolVersion": 90,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w47c",
+      "dataVersion": 150,
+      "protocolVersion": 89,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w47b",
+      "dataVersion": 149,
+      "protocolVersion": 88,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w47a",
+      "dataVersion": 148,
+      "protocolVersion": 87,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w46a",
+      "dataVersion": 146,
+      "protocolVersion": 86,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w45a",
+      "dataVersion": 145,
+      "protocolVersion": 85,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w44b",
+      "dataVersion": 143,
+      "protocolVersion": 84,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w44a",
+      "dataVersion": 142,
+      "protocolVersion": 83,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w43c",
+      "dataVersion": 141,
+      "protocolVersion": 82,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w43b",
+      "dataVersion": 140,
+      "protocolVersion": 81,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w43a",
+      "dataVersion": 139,
+      "protocolVersion": 80,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w42a",
+      "dataVersion": 138,
+      "protocolVersion": 79,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w41b",
+      "dataVersion": 137,
+      "protocolVersion": 78,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w41a",
+      "dataVersion": 136,
+      "protocolVersion": 77,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w40b",
+      "dataVersion": 134,
+      "protocolVersion": 76,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w40a",
+      "dataVersion": 133,
+      "protocolVersion": 75,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w39c",
+      "dataVersion": 132,
+      "protocolVersion": 74,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w39b",
+      "dataVersion": 131,
+      "protocolVersion": 74,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w39a",
+      "dataVersion": 130,
+      "protocolVersion": 74,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w38b",
+      "dataVersion": 129,
+      "protocolVersion": 73,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w38a",
+      "dataVersion": 128,
+      "protocolVersion": 72,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w37a",
+      "dataVersion": 127,
+      "protocolVersion": 71,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w36d",
+      "dataVersion": 126,
+      "protocolVersion": 70,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w36c",
+      "dataVersion": 125,
+      "protocolVersion": 69,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w36b",
+      "dataVersion": 124,
+      "protocolVersion": 68,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w36a",
+      "dataVersion": 123,
+      "protocolVersion": 67,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w35e",
+      "dataVersion": 122,
+      "protocolVersion": 66,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w35d",
+      "dataVersion": 121,
+      "protocolVersion": 65,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w35c",
+      "dataVersion": 120,
+      "protocolVersion": 64,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w35b",
+      "dataVersion": 119,
+      "protocolVersion": 63,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w35a",
+      "dataVersion": 118,
+      "protocolVersion": 62,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w34d",
+      "dataVersion": 117,
+      "protocolVersion": 61,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w34c",
+      "dataVersion": 116,
+      "protocolVersion": 60,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w34b",
+      "dataVersion": 115,
+      "protocolVersion": 59,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w34a",
+      "dataVersion": 114,
+      "protocolVersion": 58,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w33c",
+      "dataVersion": 112,
+      "protocolVersion": 57,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w33b",
+      "dataVersion": 111,
+      "protocolVersion": 56,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w33a",
+      "dataVersion": 111,
+      "protocolVersion": 55,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w32c",
+      "dataVersion": 104,
+      "protocolVersion": 54,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w32b",
+      "dataVersion": 103,
+      "protocolVersion": 53,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w32a",
+      "dataVersion": 100,
+      "protocolVersion": 52,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w31c",
+      "dataVersion": 99,
+      "protocolVersion": 51,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w31b",
+      "dataVersion": 98,
+      "protocolVersion": 50,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w31a",
+      "dataVersion": 97,
+      "protocolVersion": 49,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "15w14a",
+      "dataVersion": 96,
+      "protocolVersion": 48,
+      "majorVersion": "1.9",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.9",
+      "dataVersion": 95,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.8",
+      "dataVersion": 94,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.7",
+      "dataVersion": 93,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.6",
+      "dataVersion": 92,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.5",
+      "dataVersion": 91,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.4",
+      "dataVersion": 90,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.3",
+      "dataVersion": 89,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.2",
+      "dataVersion": 88,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.2-pre7",
+      "dataVersion": 87,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.2-pre6",
+      "dataVersion": 86,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.2-pre5",
+      "dataVersion": 85,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.2-pre4",
+      "dataVersion": 84,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.2-pre3",
+      "dataVersion": 83,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.2-pre2",
+      "dataVersion": 82,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.2-pre1",
+      "dataVersion": 81,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.1",
+      "dataVersion": 80,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.1-pre5",
+      "dataVersion": 79,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.1-pre4",
+      "dataVersion": 78,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.1-pre3",
+      "dataVersion": 77,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.1-pre2",
+      "dataVersion": 76,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8.1-pre1",
+      "dataVersion": 75,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8",
+      "dataVersion": 74,
+      "protocolVersion": 47,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8-pre3",
+      "dataVersion": 73,
+      "protocolVersion": 46,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8-pre2",
+      "dataVersion": 72,
+      "protocolVersion": 45,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.8-pre1",
+      "dataVersion": 71,
+      "protocolVersion": 44,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w34d",
+      "dataVersion": 70,
+      "protocolVersion": 43,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w34c",
+      "dataVersion": 69,
+      "protocolVersion": 42,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w34b",
+      "dataVersion": 68,
+      "protocolVersion": 41,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w34a",
+      "dataVersion": 67,
+      "protocolVersion": 40,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w33c",
+      "dataVersion": 66,
+      "protocolVersion": 39,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w33b",
+      "dataVersion": 65,
+      "protocolVersion": 38,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w33a",
+      "dataVersion": 64,
+      "protocolVersion": 37,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w32d",
+      "dataVersion": 63,
+      "protocolVersion": 36,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w32c",
+      "dataVersion": 62,
+      "protocolVersion": 35,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w32b",
+      "dataVersion": 61,
+      "protocolVersion": 34,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w32a",
+      "dataVersion": 60,
+      "protocolVersion": 33,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w31a",
+      "dataVersion": 59,
+      "protocolVersion": 32,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w30c",
+      "dataVersion": 58,
+      "protocolVersion": 31,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w30b",
+      "dataVersion": 57,
+      "protocolVersion": 30,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w30a",
+      "dataVersion": 56,
+      "protocolVersion": 30,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w29b",
+      "dataVersion": 55,
+      "protocolVersion": 29,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w29a",
+      "dataVersion": 54,
+      "protocolVersion": 29,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w28b",
+      "dataVersion": 53,
+      "protocolVersion": 28,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w28a",
+      "dataVersion": 52,
+      "protocolVersion": 27,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w27b",
+      "dataVersion": 51,
+      "protocolVersion": 26,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w27a",
+      "dataVersion": 50,
+      "protocolVersion": 26,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w26c",
+      "dataVersion": 49,
+      "protocolVersion": 25,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w26b",
+      "dataVersion": 48,
+      "protocolVersion": 24,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w26a",
+      "dataVersion": 47,
+      "protocolVersion": 23,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w25b",
+      "dataVersion": 46,
+      "protocolVersion": 22,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w25a",
+      "dataVersion": 45,
+      "protocolVersion": 21,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w21b",
+      "dataVersion": 44,
+      "protocolVersion": 20,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w21a",
+      "dataVersion": 43,
+      "protocolVersion": 19,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w20b",
+      "dataVersion": 42,
+      "protocolVersion": 18,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w20a",
+      "dataVersion": 41,
+      "protocolVersion": 18,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w19a",
+      "dataVersion": 40,
+      "protocolVersion": 17,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w18b",
+      "dataVersion": 39,
+      "protocolVersion": 16,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w18a",
+      "dataVersion": 38,
+      "protocolVersion": 16,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w17a",
+      "dataVersion": 37,
+      "protocolVersion": 15,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w11b",
+      "dataVersion": 36,
+      "protocolVersion": 14,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w11a",
+      "dataVersion": 35,
+      "protocolVersion": 14,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w10c",
+      "dataVersion": 34,
+      "protocolVersion": 13,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w10b",
+      "dataVersion": 33,
+      "protocolVersion": 13,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w10a",
+      "dataVersion": 32,
+      "protocolVersion": 13,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w08a",
+      "dataVersion": 31,
+      "protocolVersion": 12,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w07a",
+      "dataVersion": 30,
+      "protocolVersion": 11,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w06b",
+      "dataVersion": 29,
+      "protocolVersion": 10,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w06a",
+      "dataVersion": 28,
+      "protocolVersion": 10,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w05b",
+      "dataVersion": 27,
+      "protocolVersion": 9,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w05a",
+      "dataVersion": 26,
+      "protocolVersion": 9,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w04b",
+      "dataVersion": 25,
+      "protocolVersion": 8,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w04a",
+      "dataVersion": 24,
+      "protocolVersion": 7,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w03b",
+      "dataVersion": 23,
+      "protocolVersion": 6,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w03a",
+      "dataVersion": 22,
+      "protocolVersion": 6,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w02c",
+      "dataVersion": 21,
+      "protocolVersion": 5,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w02b",
+      "dataVersion": 20,
+      "protocolVersion": 5,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "14w02a",
+      "dataVersion": 19,
+      "protocolVersion": 5,
+      "majorVersion": "1.8",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.10",
+      "dataVersion": 18,
+      "protocolVersion": 5,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.10-pre4",
+      "dataVersion": 17,
+      "protocolVersion": 5,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.10-pre3",
+      "dataVersion": 16,
+      "protocolVersion": 5,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.10-pre2",
+      "dataVersion": 15,
+      "protocolVersion": 5,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.10-pre1",
+      "dataVersion": 14,
+      "protocolVersion": 5,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.9",
+      "dataVersion": 13,
+      "protocolVersion": 5,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.8",
+      "dataVersion": 12,
+      "protocolVersion": 5,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.7",
+      "dataVersion": 11,
+      "protocolVersion": 5,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.6",
+      "dataVersion": 10,
+      "protocolVersion": 5,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.6-pre2",
+      "dataVersion": 9,
+      "protocolVersion": 5,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.6-pre1",
+      "dataVersion": 8,
+      "protocolVersion": 5,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.5",
+      "dataVersion": 7,
+      "protocolVersion": 4,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.4",
+      "dataVersion": 6,
+      "protocolVersion": 4,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.3-pre",
+      "dataVersion": 5,
+      "protocolVersion": 4,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w49a",
+      "dataVersion": 4,
+      "protocolVersion": 4,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w48b",
+      "dataVersion": 3,
+      "protocolVersion": 4,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w48a",
+      "dataVersion": 2,
+      "protocolVersion": 4,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w47e",
+      "dataVersion": 1,
+      "protocolVersion": 4,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w47d",
+      "dataVersion": -740,
+      "protocolVersion": 4,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w47c",
+      "dataVersion": -1,
+      "protocolVersion": 4,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w47b",
+      "dataVersion": -2,
+      "protocolVersion": 4,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w47a",
+      "dataVersion": -3,
+      "protocolVersion": 4,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.2",
+      "dataVersion": -4,
+      "protocolVersion": 4,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7.1-pre",
+      "dataVersion": -5,
+      "protocolVersion": 3,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.7-pre",
+      "dataVersion": -6,
+      "protocolVersion": 3,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w43a",
+      "dataVersion": -7,
+      "protocolVersion": 2,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w42b",
+      "dataVersion": -8,
+      "protocolVersion": 1,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w42a",
+      "dataVersion": -9,
+      "protocolVersion": 1,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w41b",
+      "dataVersion": -10,
+      "protocolVersion": 0,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w41a",
+      "dataVersion": -11,
+      "protocolVersion": 0,
+      "majorVersion": "1.7",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.6.4",
+      "dataVersion": -12,
+      "protocolVersion": 78,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.6.2",
+      "dataVersion": -13,
+      "protocolVersion": 74,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.6.1",
+      "dataVersion": -14,
+      "protocolVersion": 73,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.6-pre",
+      "dataVersion": -15,
+      "protocolVersion": 72,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w26a",
+      "dataVersion": -16,
+      "protocolVersion": 72,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w25c",
+      "dataVersion": -17,
+      "protocolVersion": 71,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w25b",
+      "dataVersion": -18,
+      "protocolVersion": 71,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w25a",
+      "dataVersion": -19,
+      "protocolVersion": 71,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w24b",
+      "dataVersion": -20,
+      "protocolVersion": 70,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w24a",
+      "dataVersion": -21,
+      "protocolVersion": 69,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w23b",
+      "dataVersion": -22,
+      "protocolVersion": 68,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w23a",
+      "dataVersion": -23,
+      "protocolVersion": 67,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w22a",
+      "dataVersion": -24,
+      "protocolVersion": 67,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w21b",
+      "dataVersion": -25,
+      "protocolVersion": 67,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w21a",
+      "dataVersion": -26,
+      "protocolVersion": 67,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w19a",
+      "dataVersion": -27,
+      "protocolVersion": 66,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w18a",
+      "dataVersion": -28,
+      "protocolVersion": 65,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w17a",
+      "dataVersion": -29,
+      "protocolVersion": 64,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w16b",
+      "dataVersion": -30,
+      "protocolVersion": 63,
+      "majorVersion": "1.6",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.5.2",
+      "dataVersion": -31,
+      "protocolVersion": 61,
+      "majorVersion": "1.5",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.5.1",
+      "dataVersion": -32,
+      "protocolVersion": 60,
+      "majorVersion": "1.5",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.5",
+      "dataVersion": -33,
+      "protocolVersion": 60,
+      "majorVersion": "1.5",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w09b",
+      "dataVersion": -34,
+      "protocolVersion": 59,
+      "majorVersion": "1.5",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w06a",
+      "dataVersion": -35,
+      "protocolVersion": 58,
+      "majorVersion": "1.5",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w05b",
+      "dataVersion": -36,
+      "protocolVersion": 57,
+      "majorVersion": "1.5",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w05a",
+      "dataVersion": -37,
+      "protocolVersion": 56,
+      "majorVersion": "1.5",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w04a",
+      "dataVersion": -38,
+      "protocolVersion": 55,
+      "majorVersion": "1.5",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w03a",
+      "dataVersion": -39,
+      "protocolVersion": 54,
+      "majorVersion": "1.5",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w02a",
+      "dataVersion": -40,
+      "protocolVersion": 53,
+      "majorVersion": "1.5",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "13w01a",
+      "dataVersion": -41,
+      "protocolVersion": 52,
+      "majorVersion": "1.5",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.4.7",
+      "dataVersion": -42,
+      "protocolVersion": 51,
+      "majorVersion": "1.4",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.4.6",
+      "dataVersion": -43,
+      "protocolVersion": 51,
+      "majorVersion": "1.4",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w49a",
+      "dataVersion": -44,
+      "protocolVersion": 50,
+      "majorVersion": "1.4",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.4.5",
+      "dataVersion": -45,
+      "protocolVersion": 49,
+      "majorVersion": "1.4",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.4.4",
+      "dataVersion": -46,
+      "protocolVersion": 49,
+      "majorVersion": "1.4",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.4.3-pre",
+      "dataVersion": -47,
+      "protocolVersion": 48,
+      "majorVersion": "1.4",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.4.2",
+      "dataVersion": -48,
+      "protocolVersion": 47,
+      "majorVersion": "1.4",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w41a",
+      "dataVersion": -49,
+      "protocolVersion": 46,
+      "majorVersion": "1.4",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w40a",
+      "dataVersion": -50,
+      "protocolVersion": 45,
+      "majorVersion": "1.4",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w34b",
+      "dataVersion": -51,
+      "protocolVersion": 42,
+      "majorVersion": "1.4",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w34a",
+      "dataVersion": -52,
+      "protocolVersion": 41,
+      "majorVersion": "1.4",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w32a",
+      "dataVersion": -53,
+      "protocolVersion": 40,
+      "majorVersion": "1.4",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.3.2",
+      "dataVersion": -54,
+      "protocolVersion": 39,
+      "majorVersion": "1.3",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.3.1",
+      "dataVersion": -55,
+      "protocolVersion": 39,
+      "majorVersion": "1.3",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w27a",
+      "dataVersion": -56,
+      "protocolVersion": 38,
+      "majorVersion": "1.3",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w26a",
+      "dataVersion": -57,
+      "protocolVersion": 37,
+      "majorVersion": "1.3",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w25a",
+      "dataVersion": -58,
+      "protocolVersion": 37,
+      "majorVersion": "1.3",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w24a",
+      "dataVersion": -59,
+      "protocolVersion": 36,
+      "majorVersion": "1.3",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w23a",
+      "dataVersion": -60,
+      "protocolVersion": 35,
+      "majorVersion": "1.3",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w22a",
+      "dataVersion": -61,
+      "protocolVersion": 34,
+      "majorVersion": "1.3",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w21ab",
+      "dataVersion": -62,
+      "protocolVersion": 33,
+      "majorVersion": "1.3",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w19a",
+      "dataVersion": -63,
+      "protocolVersion": 32,
+      "majorVersion": "1.3",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w18a",
+      "dataVersion": -64,
+      "protocolVersion": 32,
+      "majorVersion": "1.3",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w17a",
+      "dataVersion": -65,
+      "protocolVersion": 31,
+      "majorVersion": "1.3",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w16a",
+      "dataVersion": -66,
+      "protocolVersion": 30,
+      "majorVersion": "1.3",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.2.5",
+      "dataVersion": -67,
+      "protocolVersion": 29,
+      "majorVersion": "1.2",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.2.4",
+      "dataVersion": -68,
+      "protocolVersion": 29,
+      "majorVersion": "1.2",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.2.3",
+      "dataVersion": -69,
+      "protocolVersion": 28,
+      "majorVersion": "1.2",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.2.2",
+      "dataVersion": -70,
+      "protocolVersion": 28,
+      "majorVersion": "1.2",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.2.1",
+      "dataVersion": -71,
+      "protocolVersion": 28,
+      "majorVersion": "1.2",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w07a",
+      "dataVersion": -72,
+      "protocolVersion": 27,
+      "majorVersion": "1.2",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w06a",
+      "dataVersion": -73,
+      "protocolVersion": 25,
+      "majorVersion": "1.2",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w01a",
+      "dataVersion": -74,
+      "protocolVersion": 24,
+      "majorVersion": "1.2",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w03a",
+      "dataVersion": -75,
+      "protocolVersion": 24,
+      "majorVersion": "1.2",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w04a",
+      "dataVersion": -76,
+      "protocolVersion": 24,
+      "majorVersion": "1.2",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "12w05a",
+      "dataVersion": -77,
+      "protocolVersion": 24,
+      "majorVersion": "1.2",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.1",
+      "dataVersion": -78,
+      "protocolVersion": 23,
+      "majorVersion": "1.1",
+      "releaseType": "unknown"
+    },
+    {
+      "minecraftVersion": "1.0.0",
+      "dataVersion": -79,
+      "protocolVersion": 22,
+      "majorVersion": "1.0",
+      "releaseType": "unknown"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+output/
+.playwright-cli/
+.wrangler/
+.agents/
+.codex/
+.dev.vars
+*.local
+*.log
+.DS_Store

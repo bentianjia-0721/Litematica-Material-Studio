@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-16T14:25:26.819Z",
+  "valid": true,
+  "checkedVersionCount": 17,
+  "checkedCompatibilityEntryCount": 508,
+  "chineseNameMissingRate": 0.0016457519029006377,
+  "blockToItemMissingRate": 0.022477034334484332,
+  "errors": [],
+  "warnings": []
+}
