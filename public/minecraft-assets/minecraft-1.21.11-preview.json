@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "minecraftVersion": "1.21.11",
+  "sourceClientSha1": "ba2df812c2d12e0219c489c4cd9a5e1f0760f5bd",
+  "sourceClientUrl": "https://piston-data.mojang.com/v1/objects/ba2df812c2d12e0219c489c4cd9a5e1f0760f5bd/client.jar",
+  "fileCount": 4789,
+  "includedRoots": [
+    "assets/minecraft/blockstates",
+    "assets/minecraft/models/block",
+    "assets/minecraft/textures/block",
+    "assets/minecraft/textures/colormap",
+    "model-referenced assets/minecraft/textures/item"
+  ],
+  "archiveSha256": "67a6b85fbcfd1334118bb98feb2400e19f8c193a5a38801e68dba1fcaf06a4ac"
+}

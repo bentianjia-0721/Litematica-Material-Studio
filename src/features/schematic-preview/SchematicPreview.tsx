@@ -44,7 +44,6 @@ import {
 
 interface SchematicPreviewProps {
   preview: LitematicPreview;
-  minecraftVersion: string | null;
 }
 
 interface PreviewMeshGroup {
@@ -270,10 +269,10 @@ function addMinecraftMeshes(
 
 function fallbackMessage(error: unknown): string {
   const detail = error instanceof Error ? error.message : "未知错误";
-  return `原版资源加载失败，已明确降级为彩色占位：${detail}`;
+  return `内置 Minecraft 1.21.11 资源加载失败，已明确降级为彩色占位：${detail}`;
 }
 
-export function SchematicPreview({ preview, minecraftVersion }: SchematicPreviewProps) {
+export function SchematicPreview({ preview }: SchematicPreviewProps) {
   const bounds = preview.bounds;
   const minimumY = bounds?.min.y ?? 0;
   const maximumY = bounds?.max.y ?? 0;
@@ -281,6 +280,7 @@ export function SchematicPreview({ preview, minecraftVersion }: SchematicPreview
   const [singleLayer, setSingleLayer] = useState(maximumY);
   const [rangeStart, setRangeStart] = useState(minimumY);
   const [rangeEnd, setRangeEnd] = useState(maximumY);
+  const [useXkrd, setUseXkrd] = useState(false);
   const [webglError, setWebglError] = useState<string | null>(null);
   const [modelStatus, setModelStatus] = useState<ModelStatus>({ phase: "idle", message: "" });
   const viewportRef = useRef<HTMLDivElement | null>(null);
@@ -414,40 +414,23 @@ export function SchematicPreview({ preview, minecraftVersion }: SchematicPreview
 
       const initialiseModels = async () => {
         if (preview.sampledBlockCount === 0) return;
-        if (!minecraftVersion) {
-          const fallbackStates = addFallbackMeshes(
-            runtime,
-            owned,
-            preview,
-            capacitiesByState(preview),
-          );
-          updateMeshGroups(runtime, preview, layerRangeRef.current);
-          setModelStatus({
-            phase: "fallback",
-            message: `未识别 Minecraft 版本，${fallbackStates} 种状态使用彩色占位。`,
-          });
-          return;
-        }
 
         setModelStatus({
           phase: "loading",
-          message: `正在从 Mojang 官方资源读取 Minecraft ${minecraftVersion} 方块模型与纹理…`,
+          message: "",
         });
         try {
           const resources = await loadMojangResources({
-            version: minecraftVersion,
             states: preview.states,
             signal: abortController.signal,
+            useXkrd,
           });
           if (abortController.signal.aborted) return;
-          const counts = addMinecraftMeshes(runtime, owned, preview, resources);
+          addMinecraftMeshes(runtime, owned, preview, resources);
           updateMeshGroups(runtime, preview, layerRangeRef.current);
           setModelStatus({
             phase: "ready",
-            message:
-              counts.fallbackStates > 0
-                ? `Minecraft ${resources.version} 原版模型已就绪：${counts.modelledStates} 种精确模型，${counts.fallbackStates} 种动态或 Mod 状态明确降级。`
-                : `Minecraft ${resources.version} 原版模型与纹理已就绪，共 ${counts.modelledStates} 种状态。`,
+            message: "",
           });
         } catch (error) {
           if (abortController.signal.aborted) return;
@@ -490,7 +473,7 @@ export function SchematicPreview({ preview, minecraftVersion }: SchematicPreview
       renderer?.dispose();
       renderer?.domElement.remove();
     };
-  }, [bounds, minecraftVersion, preview]);
+  }, [bounds, preview, useXkrd]);
 
   useEffect(() => {
     const runtime = runtimeRef.current;
@@ -654,6 +637,31 @@ export function SchematicPreview({ preview, minecraftVersion }: SchematicPreview
           ) : null}
 
           <fieldset>
+            <legend>预览材质</legend>
+            <label className="preview-resource-toggle">
+              <input
+                type="checkbox"
+                role="switch"
+                aria-label="启用 XK 红显"
+                aria-describedby="xkrd-preview-description"
+                checked={useXkrd}
+                onChange={(event) => setUseXkrd(event.target.checked)}
+              />
+              <span className="preview-resource-toggle__track" aria-hidden="true">
+                <span />
+              </span>
+              <span className="preview-resource-toggle__copy">
+                <strong>启用 XK 红显</strong>
+                <small>{useXkrd ? "已开启" : "默认关闭"}</small>
+              </span>
+            </label>
+            <small id="xkrd-preview-description">
+              开启后按原理图方块状态优先使用 XK 红显；包内缺失或异常的状态仍使用原版 1.21.11
+              模型与纹理。
+            </small>
+          </fieldset>
+
+          <fieldset>
             <legend>视角（单次动作）</legend>
             <div className="preview-view-buttons">
               <button
@@ -719,15 +727,6 @@ export function SchematicPreview({ preview, minecraftVersion }: SchematicPreview
           {bounds && preview.sampledBlockCount === 0 ? (
             <p className="preview-empty">这个投影没有可显示的非空气方块。</p>
           ) : null}
-          {webglError ? <p className="preview-empty preview-empty--error">{webglError}</p> : null}
-          {modelStatus.message ? (
-            <p
-              className={`preview-resource-status preview-resource-status--${modelStatus.phase}`}
-              role="status"
-            >
-              {modelStatus.message}
-            </p>
-          ) : null}
           <div className="preview-axis" aria-hidden="true">
             <span className="preview-axis--x">X</span>
             <span className="preview-axis--y">Y</span>
@@ -743,10 +742,28 @@ export function SchematicPreview({ preview, minecraftVersion }: SchematicPreview
           层边界不受影响。
         </p>
       ) : null}
+      {webglError ? (
+        <p className="schematic-preview__notice schematic-preview__notice--error" role="alert">
+          {webglError}
+        </p>
+      ) : null}
+      {modelStatus.phase === "fallback" && modelStatus.message ? (
+        <p className="schematic-preview__notice" role="status">
+          {modelStatus.message}
+        </p>
+      ) : null}
       <p className="schematic-preview__footnote">
-        原版资源按自动识别版本由浏览器直接从 Mojang 读取，投影文件不会上传；标准 JSON
+        预览固定使用随站点提供的 Minecraft 1.21.11 模型与纹理，投影文件不会上传；标准 JSON
         方块模型会保留元素、纹理、朝向和透明面，需要客户端动态渲染或非标准 Mod loader
-        的状态会明确显示为彩色占位。
+        的状态会明确降级为彩色占位。XK 红显 v3.3 由 Xe_Kr 制作，按 CC BY-NC-ND 4.0 原样提供；
+        <a
+          href="https://www.planetminecraft.com/texture-pack/redstone-display-5793327/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          查看作者原帖
+        </a>
+        。
       </p>
     </section>
   );

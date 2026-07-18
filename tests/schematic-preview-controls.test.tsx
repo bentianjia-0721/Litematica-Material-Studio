@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 
 import { SchematicPreview } from "../src/features/schematic-preview/SchematicPreview";
@@ -15,8 +16,9 @@ const emptyPreview: LitematicPreview = {
 };
 
 describe("schematic preview controls", () => {
-  it("keeps layer choices selectable while camera actions remain momentary buttons", () => {
-    render(<SchematicPreview preview={emptyPreview} minecraftVersion="1.21.1" />);
+  it("keeps layer choices selectable, the resource pack as a switch, and camera actions momentary", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<SchematicPreview preview={emptyPreview} />);
 
     expect(screen.getByRole("button", { name: "全部" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByRole("button", { name: "单层" })).toHaveAttribute("aria-pressed", "false");
@@ -27,5 +29,14 @@ describe("schematic preview controls", () => {
       expect(button).not.toHaveAttribute("aria-pressed");
       expect(button).not.toHaveAttribute("role", "switch");
     }
+
+    const xkrdSwitch = screen.getByRole("switch", { name: "启用 XK 红显" });
+    expect(xkrdSwitch).not.toBeChecked();
+    await user.click(xkrdSwitch);
+    expect(xkrdSwitch).toBeChecked();
+    expect(screen.getByText("已开启")).toBeInTheDocument();
+
+    expect(container.querySelector(".preview-resource-status")).toBeNull();
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
   });
 });

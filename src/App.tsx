@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Brand } from "./components/Brand";
 import type { ProcessingStage, StudioMaterial, StudioMetadata, StudioProject } from "./app/types";
+import { useScrollToPageTop } from "./app/use-scroll-to-page-top";
 import { UploadPanel } from "./features/upload/UploadPanel";
 import { readFileAsArrayBuffer } from "./features/upload/read-file";
 import { ProcessingPanel } from "./features/progress/ProcessingPanel";
@@ -220,6 +221,8 @@ export function App() {
   const workerRef = useRef<Worker | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const batchHistory = useRef<StudioMaterial[][]>([]);
+
+  useScrollToPageTop(phase === "results");
 
   useEffect(() => {
     if (!project) return;
@@ -618,11 +621,7 @@ export function App() {
               </section>
             }
           >
-            <SchematicPreview
-              key={project.projectId}
-              preview={project.preview}
-              minecraftVersion={project.dataVersion ?? project.detectedVersion}
-            />
+            <SchematicPreview key={project.projectId} preview={project.preview} />
           </Suspense>
           <section className="results-actions" aria-label="项目操作">
             <button className="action-button" type="button" onClick={clearSavedProgress}>

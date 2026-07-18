@@ -17,6 +17,7 @@
     "format:check": "prettier --check .",
     "research:litematica-versions": "tsx scripts/research-litematica-versions.ts",
     "update:minecraft-data": "tsx scripts/update-minecraft-data.ts",
+    "generate:minecraft-preview-assets": "tsx scripts/generate-minecraft-preview-assets.ts",
     "validate:version-data": "tsx scripts/validate-version-data.ts"
   },
   "engines": {

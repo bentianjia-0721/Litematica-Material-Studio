@@ -1,11 +1,15 @@
-import { BlobReader, HttpRangeReader, HttpReader, ZipReader, type Entry } from "@zip.js/zip.js";
+import { BlobReader, ZipReader, type Entry } from "@zip.js/zip.js";
 import { AssetsParser } from "mc-assets/dist/assetsParser.js";
 import type { BlockModelsStore, BlockStatesStore } from "mc-assets/dist/stores.js";
 import type { BlockModel, BlockStates, ResolvedBlockModel } from "mc-assets/dist/types.js";
 import type { BlockState } from "../../lib/litematic";
 
-export const MOJANG_VERSION_MANIFEST_URL =
-  "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";
+export const BUNDLED_MINECRAFT_VERSION = "1.21.11";
+export const BUNDLED_MINECRAFT_CLIENT_SHA1 = "ba2df812c2d12e0219c489c4cd9a5e1f0760f5bd";
+export const BUNDLED_MINECRAFT_ARCHIVE_PATH = "minecraft-assets/minecraft-1.21.11-preview.zip";
+export const XKRD_ARCHIVE_PATH = "resource-packs/XKRD-Redstone-Display-v3.3-for-1.21.zip";
+export const XKRD_ARCHIVE_SHA256 =
+  "1861d354f6a4ad0cd20d661965dfa179be53c8895f45b1e53562cd50d1536c57";
 
 const DEFAULT_CONCURRENCY = 8;
 const DEFAULT_ATLAS_SIZE = 4096;
@@ -32,14 +36,7 @@ export interface MojangResourceIssue {
 }
 
 export type MojangResourceErrorCode =
-  | "ABORTED"
-  | "NETWORK_ERROR"
-  | "INVALID_MANIFEST"
-  | "VERSION_NOT_FOUND"
-  | "INVALID_VERSION_METADATA"
-  | "CLIENT_DOWNLOAD_MISSING"
-  | "ARCHIVE_OPEN_FAILED"
-  | "CANVAS_UNAVAILABLE";
+  "ABORTED" | "NETWORK_ERROR" | "ARCHIVE_OPEN_FAILED" | "CANVAS_UNAVAILABLE";
 
 export class MojangResourceError extends Error {
   readonly code: MojangResourceErrorCode;
@@ -66,7 +63,6 @@ export interface DecodedPng {
 }
 
 export interface MojangResourceDependencies {
-  fetchJson(url: string, signal?: AbortSignal): Promise<unknown>;
   openArchive(url: string, signal?: AbortSignal): Promise<MojangArchive>;
   decodePng(bytes: Uint8Array, signal?: AbortSignal): Promise<DecodedPng>;
   createCanvas(width: number, height: number): AtlasCanvas;
@@ -95,8 +91,8 @@ export interface MojangTextureAtlas {
 
 export interface MojangResolvedResources {
   readonly version: string;
-  readonly clientUrl: string;
-  readonly clientSha1: string;
+  readonly archiveUrl: string;
+  readonly sourceClientSha1: string;
   /** Keyed by the original BlockState.key. Only fully renderable states are present. */
   readonly resolvedModels: ReadonlyMap<string, readonly ResolvedBlockModel[]>;
   /** Keyed by normalized texture path, such as `block/stone`. */
@@ -108,23 +104,13 @@ export interface MojangResolvedResources {
 }
 
 export interface LoadMojangResourcesOptions {
-  /** Auto-detected Minecraft version text, e.g. `1.21.5` or `Minecraft 1.21.5`. */
-  readonly version: string;
   readonly states: readonly BlockState[];
+  /** Applies the bundled XKRD pack before vanilla resources, with per-state vanilla fallback. */
+  readonly useXkrd?: boolean;
   readonly signal?: AbortSignal;
   readonly concurrency?: number;
   readonly maxAtlasSize?: number;
   readonly dependencies?: Partial<MojangResourceDependencies>;
-}
-
-interface VersionManifestEntry {
-  readonly id: string;
-  readonly url: string;
-}
-
-interface ClientDownload {
-  readonly url: string;
-  readonly sha1: string;
 }
 
 interface AnimationFrameRect {
@@ -166,6 +152,38 @@ class RawMapStore<T> {
     if (normalized === null) return undefined;
     const value = this.values.get(normalized);
     return value === undefined ? undefined : structuredClone(value);
+  }
+}
+
+/**
+ * A read-only resource-pack view. A path present in the overlay always wins; absent paths are
+ * read from the fallback archive. Invalid overlay data is deliberately not hidden here so the
+ * caller can reject that state and retry it against a pure vanilla archive.
+ */
+export class OverlayArchive implements MojangArchive {
+  constructor(
+    private readonly overlay: MojangArchive,
+    private readonly fallback: MojangArchive,
+  ) {}
+
+  has(path: string): boolean {
+    return this.overlay.has(path) || this.fallback.has(path);
+  }
+
+  readText(path: string, signal?: AbortSignal): Promise<string> {
+    return (this.overlay.has(path) ? this.overlay : this.fallback).readText(path, signal);
+  }
+
+  readBytes(path: string, signal?: AbortSignal): Promise<Uint8Array> {
+    return (this.overlay.has(path) ? this.overlay : this.fallback).readBytes(path, signal);
+  }
+
+  async close(): Promise<void> {
+    const results = await Promise.allSettled([this.overlay.close(), this.fallback.close()]);
+    const rejected = results.find(
+      (result): result is PromiseRejectedResult => result.status === "rejected",
+    );
+    if (rejected !== undefined) throw rejected.reason;
   }
 }
 
@@ -291,25 +309,54 @@ function splitResourceLocation(reference: string): { namespace: string; path: st
   return { namespace, path: normalized };
 }
 
+function normalizedResourceKey(namespace: string, path: string): string {
+  return namespace === "minecraft" ? path : `${namespace}:${path}`;
+}
+
+function normalizeBlockReference(reference: string): string | null {
+  const location = splitResourceLocation(reference);
+  if (!location) return null;
+  const path = location.path.replace(/^blockstates\//, "").replace(/\.json$/i, "");
+  return normalizedResourceKey(location.namespace, path);
+}
+
+function normalizeModelReference(reference: string): string | null {
+  const location = splitResourceLocation(reference);
+  if (!location) return null;
+  const path = location.path.replace(/^models\//, "").replace(/\.json$/i, "");
+  return normalizedResourceKey(location.namespace, path);
+}
+
+function normalizeTextureReference(reference: string): string | null {
+  if (reference.startsWith("#")) return null;
+  const location = splitResourceLocation(reference);
+  if (!location) return null;
+  const path = location.path.replace(/^textures\//, "").replace(/\.png$/i, "");
+  return normalizedResourceKey(location.namespace, path);
+}
+
+function archiveResourcePath(
+  kind: "blockstates" | "models" | "textures",
+  normalizedReference: string,
+  extension: ".json" | ".png" | ".png.mcmeta",
+): string {
+  const location = splitResourceLocation(normalizedReference);
+  if (!location) throw new TypeError(`Invalid resource location: ${normalizedReference}`);
+  return `assets/${location.namespace}/${kind}/${location.path}${extension}`;
+}
+
 /** Returns the path used by AssetsParser and the client jar, without `minecraft:`. */
 export function normalizeMinecraftModelReference(reference: string): string | null {
   const location = splitResourceLocation(reference);
   if (!location || location.namespace !== "minecraft") return null;
-  return location.path.replace(/^models\//, "").replace(/\.json$/i, "");
+  return normalizeModelReference(reference);
 }
 
 /** Returns e.g. `block/stone` for `minecraft:block/stone`. */
 export function normalizeMinecraftTextureReference(reference: string): string | null {
-  if (reference.startsWith("#")) return null;
   const location = splitResourceLocation(reference);
   if (!location || location.namespace !== "minecraft") return null;
-  return location.path.replace(/^textures\//, "").replace(/\.png$/i, "");
-}
-
-function normalizeMinecraftBlockName(reference: string): string | null {
-  const location = splitResourceLocation(reference);
-  if (!location || location.namespace !== "minecraft") return null;
-  return location.path.replace(/^blockstates\//, "").replace(/\.json$/i, "");
+  return normalizeTextureReference(reference);
 }
 
 function collectApplyModels(value: unknown, output: Set<string>): void {
@@ -341,122 +388,84 @@ function parseJson(text: string): unknown {
   return JSON.parse(text) as unknown;
 }
 
-function parseVersionManifest(value: unknown): readonly VersionManifestEntry[] {
-  if (!isRecord(value) || !Array.isArray(value.versions)) {
-    throw new MojangResourceError(
-      "INVALID_MANIFEST",
-      "Mojang version manifest does not contain a versions list.",
-    );
-  }
-  const versions: VersionManifestEntry[] = [];
-  for (const item of value.versions) {
-    if (!isRecord(item)) continue;
-    const id = asNonEmptyString(item.id);
-    const url = asNonEmptyString(item.url);
-    if (id !== null && url !== null) versions.push({ id, url });
-  }
-  if (versions.length === 0) {
-    throw new MojangResourceError("INVALID_MANIFEST", "Mojang version manifest is empty.");
-  }
-  return versions;
+export function bundledMinecraftArchiveUrl(basePath: string = import.meta.env.BASE_URL): string {
+  const normalizedBase = basePath.endsWith("/") ? basePath : `${basePath}/`;
+  return `${normalizedBase}${BUNDLED_MINECRAFT_ARCHIVE_PATH}`;
 }
 
-function versionCandidates(input: string): readonly string[] {
-  const trimmed = input.trim();
-  const candidates = new Set<string>();
-  if (trimmed.length > 0) candidates.add(trimmed);
-  const withoutPrefix = trimmed.replace(/^minecraft\s*/i, "").trim();
-  if (withoutPrefix.length > 0) candidates.add(withoutPrefix);
-  for (const match of trimmed.matchAll(
-    /(?:^|\D)(\d+\.\d+(?:\.\d+)?(?:[-+][0-9A-Za-z.-]+)?)(?=$|\D)/g,
-  )) {
-    const candidate = match[1];
-    if (candidate !== undefined) candidates.add(candidate);
-  }
-  const snapshot = trimmed.match(/\b\d{2}w\d{2}[a-z]\b/i)?.[0];
-  if (snapshot !== undefined) candidates.add(snapshot.toLowerCase());
-  return [...candidates];
+export function xkrdArchiveUrl(basePath: string = import.meta.env.BASE_URL): string {
+  const normalizedBase = basePath.endsWith("/") ? basePath : `${basePath}/`;
+  return `${normalizedBase}${XKRD_ARCHIVE_PATH}`;
 }
 
-function resolveManifestVersion(
-  requestedVersion: string,
-  versions: readonly VersionManifestEntry[],
-): VersionManifestEntry {
-  const byId = new Map(versions.map((entry) => [entry.id.toLowerCase(), entry]));
-  for (const candidate of versionCandidates(requestedVersion)) {
-    const match = byId.get(candidate.toLowerCase());
-    if (match !== undefined) return match;
-  }
-  throw new MojangResourceError(
-    "VERSION_NOT_FOUND",
-    `Minecraft version “${requestedVersion}” was not found in Mojang's version manifest.`,
-  );
-}
+const bundledArchiveDownloads = new Map<string, Promise<Blob>>();
 
-function parseClientDownload(value: unknown): ClientDownload {
-  if (!isRecord(value) || !isRecord(value.downloads) || !isRecord(value.downloads.client)) {
-    throw new MojangResourceError(
-      "CLIENT_DOWNLOAD_MISSING",
-      "Mojang version metadata does not contain a client download.",
-    );
-  }
-  const url = asNonEmptyString(value.downloads.client.url);
-  const sha1 = asNonEmptyString(value.downloads.client.sha1);
-  if (url === null || sha1 === null) {
-    throw new MojangResourceError(
-      "INVALID_VERSION_METADATA",
-      "Mojang client download metadata is missing its URL or SHA-1.",
-    );
-  }
-  return { url, sha1 };
-}
-
-async function defaultFetchJson(url: string, signal?: AbortSignal): Promise<unknown> {
-  throwIfAborted(signal);
+async function downloadBundledArchive(url: string): Promise<Blob> {
   let response: Response;
   try {
-    response = await fetch(url, signal === undefined ? undefined : { signal });
+    response = await fetch(url, { cache: "force-cache", credentials: "same-origin" });
   } catch (error) {
-    if (isAbort(error, signal)) throw error;
-    throw new MojangResourceError("NETWORK_ERROR", `Could not download ${url}.`, { cause: error });
+    throw new MojangResourceError(
+      "NETWORK_ERROR",
+      `无法读取内置 Minecraft ${BUNDLED_MINECRAFT_VERSION} 预览资源。`,
+      { cause: error },
+    );
   }
   if (!response.ok) {
     throw new MojangResourceError(
       "NETWORK_ERROR",
-      `Could not download ${url}: HTTP ${response.status} ${response.statusText}.`,
+      `无法读取内置 Minecraft ${BUNDLED_MINECRAFT_VERSION} 预览资源：HTTP ${response.status} ${response.statusText}。`,
     );
   }
-  try {
-    return (await response.json()) as unknown;
-  } catch (error) {
-    throw new MojangResourceError("INVALID_VERSION_METADATA", `Invalid JSON returned by ${url}.`, {
-      cause: error,
-    });
-  }
+  return await response.blob();
 }
 
-function mergedFetchSignal(
-  requestSignal: AbortSignal | null | undefined,
-  signal?: AbortSignal,
-): AbortSignal | undefined {
-  if (requestSignal && signal) return AbortSignal.any([requestSignal, signal]);
-  return requestSignal ?? signal;
+function bundledArchiveBlob(url: string): Promise<Blob> {
+  const existing = bundledArchiveDownloads.get(url);
+  if (existing !== undefined) return existing;
+  const pending = downloadBundledArchive(url).catch((error: unknown) => {
+    bundledArchiveDownloads.delete(url);
+    throw error;
+  });
+  bundledArchiveDownloads.set(url, pending);
+  return pending;
 }
 
-function archiveFetch(signal?: AbortSignal) {
-  return (input: string, init?: RequestInit): Promise<Response> => {
-    const combinedSignal = mergedFetchSignal(init?.signal, signal);
-    const hasRange = new Headers(init?.headers).has("range");
-    const requestInit: RequestInit | undefined =
-      init === undefined && combinedSignal === undefined
-        ? undefined
-        : {
-            ...init,
-            ...(hasRange ? { cache: "no-store" } : {}),
-            ...(combinedSignal === undefined ? {} : { signal: combinedSignal }),
-          };
-    return fetch(input, requestInit);
-  };
+async function waitForBlob(promise: Promise<Blob>, signal?: AbortSignal): Promise<Blob> {
+  throwIfAborted(signal);
+  if (signal === undefined) return await promise;
+  return await new Promise<Blob>((resolve, reject) => {
+    const onAbort = () => {
+      try {
+        throwIfAborted(signal);
+      } catch (error) {
+        reject(
+          error instanceof Error
+            ? error
+            : new MojangResourceError("ABORTED", "Minecraft resource loading was cancelled."),
+        );
+      }
+    };
+    signal.addEventListener("abort", onAbort, { once: true });
+    promise.then(
+      (blob) => {
+        signal.removeEventListener("abort", onAbort);
+        if (signal.aborted) onAbort();
+        else resolve(blob);
+      },
+      (error: unknown) => {
+        signal.removeEventListener("abort", onAbort);
+        reject(error instanceof Error ? error : new Error("内置 Minecraft 资源读取失败。"));
+      },
+    );
+  });
+}
+
+/** Starts the same-origin archive download before a projection is selected. */
+export async function preloadBundledMinecraftArchive(
+  basePath: string = import.meta.env.BASE_URL,
+): Promise<void> {
+  await bundledArchiveBlob(bundledMinecraftArchiveUrl(basePath));
 }
 
 async function openZipReader(
@@ -476,48 +485,15 @@ async function openZipReader(
 
 async function defaultOpenArchive(url: string, signal?: AbortSignal): Promise<MojangArchive> {
   throwIfAborted(signal);
-  const errors: unknown[] = [];
   try {
-    // Mojang exposes Content-Length on HEAD and accepts simple `bytes=start-end` ranges.
-    // Avoid a suffix range for the first request: browsers preflight that form, while Mojang's
-    // object host does not answer the OPTIONS request used by the preflight.
-    const rangeOptions = {
-      fetch: archiveFetch(signal),
-      forceRangeRequests: true,
-      preventHeadRequest: false,
-      combineSizeEocd: false,
-    } as ConstructorParameters<typeof HttpRangeReader>[1];
-    return await openZipReader(new HttpRangeReader(url, rangeOptions), signal);
+    const blob = await waitForBlob(bundledArchiveBlob(url), signal);
+    return await openZipReader(new BlobReader(blob), signal);
   } catch (error) {
-    if (isAbort(error, signal)) throw error;
-    errors.push(error);
-  }
-
-  try {
-    // Some mirrors do not expose usable ranges; HttpReader can cache the full response instead.
-    return await openZipReader(
-      new HttpReader(url, { fetch: archiveFetch(signal), preventHeadRequest: true }),
-      signal,
-    );
-  } catch (error) {
-    if (isAbort(error, signal)) throw error;
-    errors.push(error);
-  }
-
-  try {
-    // Last-resort compatibility path for hosts with unusual HEAD/range behavior.
-    const response = await fetch(url, signal === undefined ? undefined : { signal });
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status} ${response.statusText}`);
-    }
-    return await openZipReader(new BlobReader(await response.blob()), signal);
-  } catch (error) {
-    if (isAbort(error, signal)) throw error;
-    errors.push(error);
+    if (isAbort(error, signal) || error instanceof MojangResourceError) throw error;
     throw new MojangResourceError(
       "ARCHIVE_OPEN_FAILED",
-      `Could not open the Minecraft client archive at ${url}.`,
-      { cause: new AggregateError(errors, "All Minecraft client archive readers failed.") },
+      `无法打开内置 Minecraft ${BUNDLED_MINECRAFT_VERSION} 预览资源。`,
+      { cause: error },
     );
   }
 }
@@ -560,7 +536,6 @@ function defaultCreateCanvas(width: number, height: number): AtlasCanvas {
 }
 
 const defaultDependencies: MojangResourceDependencies = {
-  fetchJson: defaultFetchJson,
   openArchive: defaultOpenArchive,
   decodePng: defaultDecodePng,
   createCanvas: defaultCreateCanvas,
@@ -592,6 +567,18 @@ async function readJsonResource(
   return parseJson(text);
 }
 
+/** Rejects resource-pack selectors such as `bottom=true,1` before mc-assets can treat them as a match. */
+function hasMalformedVariantSelector(value: JsonRecord): boolean {
+  if (!isRecord(value.variants)) return false;
+  return Object.keys(value.variants).some((selector) => {
+    if (selector === "" || selector === "normal") return false;
+    return selector.split(",").some((condition) => {
+      const separator = condition.indexOf("=");
+      return separator <= 0 || separator === condition.length - 1;
+    });
+  });
+}
+
 async function loadBlockStates(
   archive: MojangArchive,
   states: readonly BlockState[],
@@ -604,13 +591,18 @@ async function loadBlockStates(
   const roots = new Set<string>();
   const uniqueBlocks = new Map<string, BlockState[]>();
   for (const state of states) {
-    const blockName = normalizeMinecraftBlockName(state.name);
-    if (blockName === null) {
+    const blockLocation = splitResourceLocation(state.name);
+    const blockName = normalizeBlockReference(state.name);
+    if (
+      blockName === null ||
+      blockLocation === null ||
+      (blockLocation.namespace !== "minecraft" && blockLocation.namespace !== "create")
+    ) {
       fallback.set(state.key, state);
       addIssue(
         issues,
         "UNSUPPORTED_NAMESPACE",
-        `Only minecraft: block resources can be loaded from the vanilla client (${state.name}).`,
+        `Only minecraft: and create: block resources are supported (${state.name}).`,
         state.name,
         state.key,
       );
@@ -622,7 +614,7 @@ async function loadBlockStates(
   }
 
   await mapLimit([...uniqueBlocks.entries()], concurrency, signal, async ([blockName, related]) => {
-    const path = `assets/minecraft/blockstates/${blockName}.json`;
+    const path = archiveResourcePath("blockstates", blockName, ".json");
     if (!archive.has(path)) {
       for (const state of related) {
         fallback.set(state.key, state);
@@ -639,6 +631,19 @@ async function loadBlockStates(
     try {
       const value = await readJsonResource(archive, path, signal);
       if (!isRecord(value)) throw new TypeError("The blockstate root is not an object.");
+      if (hasMalformedVariantSelector(value)) {
+        for (const state of related) {
+          fallback.set(state.key, state);
+          addIssue(
+            issues,
+            "BLOCKSTATE_INVALID",
+            `Blockstate has a malformed variant selector and requires per-state fallback: ${path}.`,
+            path,
+            state.key,
+          );
+        }
+        return;
+      }
       values.set(blockName, value);
       for (const reference of collectBlockStateModelReferences(value)) roots.add(reference);
     } catch (error) {
@@ -673,12 +678,12 @@ async function loadModelClosure(
     throwIfAborted(signal);
     const current: string[] = [];
     for (const reference of pending) {
-      const model = normalizeMinecraftModelReference(reference);
+      const model = normalizeModelReference(reference);
       if (model === null) {
         addIssue(
           issues,
           "MODEL_MISSING",
-          `Only minecraft: model references are supported (${reference}).`,
+          `The model resource location is invalid (${reference}).`,
           reference,
           null,
         );
@@ -690,7 +695,7 @@ async function loadModelClosure(
     pending = [];
 
     const parents = await mapLimit(current, concurrency, signal, async (model) => {
-      const path = `assets/minecraft/models/${model}.json`;
+      const path = archiveResourcePath("models", model, ".json");
       if (!archive.has(path)) {
         addIssue(issues, "MODEL_MISSING", `Vanilla model is missing: ${path}.`, path, null);
         return null;
@@ -721,7 +726,7 @@ function resolvedTextureReferences(models: readonly ResolvedBlockModel[]): Reado
         if (reference.startsWith("#")) {
           reference = model.textures?.[reference.slice(1)] ?? reference;
         }
-        const normalized = normalizeMinecraftTextureReference(reference);
+        const normalized = normalizeTextureReference(reference);
         if (normalized !== null) references.add(normalized);
       }
     }
@@ -736,7 +741,7 @@ function hasUnresolvedFaceTexture(models: readonly ResolvedBlockModel[]): boolea
         let reference = face.texture;
         if (reference.startsWith("#"))
           reference = model.textures?.[reference.slice(1)] ?? reference;
-        if (normalizeMinecraftTextureReference(reference) === null) return true;
+        if (normalizeTextureReference(reference) === null) return true;
       }
     }
   }
@@ -755,6 +760,17 @@ function fluidTexture(state: BlockState): string | null {
   }
 }
 
+function isCompleteResolvedModel(
+  models: readonly ResolvedBlockModel[] | undefined,
+): models is readonly ResolvedBlockModel[] {
+  return (
+    models !== undefined &&
+    models.length > 0 &&
+    models.every((model) => model && Array.isArray(model.elements) && model.elements.length > 0) &&
+    !hasUnresolvedFaceTexture(models)
+  );
+}
+
 function resolveBlockModels(
   version: string,
   states: readonly BlockState[],
@@ -762,12 +778,13 @@ function resolveBlockModels(
   models: ReadonlyMap<string, BlockModel>,
   fallback: Map<string, BlockState>,
   issues: MojangResourceIssue[],
+  allowFallbackVariant: boolean,
 ): {
   resolved: Map<string, readonly ResolvedBlockModel[]>;
   stateTextures: Map<string, ReadonlySet<string>>;
 } {
-  const blockStateStore = new RawMapStore(blockStates, normalizeMinecraftBlockName);
-  const modelStore = new RawMapStore(models, normalizeMinecraftModelReference);
+  const blockStateStore = new RawMapStore(blockStates, normalizeBlockReference);
+  const modelStore = new RawMapStore(models, normalizeModelReference);
   const parser = new AssetsParser(
     version,
     blockStateStore as unknown as BlockStatesStore,
@@ -780,11 +797,9 @@ function resolveBlockModels(
     if (fallback.has(state.key)) continue;
     const issueStart = parser.issues.length;
     try {
-      const result = parser.getResolvedModelFirst(
-        { name: state.name, properties: { ...state.properties } },
-        false,
-      );
-      const cloned = result === undefined ? undefined : structuredClone(result);
+      const queriedState = { name: state.name, properties: { ...state.properties } };
+      const exact = parser.getResolvedModelFirst(queriedState, false);
+      let cloned = exact === undefined ? undefined : structuredClone(exact);
       const fluid = fluidTexture(state);
       if (fluid !== null) {
         // Fluids are rendered procedurally by the preview, so their vanilla models intentionally
@@ -793,14 +808,11 @@ function resolveBlockModels(
         stateTextures.set(state.key, new Set([fluid]));
         continue;
       }
-      if (
-        cloned === undefined ||
-        cloned.length === 0 ||
-        cloned.some(
-          (model) => !model || !Array.isArray(model.elements) || model.elements.length === 0,
-        ) ||
-        hasUnresolvedFaceTexture(cloned)
-      ) {
+      if (!isCompleteResolvedModel(cloned) && allowFallbackVariant) {
+        const compatible = parser.getResolvedModelFirst(queriedState, allowFallbackVariant);
+        cloned = compatible === undefined ? undefined : structuredClone(compatible);
+      }
+      if (!isCompleteResolvedModel(cloned)) {
         throw new Error("No complete vanilla block model matched this state.");
       }
       resolved.set(state.key, cloned);
@@ -874,7 +886,7 @@ async function textureAnimationMetadata(
   texture: string,
   signal?: AbortSignal,
 ): Promise<unknown> {
-  const path = `assets/minecraft/textures/${texture}.png.mcmeta`;
+  const path = archiveResourcePath("textures", texture, ".png.mcmeta");
   if (!archive.has(path)) return null;
   try {
     return await readJsonResource(archive, path, signal);
@@ -894,7 +906,7 @@ async function loadTextures(
 ): Promise<{ loaded: LoadedTexture[]; failed: Set<string> }> {
   const failed = new Set<string>();
   const results = await mapLimit(textureReferences, concurrency, signal, async (texture) => {
-    const path = `assets/minecraft/textures/${texture}.png`;
+    const path = archiveResourcePath("textures", texture, ".png");
     if (!archive.has(path)) {
       failed.add(texture);
       addIssue(issues, "TEXTURE_MISSING", `Vanilla texture is missing: ${path}.`, path, null);
@@ -1098,70 +1110,27 @@ function orderedFallbackStates(
   return output;
 }
 
-/**
- * Lazily loads only the requested vanilla block resources from Mojang's client jar.
- * Nothing is written to disk or bundled into the application.
- */
-export async function loadMojangResources(
-  options: LoadMojangResourcesOptions,
-): Promise<MojangResolvedResources> {
-  const { signal } = options;
-  throwIfAborted(signal);
-  const concurrency = normalizedLimit(options.concurrency);
-  const maxAtlasSize = normalizedAtlasSize(options.maxAtlasSize);
-  const dependencies = dependenciesFor(options.dependencies);
+interface ResourcePassOptions {
+  readonly archive: MojangArchive;
+  readonly archiveUrl: string;
+  readonly states: readonly BlockState[];
+  readonly allowFallbackVariant: boolean;
+  readonly signal: AbortSignal | undefined;
+  readonly concurrency: number;
+  readonly maxAtlasSize: number;
+  readonly dependencies: MojangResourceDependencies;
+}
+
+async function loadResourcePass(options: ResourcePassOptions): Promise<MojangResolvedResources> {
+  const { archive, archiveUrl, states, allowFallbackVariant, signal, dependencies } = options;
   const issues: MojangResourceIssue[] = [];
   const fallback = new Map<string, BlockState>();
-
-  let manifestValue: unknown;
-  try {
-    manifestValue = await dependencies.fetchJson(MOJANG_VERSION_MANIFEST_URL, signal);
-  } catch (error) {
-    if (isAbort(error, signal) || error instanceof MojangResourceError) throw error;
-    throw new MojangResourceError(
-      "NETWORK_ERROR",
-      "Could not download Mojang's version manifest.",
-      {
-        cause: error,
-      },
-    );
-  }
-  const manifestEntry = resolveManifestVersion(
-    options.version,
-    parseVersionManifest(manifestValue),
-  );
-
-  let metadataValue: unknown;
-  try {
-    metadataValue = await dependencies.fetchJson(manifestEntry.url, signal);
-  } catch (error) {
-    if (isAbort(error, signal) || error instanceof MojangResourceError) throw error;
-    throw new MojangResourceError(
-      "NETWORK_ERROR",
-      `Could not download metadata for Minecraft ${manifestEntry.id}.`,
-      { cause: error },
-    );
-  }
-  const client = parseClientDownload(metadataValue);
-
-  let archive: MojangArchive;
-  try {
-    archive = await dependencies.openArchive(client.url, signal);
-  } catch (error) {
-    if (isAbort(error, signal) || error instanceof MojangResourceError) throw error;
-    throw new MojangResourceError(
-      "ARCHIVE_OPEN_FAILED",
-      `Could not open the Minecraft ${manifestEntry.id} client archive.`,
-      { cause: error },
-    );
-  }
-
   let loadedTextures: LoadedTexture[] = [];
   try {
     const blockResources = await loadBlockStates(
       archive,
-      options.states,
-      concurrency,
+      states,
+      options.concurrency,
       signal,
       issues,
       fallback,
@@ -1169,17 +1138,18 @@ export async function loadMojangResources(
     const modelResources = await loadModelClosure(
       archive,
       blockResources.roots,
-      concurrency,
+      options.concurrency,
       signal,
       issues,
     );
     const modelResolution = resolveBlockModels(
-      manifestEntry.id,
+      BUNDLED_MINECRAFT_VERSION,
       options.states,
       blockResources.values,
       modelResources,
       fallback,
       issues,
+      allowFallbackVariant,
     );
     const textureReferences = new Set<string>();
     for (const references of modelResolution.stateTextures.values()) {
@@ -1188,35 +1158,189 @@ export async function loadMojangResources(
     const textureResult = await loadTextures(
       archive,
       [...textureReferences],
-      concurrency,
+      options.concurrency,
       signal,
       dependencies,
       issues,
     );
     loadedTextures = textureResult.loaded;
     finalizeTextureFailures(
-      options.states,
+      states,
       textureResult.failed,
       modelResolution.stateTextures,
       modelResolution.resolved,
       fallback,
       issues,
     );
-    const atlases = renderAtlases(loadedTextures, maxAtlasSize, (width, height) =>
+    const atlases = renderAtlases(loadedTextures, options.maxAtlasSize, (width, height) =>
       dependencies.createCanvas(width, height),
     );
     return {
-      version: manifestEntry.id,
-      clientUrl: client.url,
-      clientSha1: client.sha1,
+      version: BUNDLED_MINECRAFT_VERSION,
+      archiveUrl,
+      sourceClientSha1: BUNDLED_MINECRAFT_CLIENT_SHA1,
       resolvedModels: modelResolution.resolved,
       textureLookup: atlases.lookup,
       atlases: atlases.atlases,
-      fallbackStates: orderedFallbackStates(options.states, fallback),
+      fallbackStates: orderedFallbackStates(states, fallback),
       issues,
     };
   } finally {
     for (const texture of loadedTextures) texture.decoded.close?.();
     await archive.close().catch(() => undefined);
+  }
+}
+
+async function openResourceArchive(
+  url: string,
+  dependencies: MojangResourceDependencies,
+  signal?: AbortSignal,
+): Promise<MojangArchive> {
+  try {
+    return await dependencies.openArchive(url, signal);
+  } catch (error) {
+    if (isAbort(error, signal) || error instanceof MojangResourceError) throw error;
+    throw new MojangResourceError(
+      "ARCHIVE_OPEN_FAILED",
+      `无法打开内置 Minecraft ${BUNDLED_MINECRAFT_VERSION} 预览资源。`,
+      { cause: error },
+    );
+  }
+}
+
+function mergeResourcePasses(
+  overlay: MojangResolvedResources,
+  vanillaRetry: MojangResolvedResources,
+): MojangResolvedResources {
+  const retryTextureKey = (texture: string) => `__vanilla_retry__/${texture}`;
+  const rewriteRetryTextureReference = (reference: string): string => {
+    if (reference.startsWith("#")) return reference;
+    const normalized = normalizeTextureReference(reference);
+    return normalized === null ? reference : retryTextureKey(normalized);
+  };
+  const rewriteRetryModel = (model: ResolvedBlockModel): ResolvedBlockModel => {
+    const rewritten = structuredClone(model);
+    if (rewritten.textures !== undefined) {
+      for (const [key, reference] of Object.entries(rewritten.textures)) {
+        rewritten.textures[key] = rewriteRetryTextureReference(reference);
+      }
+    }
+    for (const element of rewritten.elements ?? []) {
+      for (const face of Object.values(element.faces ?? {})) {
+        face.texture = rewriteRetryTextureReference(face.texture);
+      }
+    }
+    return rewritten;
+  };
+  const atlasOffset = overlay.atlases.length;
+  const resolvedModels = new Map(overlay.resolvedModels);
+  for (const [stateKey, models] of vanillaRetry.resolvedModels) {
+    resolvedModels.set(stateKey, models.map(rewriteRetryModel));
+  }
+  const textureLookup = new Map(overlay.textureLookup);
+  for (const [texture, region] of vanillaRetry.textureLookup) {
+    const retryRegion = {
+      ...region,
+      texture: retryTextureKey(texture),
+      atlasIndex: region.atlasIndex + atlasOffset,
+    };
+    textureLookup.set(retryRegion.texture, retryRegion);
+    // Procedural fluids use an unqualified fixed texture key. Preserve that alias only when it
+    // cannot overwrite an XKRD texture used by an already-resolved overlay state.
+    if (!textureLookup.has(texture)) textureLookup.set(texture, retryRegion);
+  }
+  return {
+    version: BUNDLED_MINECRAFT_VERSION,
+    archiveUrl: overlay.archiveUrl,
+    sourceClientSha1: BUNDLED_MINECRAFT_CLIENT_SHA1,
+    resolvedModels,
+    textureLookup,
+    atlases: [...overlay.atlases, ...vanillaRetry.atlases],
+    fallbackStates: vanillaRetry.fallbackStates,
+    issues: [...overlay.issues, ...vanillaRetry.issues],
+  };
+}
+
+/** Reads only the requested states from the bundled Minecraft 1.21.11 preview resources. */
+export async function loadMojangResources(
+  options: LoadMojangResourcesOptions,
+): Promise<MojangResolvedResources> {
+  const { signal } = options;
+  throwIfAborted(signal);
+  const concurrency = normalizedLimit(options.concurrency);
+  const maxAtlasSize = normalizedAtlasSize(options.maxAtlasSize);
+  const dependencies = dependenciesFor(options.dependencies);
+  const vanillaUrl = bundledMinecraftArchiveUrl();
+  const loadVanillaOnly = async (): Promise<MojangResolvedResources> => {
+    const archive = await openResourceArchive(vanillaUrl, dependencies, signal);
+    return await loadResourcePass({
+      archive,
+      archiveUrl: vanillaUrl,
+      states: options.states,
+      allowFallbackVariant: true,
+      signal,
+      concurrency,
+      maxAtlasSize,
+      dependencies,
+    });
+  };
+
+  if (options.useXkrd !== true) {
+    return await loadVanillaOnly();
+  }
+
+  const overlayUrl = xkrdArchiveUrl();
+  let overlayArchive: MojangArchive;
+  try {
+    overlayArchive = await openResourceArchive(overlayUrl, dependencies, signal);
+  } catch (error) {
+    if (isAbort(error, signal)) throw error;
+    return await loadVanillaOnly();
+  }
+  let vanillaForOverlay: MojangArchive;
+  try {
+    vanillaForOverlay = await openResourceArchive(vanillaUrl, dependencies, signal);
+  } catch (error) {
+    await overlayArchive.close().catch(() => undefined);
+    if (isAbort(error, signal)) throw error;
+    return await loadVanillaOnly();
+  }
+  let overlayPass: MojangResolvedResources;
+  try {
+    overlayPass = await loadResourcePass({
+      archive: new OverlayArchive(overlayArchive, vanillaForOverlay),
+      archiveUrl: overlayUrl,
+      states: options.states,
+      // Never select an arbitrary XKRD variant. A miss is retried against pure vanilla below.
+      allowFallbackVariant: false,
+      signal,
+      concurrency,
+      maxAtlasSize,
+      dependencies,
+    });
+  } catch (error) {
+    if (isAbort(error, signal)) throw error;
+    return await loadVanillaOnly();
+  }
+  if (overlayPass.fallbackStates.length === 0) return overlayPass;
+
+  try {
+    const vanillaRetryArchive = await openResourceArchive(vanillaUrl, dependencies, signal);
+    const vanillaRetry = await loadResourcePass({
+      archive: vanillaRetryArchive,
+      archiveUrl: vanillaUrl,
+      states: overlayPass.fallbackStates,
+      allowFallbackVariant: true,
+      signal,
+      concurrency,
+      maxAtlasSize,
+      dependencies,
+    });
+    return mergeResourcePasses(overlayPass, vanillaRetry);
+  } catch (error) {
+    if (isAbort(error, signal)) throw error;
+    // Keep every state the overlay pass resolved; only its already-declared fallback states use
+    // the coloured safety mesh when a later vanilla retry cannot be opened or decoded.
+    return overlayPass;
   }
 }
