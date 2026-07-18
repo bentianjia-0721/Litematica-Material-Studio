@@ -470,6 +470,10 @@ function parseRegion(
   const palette = readPalette(region, regionName, warnings);
   stats.paletteEntryCount += palette.length;
   const localCounts = new Map<string, MutableCount>();
+  const previewMinimum =
+    position !== null && size !== null && dimensions !== null
+      ? regionBounds(position, size, dimensions).min
+      : null;
 
   if (volume > 0 && palette.length > 0) {
     const blockStates = region.BlockStates;
@@ -509,17 +513,20 @@ function parseRegion(
         incrementCount(localCounts, state, 1);
         incrementCount(aggregateCounts, state, 1);
 
-        if (position !== null && size !== null && dimensions !== null && !isPreviewAir(state)) {
+        if (previewMinimum !== null && dimensions !== null && !isPreviewAir(state)) {
           // Litematica stores x as the fastest-changing axis, followed by z and y.
+          // The palette container always starts at the region's minimum corner. Position is
+          // the signed selection origin (pos1), so walking backwards from it for negative Size
+          // mirrors the schematic on that axis.
           const localX = blockIndex % dimensions.x;
           const localZ = Math.floor(blockIndex / dimensions.x) % dimensions.z;
           const localY = Math.floor(blockIndex / (dimensions.x * dimensions.z));
           includePreviewBlock(
             preview,
             state,
-            position.x + (size.x < 0 ? -localX : localX),
-            position.y + (size.y < 0 ? -localY : localY),
-            position.z + (size.z < 0 ? -localZ : localZ),
+            previewMinimum.x + localX,
+            previewMinimum.y + localY,
+            previewMinimum.z + localZ,
           );
         }
       },

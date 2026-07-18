@@ -618,7 +618,11 @@ export function App() {
               </section>
             }
           >
-            <SchematicPreview key={project.projectId} preview={project.preview} />
+            <SchematicPreview
+              key={project.projectId}
+              preview={project.preview}
+              minecraftVersion={project.dataVersion ?? project.detectedVersion}
+            />
           </Suspense>
           <section className="results-actions" aria-label="项目操作">
             <button className="action-button" type="button" onClick={clearSavedProgress}>

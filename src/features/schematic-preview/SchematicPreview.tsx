@@ -1,27 +1,39 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { type MouseEvent as ReactMouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
   AmbientLight,
   Box3,
   Box3Helper,
   BoxGeometry,
+  CanvasTexture,
   Color,
   DirectionalLight,
+  DoubleSide,
   DynamicDrawUsage,
   GridHelper,
   HemisphereLight,
   InstancedMesh,
   Matrix4,
   type Material,
-  MeshBasicMaterial,
+  MeshLambertMaterial,
+  NearestFilter,
   PerspectiveCamera,
   Scene,
   Sphere,
   SRGBColorSpace,
+  type Texture,
   Vector3,
   WebGLRenderer,
+  type BufferGeometry,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import type { LitematicPreview } from "../../lib/litematic";
+import { clampCameraDistance } from "./camera-controls";
+import {
+  bakeMinecraftModelGeometry,
+  type MinecraftAtlasKind,
+  type MinecraftTextureLookup,
+} from "./minecraft-model-geometry";
+import { loadMojangResources, type MojangResolvedResources } from "./mojang-resources";
 import {
   blockStateColor,
   countVisibleBlocks,
@@ -32,10 +44,11 @@ import {
 
 interface SchematicPreviewProps {
   preview: LitematicPreview;
+  minecraftVersion: string | null;
 }
 
 interface PreviewMeshGroup {
-  readonly mesh: InstancedMesh<BoxGeometry, MeshBasicMaterial>;
+  readonly mesh: InstancedMesh;
 }
 
 interface PreviewRuntime {
@@ -43,17 +56,33 @@ interface PreviewRuntime {
   readonly scene: Scene;
   readonly camera: PerspectiveCamera;
   readonly controls: OrbitControls;
-  readonly meshGroups: readonly PreviewMeshGroup[];
-  readonly groupByColour: ReadonlyMap<number, PreviewMeshGroup>;
+  readonly viewport: HTMLDivElement;
+  readonly meshGroups: PreviewMeshGroup[];
+  readonly groupsByState: Map<number, PreviewMeshGroup[]>;
   readonly centre: Vector3;
   readonly distance: number;
-  readonly colours: readonly number[];
+  readonly render: () => void;
+}
+
+interface OwnedGraphics {
+  readonly geometries: Set<BufferGeometry>;
+  readonly materials: Set<Material>;
+  readonly textures: Set<Texture>;
+}
+
+interface ModelStatus {
+  readonly phase: "idle" | "loading" | "ready" | "fallback";
+  readonly message: string;
 }
 
 const integerFormatter = new Intl.NumberFormat("zh-CN");
 const fallbackVoxelColour = 0x8aa99a;
 
-function configurePerspective(runtime: PreviewRuntime) {
+function cameraDistance(runtime: PreviewRuntime): number {
+  return runtime.camera.position.distanceTo(runtime.controls.target);
+}
+
+function configurePerspective(runtime: PreviewRuntime): void {
   const { camera, controls, distance } = runtime;
   camera.up.set(0, 1, 0);
   camera.position.set(distance * 0.78, distance * 0.62, distance * 0.78);
@@ -61,19 +90,49 @@ function configurePerspective(runtime: PreviewRuntime) {
   controls.update();
 }
 
-function disposeMaterials(material: Material | Material[]) {
+function disposeMaterials(material: Material | Material[]): void {
   if (Array.isArray(material)) material.forEach((item) => item.dispose());
   else material.dispose();
+}
+
+function capacitiesByState(preview: LitematicPreview): Map<number, number> {
+  const capacities = new Map<number, number>();
+  for (let index = 0; index < preview.sampledBlockCount; index += 1) {
+    const stateIndex = preview.stateIndices[index] ?? 0;
+    capacities.set(stateIndex, (capacities.get(stateIndex) ?? 0) + 1);
+  }
+  return capacities;
+}
+
+function registerMesh(
+  runtime: PreviewRuntime,
+  owned: OwnedGraphics,
+  stateIndex: number,
+  geometry: BufferGeometry,
+  material: Material,
+  capacity: number,
+): void {
+  const mesh = new InstancedMesh(geometry, material, Math.max(1, capacity));
+  mesh.instanceMatrix.setUsage(DynamicDrawUsage);
+  mesh.count = 0;
+  mesh.frustumCulled = false;
+  runtime.scene.add(mesh);
+  const group = { mesh };
+  runtime.meshGroups.push(group);
+  const groups = runtime.groupsByState.get(stateIndex) ?? [];
+  groups.push(group);
+  runtime.groupsByState.set(stateIndex, groups);
+  owned.geometries.add(geometry);
+  owned.materials.add(material);
 }
 
 function updateMeshGroups(
   runtime: PreviewRuntime,
   preview: LitematicPreview,
   layerRange: PreviewLayerRange,
-) {
-  const { meshGroups, groupByColour, centre, colours } = runtime;
+): void {
   const visibleCounts = new Map<PreviewMeshGroup, number>();
-  meshGroups.forEach((group) => visibleCounts.set(group, 0));
+  runtime.meshGroups.forEach((group) => visibleCounts.set(group, 0));
   const matrix = new Matrix4();
 
   for (let sourceIndex = 0; sourceIndex < preview.sampledBlockCount; sourceIndex += 1) {
@@ -85,22 +144,136 @@ function updateMeshGroups(
     if (y < layerRange.min || y > layerRange.max) continue;
 
     const stateIndex = preview.stateIndices[sourceIndex] ?? 0;
-    const group = groupByColour.get(colours[stateIndex] ?? fallbackVoxelColour);
-    if (!group) continue;
-    const visibleCount = visibleCounts.get(group) ?? 0;
-    matrix.makeTranslation(x - centre.x, y - centre.y, z - centre.z);
-    group.mesh.setMatrixAt(visibleCount, matrix);
-    visibleCounts.set(group, visibleCount + 1);
+    const groups = runtime.groupsByState.get(stateIndex);
+    if (!groups) continue;
+    matrix.makeTranslation(x - runtime.centre.x, y - runtime.centre.y, z - runtime.centre.z);
+    for (const group of groups) {
+      const visibleCount = visibleCounts.get(group) ?? 0;
+      group.mesh.setMatrixAt(visibleCount, matrix);
+      visibleCounts.set(group, visibleCount + 1);
+    }
   }
 
-  for (const group of meshGroups) {
+  for (const group of runtime.meshGroups) {
     group.mesh.count = visibleCounts.get(group) ?? 0;
     group.mesh.instanceMatrix.needsUpdate = true;
   }
-  runtime.renderer.render(runtime.scene, runtime.camera);
+  runtime.render();
 }
 
-export function SchematicPreview({ preview }: SchematicPreviewProps) {
+function addFallbackMeshes(
+  runtime: PreviewRuntime,
+  owned: OwnedGraphics,
+  preview: LitematicPreview,
+  capacities: ReadonlyMap<number, number>,
+): number {
+  const geometry = new BoxGeometry(0.92, 0.92, 0.92);
+  owned.geometries.add(geometry);
+  const materialByColour = new Map<number, MeshLambertMaterial>();
+  let added = 0;
+
+  preview.states.forEach((state, stateIndex) => {
+    if (runtime.groupsByState.has(stateIndex)) return;
+    const capacity = capacities.get(stateIndex) ?? 0;
+    if (capacity === 0) return;
+    const colour = blockStateColor(state) ?? fallbackVoxelColour;
+    let material = materialByColour.get(colour);
+    if (!material) {
+      material = new MeshLambertMaterial({ color: colour, toneMapped: false });
+      materialByColour.set(colour, material);
+      owned.materials.add(material);
+    }
+    registerMesh(runtime, owned, stateIndex, geometry, material, capacity);
+    added += 1;
+  });
+  return added;
+}
+
+function atlasLookup(resources: MojangResolvedResources): MinecraftTextureLookup {
+  return (textureName) => {
+    const region = resources.textureLookup.get(textureName);
+    if (!region || region.atlasIndex > 1) return undefined;
+    return {
+      u: region.u0,
+      v: region.v0,
+      su: region.u1 - region.u0,
+      sv: region.v1 - region.v0,
+      imageType: (region.atlasIndex === 0 ? "latest" : "legacy") satisfies MinecraftAtlasKind,
+    };
+  };
+}
+
+function createAtlasMaterials(
+  resources: MojangResolvedResources,
+  owned: OwnedGraphics,
+): Partial<Record<MinecraftAtlasKind, MeshLambertMaterial>> {
+  const output: Partial<Record<MinecraftAtlasKind, MeshLambertMaterial>> = {};
+  resources.atlases.slice(0, 2).forEach((atlas, index) => {
+    const texture = new CanvasTexture(atlas.canvas);
+    texture.colorSpace = SRGBColorSpace;
+    texture.magFilter = NearestFilter;
+    texture.minFilter = NearestFilter;
+    texture.generateMipmaps = false;
+    texture.needsUpdate = true;
+    const material = new MeshLambertMaterial({
+      map: texture,
+      alphaTest: 0.02,
+      transparent: true,
+      depthWrite: true,
+      side: DoubleSide,
+      vertexColors: true,
+      toneMapped: false,
+    });
+    const kind: MinecraftAtlasKind = index === 0 ? "latest" : "legacy";
+    output[kind] = material;
+    owned.textures.add(texture);
+    owned.materials.add(material);
+  });
+  return output;
+}
+
+function addMinecraftMeshes(
+  runtime: PreviewRuntime,
+  owned: OwnedGraphics,
+  preview: LitematicPreview,
+  resources: MojangResolvedResources,
+): { modelledStates: number; fallbackStates: number } {
+  const capacities = capacitiesByState(preview);
+  const materials = createAtlasMaterials(resources, owned);
+  const getTexture = atlasLookup(resources);
+  let modelledStates = 0;
+
+  preview.states.forEach((state, stateIndex) => {
+    const capacity = capacities.get(stateIndex) ?? 0;
+    if (capacity === 0) return;
+    const result = bakeMinecraftModelGeometry(
+      state,
+      resources.resolvedModels.get(state.key),
+      getTexture,
+    );
+    if (!result.geometries || result.missing) return;
+
+    let addedForState = 0;
+    for (const kind of ["latest", "legacy"] as const) {
+      const geometry = result.geometries[kind];
+      const material = materials[kind];
+      if (!geometry || !material) continue;
+      registerMesh(runtime, owned, stateIndex, geometry, material, capacity);
+      addedForState += 1;
+    }
+    if (addedForState > 0) modelledStates += 1;
+  });
+
+  const fallbackStates = addFallbackMeshes(runtime, owned, preview, capacities);
+  return { modelledStates, fallbackStates };
+}
+
+function fallbackMessage(error: unknown): string {
+  const detail = error instanceof Error ? error.message : "未知错误";
+  return `原版资源加载失败，已明确降级为彩色占位：${detail}`;
+}
+
+export function SchematicPreview({ preview, minecraftVersion }: SchematicPreviewProps) {
   const bounds = preview.bounds;
   const minimumY = bounds?.min.y ?? 0;
   const maximumY = bounds?.max.y ?? 0;
@@ -109,6 +282,7 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
   const [rangeStart, setRangeStart] = useState(minimumY);
   const [rangeEnd, setRangeEnd] = useState(maximumY);
   const [webglError, setWebglError] = useState<string | null>(null);
+  const [modelStatus, setModelStatus] = useState<ModelStatus>({ phase: "idle", message: "" });
   const viewportRef = useRef<HTMLDivElement | null>(null);
   const runtimeRef = useRef<PreviewRuntime | null>(null);
 
@@ -119,6 +293,11 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
         : { min: 0, max: 0 },
     [bounds, mode, rangeEnd, rangeStart, singleLayer],
   );
+  const layerRangeRef = useRef(layerRange);
+
+  useEffect(() => {
+    layerRangeRef.current = layerRange;
+  }, [layerRange]);
 
   const visibleCount = useMemo(
     () => countVisibleBlocks(preview.positions, layerRange),
@@ -129,11 +308,15 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
     const viewport = viewportRef.current;
     if (!viewport || !bounds) return;
 
+    const abortController = new AbortController();
+    const owned: OwnedGraphics = {
+      geometries: new Set(),
+      materials: new Set(),
+      textures: new Set(),
+    };
     let renderer: WebGLRenderer | null = null;
     let resizeObserver: ResizeObserver | null = null;
     let controls: OrbitControls | null = null;
-    let geometry: BoxGeometry | null = null;
-    const voxelMaterials: MeshBasicMaterial[] = [];
     let boundsHelper: Box3Helper | null = null;
     let grid: GridHelper | null = null;
     let errorTimer: number | null = null;
@@ -153,9 +336,9 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
 
       const scene = new Scene();
       scene.background = new Color(0x07100d);
-      scene.add(new AmbientLight(0xffffff, 1.35));
-      scene.add(new HemisphereLight(0xd9ffec, 0x254d3a, 1.8));
-      const directional = new DirectionalLight(0xffffff, 2.25);
+      scene.add(new AmbientLight(0xffffff, 1.1));
+      scene.add(new HemisphereLight(0xd9ffec, 0x254d3a, 1.35));
+      const directional = new DirectionalLight(0xffffff, 1.8);
       directional.position.set(8, 12, 7);
       scene.add(directional);
 
@@ -186,28 +369,25 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
       controls.minDistance = Math.max(0.25, radius * 0.06);
       controls.maxDistance = distance * 8;
 
-      geometry = new BoxGeometry(0.92, 0.92, 0.92);
-      const colours = preview.states.map(blockStateColor);
-      const capacityByColour = new Map<number, number>();
-      for (let index = 0; index < preview.sampledBlockCount; index += 1) {
-        const stateIndex = preview.stateIndices[index] ?? 0;
-        const colour = colours[stateIndex] ?? fallbackVoxelColour;
-        capacityByColour.set(colour, (capacityByColour.get(colour) ?? 0) + 1);
-      }
-      const meshGroups: PreviewMeshGroup[] = [];
-      const groupByColour = new Map<number, PreviewMeshGroup>();
-      for (const [colour, capacity] of capacityByColour) {
-        const voxelMaterial = new MeshBasicMaterial({ color: colour, toneMapped: false });
-        voxelMaterials.push(voxelMaterial);
-        const mesh = new InstancedMesh(geometry, voxelMaterial, Math.max(1, capacity));
-        mesh.instanceMatrix.setUsage(DynamicDrawUsage);
-        mesh.count = 0;
-        mesh.frustumCulled = false;
-        scene.add(mesh);
-        const group: PreviewMeshGroup = { mesh };
-        meshGroups.push(group);
-        groupByColour.set(colour, group);
-      }
+      const runtime: PreviewRuntime = {
+        renderer,
+        scene,
+        camera,
+        controls,
+        viewport,
+        meshGroups: [],
+        groupsByState: new Map(),
+        centre,
+        distance,
+        render: () => {
+          viewport.dataset.cameraDistance = cameraDistance(runtime).toFixed(6);
+          renderer?.render(scene, camera);
+        },
+      };
+      runtimeRef.current = runtime;
+      renderScene = runtime.render;
+      controls.addEventListener("change", renderScene);
+      configurePerspective(runtime);
 
       boundsHelper = new Box3Helper(localBounds, 0x7eebb2);
       scene.add(boundsHelper);
@@ -220,33 +400,71 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
       grid.position.y = bounds.min.y - centre.y - 0.51;
       scene.add(grid);
 
-      const runtime: PreviewRuntime = {
-        renderer,
-        scene,
-        camera,
-        controls,
-        meshGroups,
-        groupByColour,
-        centre,
-        distance,
-        colours,
-      };
-      runtimeRef.current = runtime;
-      renderScene = () => renderer?.render(scene, camera);
-      controls.addEventListener("change", renderScene);
-      configurePerspective(runtime);
-
       const resize = () => {
         const widthPx = Math.max(1, viewport.clientWidth);
         const heightPx = Math.max(1, viewport.clientHeight);
         renderer?.setSize(widthPx, heightPx, false);
         camera.aspect = widthPx / heightPx;
         camera.updateProjectionMatrix();
-        renderScene?.();
+        runtime.render();
       };
       resizeObserver = new ResizeObserver(resize);
       resizeObserver.observe(viewport);
       resize();
+
+      const initialiseModels = async () => {
+        if (preview.sampledBlockCount === 0) return;
+        if (!minecraftVersion) {
+          const fallbackStates = addFallbackMeshes(
+            runtime,
+            owned,
+            preview,
+            capacitiesByState(preview),
+          );
+          updateMeshGroups(runtime, preview, layerRangeRef.current);
+          setModelStatus({
+            phase: "fallback",
+            message: `未识别 Minecraft 版本，${fallbackStates} 种状态使用彩色占位。`,
+          });
+          return;
+        }
+
+        setModelStatus({
+          phase: "loading",
+          message: `正在从 Mojang 官方资源读取 Minecraft ${minecraftVersion} 方块模型与纹理…`,
+        });
+        try {
+          const resources = await loadMojangResources({
+            version: minecraftVersion,
+            states: preview.states,
+            signal: abortController.signal,
+          });
+          if (abortController.signal.aborted) return;
+          const counts = addMinecraftMeshes(runtime, owned, preview, resources);
+          updateMeshGroups(runtime, preview, layerRangeRef.current);
+          setModelStatus({
+            phase: "ready",
+            message:
+              counts.fallbackStates > 0
+                ? `Minecraft ${resources.version} 原版模型已就绪：${counts.modelledStates} 种精确模型，${counts.fallbackStates} 种动态或 Mod 状态明确降级。`
+                : `Minecraft ${resources.version} 原版模型与纹理已就绪，共 ${counts.modelledStates} 种状态。`,
+          });
+        } catch (error) {
+          if (abortController.signal.aborted) return;
+          const fallbackStates = addFallbackMeshes(
+            runtime,
+            owned,
+            preview,
+            capacitiesByState(preview),
+          );
+          updateMeshGroups(runtime, preview, layerRangeRef.current);
+          setModelStatus({
+            phase: "fallback",
+            message: `${fallbackMessage(error)}（${fallbackStates} 种状态）`,
+          });
+        }
+      };
+      void initialiseModels();
     } catch (error) {
       const message =
         error instanceof Error
@@ -256,13 +474,15 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
     }
 
     return () => {
+      abortController.abort();
       runtimeRef.current = null;
       if (errorTimer !== null) window.clearTimeout(errorTimer);
       resizeObserver?.disconnect();
       if (controls && renderScene) controls.removeEventListener("change", renderScene);
       controls?.dispose();
-      geometry?.dispose();
-      voxelMaterials.forEach((material) => material.dispose());
+      owned.geometries.forEach((geometry) => geometry.dispose());
+      owned.materials.forEach((material) => material.dispose());
+      owned.textures.forEach((texture) => texture.dispose());
       boundsHelper?.geometry.dispose();
       if (boundsHelper) disposeMaterials(boundsHelper.material);
       grid?.geometry.dispose();
@@ -270,7 +490,7 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
       renderer?.dispose();
       renderer?.domElement.remove();
     };
-  }, [bounds, preview]);
+  }, [bounds, minecraftVersion, preview]);
 
   useEffect(() => {
     const runtime = runtimeRef.current;
@@ -281,10 +501,15 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
   const setZoom = (factor: number) => {
     const runtime = runtimeRef.current;
     if (!runtime) return;
-    const offset = runtime.camera.position
-      .clone()
-      .sub(runtime.controls.target)
-      .multiplyScalar(factor);
+    const offset = runtime.camera.position.clone().sub(runtime.controls.target);
+    const nextDistance = clampCameraDistance(
+      offset.length(),
+      factor,
+      runtime.controls.minDistance,
+      runtime.controls.maxDistance,
+    );
+    if (nextDistance <= 0 || !Number.isFinite(nextDistance)) return;
+    offset.setLength(nextDistance);
     runtime.camera.position.copy(runtime.controls.target).add(offset);
     runtime.controls.update();
   };
@@ -304,12 +529,17 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
     void viewport.requestFullscreen().catch(() => setWebglError("浏览器拒绝进入全屏模式。"));
   };
 
+  const runCameraAction = (event: ReactMouseEvent<HTMLButtonElement>, action: () => void) => {
+    action();
+    event.currentTarget.blur();
+  };
+
   return (
     <section className="schematic-preview" aria-labelledby="schematic-preview-title">
       <div className="schematic-preview__heading">
         <div>
           <span className="eyebrow">TEST · SCHEMATIC VIEWER</span>
-          <h2 id="schematic-preview-title">原理图体素预览</h2>
+          <h2 id="schematic-preview-title">原理图方块模型预览</h2>
           <p>左键旋转 · 滚轮缩放 · 右键平移；可查看全部、单层或任意连续多层。</p>
         </div>
         <div className="schematic-preview__summary" aria-live="polite">
@@ -424,27 +654,37 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
           ) : null}
 
           <fieldset>
-            <legend>视角</legend>
+            <legend>视角（单次动作）</legend>
             <div className="preview-view-buttons">
-              <button type="button" onClick={() => setZoom(0.78)} aria-label="放大">
+              <button
+                type="button"
+                onClick={(event) => runCameraAction(event, () => setZoom(0.78))}
+                aria-label="放大"
+              >
                 放大
               </button>
-              <button type="button" onClick={() => setZoom(1.28)} aria-label="缩小">
+              <button
+                type="button"
+                onClick={(event) => runCameraAction(event, () => setZoom(1.28))}
+                aria-label="缩小"
+              >
                 缩小
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  const runtime = runtimeRef.current;
-                  if (runtime) configurePerspective(runtime);
-                }}
+                onClick={(event) =>
+                  runCameraAction(event, () => {
+                    const runtime = runtimeRef.current;
+                    if (runtime) configurePerspective(runtime);
+                  })
+                }
               >
                 重置
               </button>
-              <button type="button" onClick={showTop}>
+              <button type="button" onClick={(event) => runCameraAction(event, showTop)}>
                 顶视
               </button>
-              <button type="button" onClick={requestFullscreen}>
+              <button type="button" onClick={(event) => runCameraAction(event, requestFullscreen)}>
                 全屏
               </button>
             </div>
@@ -454,9 +694,9 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
             <div>
               <dt>坐标范围</dt>
               <dd>
-                X {bounds ? `${bounds.min.x}…${bounds.max.x}` : "—"}
-                <br />Y {bounds ? `${bounds.min.y}…${bounds.max.y}` : "—"}
-                <br />Z {bounds ? `${bounds.min.z}…${bounds.max.z}` : "—"}
+                X {bounds ? `${bounds.min.x}–${bounds.max.x}` : "—"}
+                <br />Y {bounds ? `${bounds.min.y}–${bounds.max.y}` : "—"}
+                <br />Z {bounds ? `${bounds.min.z}–${bounds.max.z}` : "—"}
               </dd>
             </div>
             <div>
@@ -470,7 +710,8 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
           ref={viewportRef}
           className="schematic-preview__viewport"
           role="img"
-          aria-label={`原理图三维体素预览，当前显示 Y ${layerRange.min} 至 ${layerRange.max}`}
+          aria-label={`原理图三维方块模型预览，当前显示 Y ${layerRange.min} 至 ${layerRange.max}`}
+          data-model-phase={modelStatus.phase}
         >
           {!bounds ? (
             <p className="preview-empty">投影缺少可定位的 Region，无法生成空间预览。</p>
@@ -479,6 +720,14 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
             <p className="preview-empty">这个投影没有可显示的非空气方块。</p>
           ) : null}
           {webglError ? <p className="preview-empty preview-empty--error">{webglError}</p> : null}
+          {modelStatus.message ? (
+            <p
+              className={`preview-resource-status preview-resource-status--${modelStatus.phase}`}
+              role="status"
+            >
+              {modelStatus.message}
+            </p>
+          ) : null}
           <div className="preview-axis" aria-hidden="true">
             <span className="preview-axis--x">X</span>
             <span className="preview-axis--y">Y</span>
@@ -489,14 +738,15 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
 
       {preview.truncated ? (
         <p className="schematic-preview__notice">
-          为保证浏览器流畅，体素预览保留了 {integerFormatter.format(preview.sampledBlockCount)} /{" "}
+          为保证浏览器流畅，模型预览保留了 {integerFormatter.format(preview.sampledBlockCount)} /{" "}
           {integerFormatter.format(preview.totalBlockCount)} 个非空气方块；完整材料统计和 Region
           层边界不受影响。
         </p>
       ) : null}
       <p className="schematic-preview__footnote">
-        当前为高性能彩色体素预览；可核对空间结构与层高，但不还原 Minecraft
-        的方块纹理、朝向和复杂模型。
+        原版资源按自动识别版本由浏览器直接从 Mojang 读取，投影文件不会上传；标准 JSON
+        方块模型会保留元素、纹理、朝向和透明面，需要客户端动态渲染或非标准 Mod loader
+        的状态会明确显示为彩色占位。
       </p>
     </section>
   );

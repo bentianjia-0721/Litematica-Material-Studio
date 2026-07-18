@@ -72,33 +72,41 @@ describe(".litematic parser", () => {
     expect(result.warnings).toEqual([]);
   });
 
-  it("decodes x fastest, then z and y, while respecting every signed Size axis", () => {
+  it("decodes x fastest, then z and y, from the minimum corner for signed Size axes", () => {
     const fixture = createLitematicFixture({
       regions: [
         {
           name: "Mixed directions",
           position: { x: 10, y: 20, z: 30 },
-          size: { x: -2, y: -2, z: 2 },
-          palette: [{ name: "minecraft:stone" }],
-          blockIndices: Array(8).fill(0),
+          size: { x: -3, y: -2, z: -4 },
+          palette: [
+            { name: "minecraft:air" },
+            { name: "minecraft:redstone_block" },
+            { name: "minecraft:gold_block" },
+            { name: "minecraft:emerald_block" },
+            { name: "minecraft:lapis_block" },
+          ],
+          blockIndices: Array.from({ length: 24 }, (_, index) => {
+            if (index === 0) return 1; // local 0,0,0
+            if (index === 2) return 2; // local 2,0,0
+            if (index === 12) return 3; // local 0,1,0
+            if (index === 9) return 4; // local 0,0,3
+            return 0;
+          }),
         },
       ],
     });
 
     const result = parseLitematic(fixture);
     expect(previewCoordinates(result)).toEqual([
-      [10, 20, 30],
-      [9, 20, 30],
-      [10, 20, 31],
-      [9, 20, 31],
-      [10, 19, 30],
-      [9, 19, 30],
-      [10, 19, 31],
-      [9, 19, 31],
+      [8, 19, 27],
+      [10, 19, 27],
+      [8, 19, 30],
+      [8, 20, 27],
     ]);
     expect(result.preview.bounds).toEqual({
-      min: { x: 9, y: 19, z: 30 },
-      max: { x: 10, y: 20, z: 31 },
+      min: { x: 8, y: 19, z: 27 },
+      max: { x: 10, y: 20, z: 30 },
     });
   });
 

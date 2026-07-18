@@ -23,9 +23,11 @@
     "node": ">=20"
   },
   "dependencies": {
+    "@zip.js/zip.js": "^2.8.31",
     "exceljs": "^4.4.0",
     "idb": "^8.0.3",
     "jszip": "^3.10.1",
+    "mc-assets": "^0.2.83",
     "pako": "^3.0.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
