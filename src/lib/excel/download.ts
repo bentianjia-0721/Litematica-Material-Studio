@@ -5,16 +5,8 @@ export const XLSX_MIME_TYPE = "application/vnd.openxmlformats-officedocument.spr
 
 const INVALID_FILE_NAME_CHARACTERS = new Set(["<", ">", ":", '"', "/", "\\", "|", "?", "*"]);
 
-function copyToArrayBuffer(buffer: ArrayBuffer): ArrayBuffer {
-  return new Uint8Array(buffer).slice().buffer;
-}
-
-export function createMaterialWorkbookFileName(input: MaterialWorkbookInput): string {
-  const date = input.exportedAt ?? new Date();
-  const datePart = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
-    .map((value, index) => (index === 0 ? String(value) : String(value).padStart(2, "0")))
-    .join("-");
-  const projectionName = [...(input.metadata.name?.trim() || "投影")]
+function sanitizeFileNameStem(value: string): string {
+  return [...value]
     .map((character) =>
       character.charCodeAt(0) <= 31 || INVALID_FILE_NAME_CHARACTERS.has(character)
         ? "-"
@@ -23,6 +15,24 @@ export function createMaterialWorkbookFileName(input: MaterialWorkbookInput): st
     .join("")
     .replace(/[. ]+$/g, "")
     .slice(0, 100);
+}
+
+function copyToArrayBuffer(buffer: ArrayBuffer): ArrayBuffer {
+  return new Uint8Array(buffer).slice().buffer;
+}
+
+export function createMaterialWorkbookFileName(input: MaterialWorkbookInput): string {
+  const originalFileName = input.metadata.originalFileName?.trim();
+  if (originalFileName) {
+    const uploadedFileStem = sanitizeFileNameStem(originalFileName.replace(/\.litematic$/i, ""));
+    if (uploadedFileStem) return `${uploadedFileStem}.xlsx`;
+  }
+
+  const date = input.exportedAt ?? new Date();
+  const datePart = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
+    .map((value, index) => (index === 0 ? String(value) : String(value).padStart(2, "0")))
+    .join("-");
+  const projectionName = sanitizeFileNameStem(input.metadata.name?.trim() || "投影");
 
   return `${projectionName || "投影"}-材料清单-${datePart}.xlsx`;
 }
