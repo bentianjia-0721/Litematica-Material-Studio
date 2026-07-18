@@ -1,4 +1,5 @@
 import type { ProcessingStage } from "../app/types";
+import type { LitematicParseResult } from "../lib/litematic";
 
 export interface ParseWorkerRequest {
   type: "parse";
@@ -23,9 +24,17 @@ export interface ParseProgressResponse {
 
 export interface ParseResultResponse {
   type: "result";
-  result: unknown;
+  result: LitematicParseResult;
   versionMatch: unknown;
   materials: unknown[];
+}
+
+/** Buffers transferred with a parse result so preview data is not cloned. */
+export function parseResultTransferables(result: LitematicParseResult): Transferable[] {
+  return [
+    result.preview.positions.buffer as ArrayBuffer,
+    result.preview.stateIndices.buffer as ArrayBuffer,
+  ];
 }
 
 export interface ParseErrorResponse {

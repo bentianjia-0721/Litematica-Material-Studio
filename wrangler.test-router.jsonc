@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "litematica-material-studio-test-router",
+  "main": "cloudflare/test-router.ts",
+  "compatibility_date": "2026-07-18",
+  "workers_dev": false,
+  "routes": [
+    {
+      "pattern": "litematica.bentianjia.com/test*",
+      "zone_name": "bentianjia.com",
+    },
+  ],
+  "vars": {
+    "TEST_ORIGIN": "https://test.litematica-material-studio.pages.dev",
+    "PRODUCTION_ORIGIN": "https://litematica-material-studio.pages.dev",
+  },
+}

@@ -2,12 +2,15 @@
 
 一个在浏览器本地解析 `.litematic` 文件、识别 Minecraft Java Edition 版本并生成材料清单与 Excel 的静态 Web 应用。
 
+> `test` 分支的独立实验入口是 <https://litematica.bentianjia.com/test/>；生产入口 <https://litematica.bentianjia.com/> 仍由 `main` 分支提供。
+
 > 当前版本适合检查受支持版本的数据和常见原版方块材料，不应视为“所有 Litematica / Minecraft 历史版本均已完整验证”的转换器。准确的数据覆盖与限制见[支持状态](#支持状态)和[已知限制](#已知限制)。
 
 ## 功能
 
 - 拖拽、点击或键盘选择 `.litematic` 文件，上传入口限制为 128 MiB。
 - 使用 Web Worker 在浏览器内完成 gzip 解压、NBT 解析、版本识别和材料统计，可取消正在进行的任务。
+- `test` 分支提供高性能 3D 体素预览：鼠标旋转、缩放和平移，并可切换全部、单层或连续多层显示。
 - NBT 解析支持全部标准 Tag、Java 有符号 `Long` / `LongArray`、BigInt，以及深度、长度、总 Tag 数和解压体积限制。
 - 读取 Metadata、多 Region、Position、正负 Size、方块状态调色板和位压缩 `BlockStates`；支持跨 64 位 Long 边界的条目。
 - 只按投影内的 `MinecraftDataVersion` / `DataVersion` 自动识别版本；没有精确本地数据时自动选取同一版本系列中最近的数据并明确标记兼容推断，不提供手动切换，也不会静默套用最新版本。
@@ -49,7 +52,9 @@ File API
 | `src/lib/stack/`、`src/lib/progress/` | 堆叠拆分和可复用进度计算                                     |
 | `src/lib/storage/`                    | 文件哈希，以及 IndexedDB → localStorage → 内存的可复用存储层 |
 | `src/lib/excel/`                      | Excel 工作簿、公式、样式、校验与下载                         |
+| `src/features/schematic-preview/`     | 分层 3D 体素预览、视角控制与颜色分组渲染                     |
 | `src/features/`                       | 上传、进度、投影摘要和材料表 UI                              |
+| `cloudflare/`                         | `/test` 到 Pages Preview 分支别名的 Worker 路由              |
 | `src/data/minecraft/`                 | 本地版本数据、DataVersion 映射、兼容矩阵和生成报告           |
 | `scripts/`                            | 版本研究、Minecraft 数据生成和一致性验证                     |
 | `tests/`                              | 解析、真实格式生成夹具、材料/UI 与 Excel 测试                |
@@ -78,6 +83,8 @@ npm run format:check    # 检查 Prettier 格式
 npm run format          # 写入 Prettier 格式
 npm run build           # typecheck 后由 Vite 构建到 dist/
 npm run preview         # 本地预览 dist/
+npm run build:test      # 以 /test/ 为 base 构建到 dist-test/
+npm run preview:test    # 在 /test/ 下本地预览 dist-test/
 ```
 
 `npm run build` 不会自动执行 ESLint 或 Vitest；发布前建议依次运行 `typecheck`、`lint`、`test`、`format:check` 和 `build`。
@@ -92,10 +99,11 @@ npm run preview         # 本地预览 dist/
 4. 以大端序读取 NBT。Compound 使用无原型对象并拒绝重复键，集合、字符串、深度、总 Tag 数和输入字节数均有限制。
 5. 读取根级格式版本、子版本和 Minecraft DataVersion，再读取 Metadata 与全部 Regions。
 6. Region Size 的每个轴取绝对值计算体积；调色板索引按 Litematica 连续位数组解码，支持一个条目横跨两个有符号 Long。
-7. 聚合各 Region 的完整方块状态。解析层保留空气，材料层再统一过滤 `air`、`cave_air` 和 `void_air`。
-8. 材料层应用与 Litematica 一致的 Pick Block、空物品栈过滤、状态倍数和最大堆叠数量；未知 Mod 项保留原始 ID 与警告。
+7. 按 `x → z → y` 索引顺序和各轴 Size 正负方向生成全局预览坐标；预览只略过三种空气，传送门、流体和技术方块仍可见。
+8. 聚合各 Region 的完整方块状态。解析层保留空气，材料层再统一过滤 `air`、`cave_air` 和 `void_air`。
+9. 材料层应用与 Litematica 一致的 Pick Block、空物品栈过滤、状态倍数和最大堆叠数量；未知 Mod 项保留原始 ID 与警告。
 
-默认安全上限包括 128 MiB 上传、512 MiB 解压 NBT、单 Region 50,000,000 个位置、全部 Region 合计 100,000,000 个位置。它们是浏览器安全边界，不是格式能力声明。
+默认安全上限包括 128 MiB 上传、512 MiB 解压 NBT、单 Region 50,000,000 个位置、全部 Region 合计 100,000,000 个位置，以及最多保留 200,000 个非空气体素用于 3D 预览。它们是浏览器安全边界，不是格式能力声明；预览截断不影响完整材料统计与 Region 边界。
 
 ## 版本识别
 
@@ -193,6 +201,7 @@ Minecraft Wiki 的文件页将这些游戏图标标记为 Mojang 内容；从 Wi
 | ExcelJS                      | `.xlsx` 生成          | MIT                                           |
 | idb                          | IndexedDB 封装        | ISC                                           |
 | JSZip                        | 本地 Mod ZIP/JAR 解析 | MIT                                           |
+| Three.js                     | 3D 体素预览           | MIT                                           |
 | Vite / Vitest                | 构建与测试            | MIT                                           |
 | Wrangler                     | Cloudflare 部署工具   | MIT OR Apache-2.0                             |
 
@@ -222,7 +231,7 @@ Mojang / Microsoft 的语言内容不因 `minecraft-data` 的 MIT 许可证而�
 
 ## Cloudflare Pages Direct Upload
 
-该项目是纯静态 Vite 构建，没有 Pages Functions，也没有 `wrangler.toml` / `wrangler.jsonc`。Vite 输出目录是 `dist/`；`public/_headers` 和 `public/_redirects` 会复制到构建结果，用于安全响应头、长期静态资源缓存和 SPA 回退。
+该项目是纯静态 Vite 构建，没有 Pages Functions。生产 Vite 输出目录是 `dist/`；`public/_headers` 和 `public/_redirects` 会复制到构建结果，用于安全响应头、长期静态资源缓存和 SPA 回退。`test` 分支另有 `dist-test/` 构建和 `wrangler.test-router.jsonc`，只接管自定义域的 `/test*` 路由。
 
 当前生产项目为 `litematica-material-studio`，生产分支为 `main`，正式地址是 <https://litematica.bentianjia.com/>，`pages.dev` 地址仅作为托管平台回退入口。自定义域名当前已通过 Cloudflare Pages 验证，DNS 与 SSL 状态均为 `active`。
 
@@ -255,11 +264,15 @@ npx wrangler pages project create litematica-material-studio --production-branch
 npx wrangler pages deploy dist --project-name litematica-material-studio --branch main
 ```
 
-若实际创建时采用了其他名称，把命令中的名称同步替换。预览分支部署示例：
+`test` 分支先构建并作为 Pages Preview 部署，再发布路径 Worker：
 
 ```bash
-npx wrangler pages deploy dist --project-name=litematica-material-studio --branch=preview
+npm run build:test
+npx wrangler pages deploy dist-test --project-name=litematica-material-studio --branch=test
+npx wrangler deploy --config wrangler.test-router.jsonc
 ```
+
+该 Preview 的稳定源站别名是 `test.litematica-material-studio.pages.dev`。Worker 只为 `/test` 做尾斜杠跳转，并把 `/test/…` 去前缀后转发到该别名；生产根路径不会进入 Worker。
 
 部署后至少实测：首页和静态资源、拖拽/选择、Worker、真实 `.litematic`、版本识别、材料编辑、本地进度与 Excel 下载。
 
@@ -275,6 +288,7 @@ Cloudflare 当前文档说明 Direct Upload 项目创建后不能原地切换为
 - 真实 Litematica 生成样本覆盖不足；测试以生成式 gzip NBT 夹具为主，不能据此宣称全历史兼容。
 - 材料转换规则不是完整 Minecraft 模拟：容器内容、方块实体库存、实体、掉落概率、红石/流体更新、相邻方块合并和资源复用不会被完整推演。
 - 多 Region 按各自内容求和；重叠 Region 不做空间去重，可能导致重叠位置重复计数。
+- 3D 功能是彩色体素预览，不是 Minecraft 完整渲染器：它不还原方块纹理、blockstate 模型、朝向、连接模型或透明材质；超出 200,000 个非空气方块时使用确定性蓄水池保留代表性体素。
 - Mod 方块会保留 ID；导入包含标准资源目录的 Mod JAR / 资源包后可补全当前材料的名称和 PNG 图标，但应用不会执行 Mod 代码，也无法从静态资源可靠推断方块到物品的非标准转换或运行时最大堆叠数量，后者需手动填写。
 - 导入的 Mod 名称与图标只保留在当前页面会话中；刷新页面、重置项目或重新打开投影后需要重新导入资源。
 - 大文件同时受上传、解压 NBT、集合长度和 Region 体积限制；在低内存移动设备上仍可能失败。

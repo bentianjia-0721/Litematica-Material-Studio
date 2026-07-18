@@ -9,6 +9,13 @@ interface ItemIconProps {
 
 export function ItemIcon({ itemId, displayName, src, compact = false }: ItemIconProps) {
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const resolvedSrc = useMemo(
+    () =>
+      src?.startsWith("/") && !src.startsWith("//")
+        ? `${import.meta.env.BASE_URL}${src.slice(1)}`
+        : src,
+    [src],
+  );
   const hue = useMemo(
     () => ([...itemId].reduce((sum, char) => sum + char.charCodeAt(0), 0) % 80) + 125,
     [itemId],
@@ -21,14 +28,14 @@ export function ItemIcon({ itemId, displayName, src, compact = false }: ItemIcon
       aria-hidden="true"
       title={displayName}
     >
-      {src && failedSrc !== src ? (
+      {resolvedSrc && failedSrc !== resolvedSrc ? (
         <img
-          src={src}
+          src={resolvedSrc}
           alt=""
           loading="lazy"
           decoding="async"
           draggable={false}
-          onError={() => setFailedSrc(src)}
+          onError={() => setFailedSrc(resolvedSrc)}
         />
       ) : (
         <i />

@@ -213,7 +213,8 @@ export interface FixturePaletteEntry {
 
 export interface FixtureRegion {
   readonly name: string;
-  readonly position?: Vector3i;
+  /** null omits Position; undefined keeps the fixture default at the origin. */
+  readonly position?: Vector3i | null;
   readonly size: Vector3i;
   readonly palette: readonly FixturePaletteEntry[];
   readonly blockIndices: readonly number[];
@@ -314,7 +315,9 @@ function regionTag(region: FixtureRegion): NbtCompoundTag {
   }
 
   return fixtureTag.compound({
-    Position: vectorTag(region.position ?? { x: 0, y: 0, z: 0 }),
+    ...(region.position === null
+      ? {}
+      : { Position: vectorTag(region.position ?? { x: 0, y: 0, z: 0 }) }),
     Size: vectorTag(region.size),
     BlockStatePalette: paletteTag(region.palette),
     BlockStates: fixtureTag.longArray(

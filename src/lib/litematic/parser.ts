@@ -19,6 +19,8 @@ import {
   type BlockStateCount,
   type LitematicMetadata,
   type LitematicParseOptions,
+  type LitematicPreview,
+  type LitematicPreviewBounds,
   type LitematicParseResult,
   type LitematicRegion,
   type LitematicWarning,
@@ -28,6 +30,7 @@ import {
 
 const DEFAULT_MAX_REGION_VOLUME = 50_000_000;
 const DEFAULT_MAX_TOTAL_VOLUME = 100_000_000;
+const DEFAULT_MAX_PREVIEW_BLOCKS = 200_000;
 const DEFAULT_SUPPORTED_FORMAT_VERSIONS = new Set([4, 5, 6, 7]);
 
 interface MutableCount {
@@ -40,6 +43,17 @@ interface MutableStats {
   totalVolume: number;
   decodedBlockCount: number;
   invalidPaletteIndexCount: number;
+}
+
+interface MutablePreview {
+  readonly maxBlocks: number;
+  readonly states: BlockState[];
+  readonly stateIndexByKey: Map<string, number>;
+  readonly positions: Int32Array;
+  readonly stateIndices: Uint32Array;
+  bounds: LitematicPreviewBounds | null;
+  totalBlockCount: number;
+  sampledBlockCount: number;
 }
 
 function resolvePositiveLimit(value: number | undefined, fallback: number, name: string): number {
@@ -226,6 +240,139 @@ function absoluteDimensions(size: Vector3i): Vector3i {
   };
 }
 
+function isPreviewAir(state: BlockState): boolean {
+  return /^(?:minecraft:)?(?:air|cave_air|void_air)$/.test(state.name);
+}
+
+function regionBounds(
+  position: Vector3i,
+  size: Vector3i,
+  dimensions: Vector3i,
+): LitematicPreviewBounds {
+  const end = {
+    x: position.x + (size.x < 0 ? -(dimensions.x - 1) : dimensions.x - 1),
+    y: position.y + (size.y < 0 ? -(dimensions.y - 1) : dimensions.y - 1),
+    z: position.z + (size.z < 0 ? -(dimensions.z - 1) : dimensions.z - 1),
+  };
+
+  return {
+    min: {
+      x: Math.min(position.x, end.x),
+      y: Math.min(position.y, end.y),
+      z: Math.min(position.z, end.z),
+    },
+    max: {
+      x: Math.max(position.x, end.x),
+      y: Math.max(position.y, end.y),
+      z: Math.max(position.z, end.z),
+    },
+  };
+}
+
+function includeRegionBounds(
+  preview: MutablePreview,
+  position: Vector3i,
+  size: Vector3i,
+  dimensions: Vector3i,
+): void {
+  const next = regionBounds(position, size, dimensions);
+  if (preview.bounds === null) {
+    preview.bounds = next;
+    return;
+  }
+
+  preview.bounds = {
+    min: {
+      x: Math.min(preview.bounds.min.x, next.min.x),
+      y: Math.min(preview.bounds.min.y, next.min.y),
+      z: Math.min(preview.bounds.min.z, next.min.z),
+    },
+    max: {
+      x: Math.max(preview.bounds.max.x, next.max.x),
+      y: Math.max(preview.bounds.max.y, next.max.y),
+      z: Math.max(preview.bounds.max.z, next.max.z),
+    },
+  };
+}
+
+function previewStateIndex(preview: MutablePreview, state: BlockState): number {
+  const existing = preview.stateIndexByKey.get(state.key);
+  if (existing !== undefined) return existing;
+
+  const index = preview.states.length;
+  preview.states.push(state);
+  preview.stateIndexByKey.set(state.key, index);
+  return index;
+}
+
+/** Stable pseudo-random slot for deterministic reservoir sampling. */
+function reservoirSlot(seen: number, x: number, y: number, z: number, stateIndex: number): number {
+  let hash = 0x811c9dc5;
+  for (const value of [seen, x, y, z, stateIndex]) {
+    hash = Math.imul(hash ^ value, 0x01000193);
+    hash = Math.imul(hash ^ (value / 0x1_0000_0000), 0x01000193);
+  }
+  return (hash >>> 0) % seen;
+}
+
+function includePreviewBlock(
+  preview: MutablePreview,
+  state: BlockState,
+  x: number,
+  y: number,
+  z: number,
+): void {
+  preview.totalBlockCount += 1;
+  const seen = preview.totalBlockCount;
+  let slot: number;
+
+  if (preview.sampledBlockCount < preview.maxBlocks) {
+    slot = preview.sampledBlockCount;
+    preview.sampledBlockCount += 1;
+  } else {
+    slot = reservoirSlot(seen, x, y, z, previewStateIndex(preview, state));
+    if (slot >= preview.maxBlocks) return;
+  }
+
+  const stateIndex = previewStateIndex(preview, state);
+  const coordinateOffset = slot * 3;
+  preview.positions[coordinateOffset] = x;
+  preview.positions[coordinateOffset + 1] = y;
+  preview.positions[coordinateOffset + 2] = z;
+  preview.stateIndices[slot] = stateIndex;
+}
+
+function finalizePreview(preview: MutablePreview): LitematicPreview {
+  const stateIndices = new Uint32Array(preview.sampledBlockCount);
+  const states: BlockState[] = [];
+  const compactIndexByOriginal = new Map<number, number>();
+
+  for (let index = 0; index < preview.sampledBlockCount; index += 1) {
+    const originalIndex = preview.stateIndices[index] ?? 0;
+    let compactIndex = compactIndexByOriginal.get(originalIndex);
+    if (compactIndex === undefined) {
+      compactIndex = states.length;
+      const state = preview.states[originalIndex];
+      if (state === undefined) {
+        throw new Error(`Preview state index ${originalIndex} is missing`);
+      }
+      states.push(state);
+      compactIndexByOriginal.set(originalIndex, compactIndex);
+    }
+    stateIndices[index] = compactIndex;
+  }
+
+  return {
+    states,
+    positions: preview.positions.slice(0, preview.sampledBlockCount * 3),
+    stateIndices,
+    bounds: preview.bounds,
+    totalBlockCount: preview.totalBlockCount,
+    sampledBlockCount: preview.sampledBlockCount,
+    truncated: preview.totalBlockCount > preview.sampledBlockCount,
+  };
+}
+
 function calculateRegionVolume(
   dimensions: Vector3i,
   regionName: string,
@@ -288,6 +435,7 @@ function parseRegion(
   warnings: LitematicWarning[],
   stats: MutableStats,
   aggregateCounts: Map<string, MutableCount>,
+  preview: MutablePreview,
   maxRegionVolume: number,
   maxTotalVolume: number,
 ): LitematicRegion {
@@ -305,6 +453,10 @@ function parseRegion(
   const dimensions = size === null ? null : absoluteDimensions(size);
   const volume =
     dimensions === null ? 0 : calculateRegionVolume(dimensions, regionName, maxRegionVolume);
+
+  if (volume > 0 && position !== null && size !== null && dimensions !== null) {
+    includeRegionBounds(preview, position, size, dimensions);
+  }
 
   stats.totalVolume += volume;
   if (stats.totalVolume > maxTotalVolume) {
@@ -341,18 +493,37 @@ function parseRegion(
     }
 
     let invalidInRegion = 0;
-    forEachPackedPaletteIndex(blockStates.value, volume, palette.length, (paletteIndex) => {
-      stats.decodedBlockCount += 1;
-      const state = palette[paletteIndex];
-      if (state === undefined) {
-        invalidInRegion += 1;
-        stats.invalidPaletteIndexCount += 1;
-        return;
-      }
+    forEachPackedPaletteIndex(
+      blockStates.value,
+      volume,
+      palette.length,
+      (paletteIndex, blockIndex) => {
+        stats.decodedBlockCount += 1;
+        const state = palette[paletteIndex];
+        if (state === undefined) {
+          invalidInRegion += 1;
+          stats.invalidPaletteIndexCount += 1;
+          return;
+        }
 
-      incrementCount(localCounts, state, 1);
-      incrementCount(aggregateCounts, state, 1);
-    });
+        incrementCount(localCounts, state, 1);
+        incrementCount(aggregateCounts, state, 1);
+
+        if (position !== null && size !== null && dimensions !== null && !isPreviewAir(state)) {
+          // Litematica stores x as the fastest-changing axis, followed by z and y.
+          const localX = blockIndex % dimensions.x;
+          const localZ = Math.floor(blockIndex / dimensions.x) % dimensions.z;
+          const localY = Math.floor(blockIndex / (dimensions.x * dimensions.z));
+          includePreviewBlock(
+            preview,
+            state,
+            position.x + (size.x < 0 ? -localX : localX),
+            position.y + (size.y < 0 ? -localY : localY),
+            position.z + (size.z < 0 ? -localZ : localZ),
+          );
+        }
+      },
+    );
 
     if (invalidInRegion > 0) {
       warning(
@@ -458,6 +629,10 @@ export function parseLitematic(
     DEFAULT_MAX_TOTAL_VOLUME,
     "maxTotalVolume",
   );
+  const maxPreviewBlocks = Math.min(
+    resolvePositiveLimit(options.maxPreviewBlocks, DEFAULT_MAX_PREVIEW_BLOCKS, "maxPreviewBlocks"),
+    DEFAULT_MAX_PREVIEW_BLOCKS,
+  );
   const stats: MutableStats = {
     paletteEntryCount: 0,
     totalVolume: 0,
@@ -465,6 +640,16 @@ export function parseLitematic(
     invalidPaletteIndexCount: 0,
   };
   const aggregateCounts = new Map<string, MutableCount>();
+  const preview: MutablePreview = {
+    maxBlocks: maxPreviewBlocks,
+    states: [],
+    stateIndexByKey: new Map(),
+    positions: new Int32Array(maxPreviewBlocks * 3),
+    stateIndices: new Uint32Array(maxPreviewBlocks),
+    bounds: null,
+    totalBlockCount: 0,
+    sampledBlockCount: 0,
+  };
   const regions: LitematicRegion[] = [];
   const regionsTag = root.Regions;
 
@@ -489,6 +674,7 @@ export function parseLitematic(
           warnings,
           stats,
           aggregateCounts,
+          preview,
           maxRegionVolume,
           maxTotalVolume,
         ),
@@ -515,6 +701,7 @@ export function parseLitematic(
     metadata,
     regions,
     blockStateCounts: finalizeCounts(aggregateCounts),
+    preview: finalizePreview(preview),
     warnings,
     stats: {
       compressedBytes,
