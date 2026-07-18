@@ -5,7 +5,7 @@ import { detectMinecraftVersion, loadMinecraftVersionData } from "../lib/minecra
 import { convertBlockStateCounts } from "../lib/materials";
 import { toFriendlyError } from "../lib/errors/friendly-error";
 import type { ProcessingStage } from "../app/types";
-import type { WorkerRequest, WorkerResponse } from "./protocol";
+import { parseResultTransferables, type WorkerRequest, type WorkerResponse } from "./protocol";
 
 const context = self as DedicatedWorkerGlobalScope;
 let cancelled = false;
@@ -86,7 +86,7 @@ async function runParse(request: Extract<WorkerRequest, { type: "parse" }>) {
       versionMatch,
       materials,
     };
-    context.postMessage(response);
+    context.postMessage(response, parseResultTransferables(result));
   } catch (error) {
     if (cancelled || (error instanceof DOMException && error.name === "AbortError")) return;
     const friendly = toFriendlyError(error);

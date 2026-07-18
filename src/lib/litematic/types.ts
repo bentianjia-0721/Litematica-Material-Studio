@@ -54,6 +54,24 @@ export interface LitematicRegion {
   readonly pendingFluidTickCount: number;
 }
 
+export interface LitematicPreviewBounds {
+  readonly min: Vector3i;
+  readonly max: Vector3i;
+}
+
+/** Compact, capped non-air block data used only for the interactive preview. */
+export interface LitematicPreview {
+  readonly states: readonly BlockState[];
+  /** Interleaved x/y/z world coordinates. Length is sampledBlockCount * 3. */
+  readonly positions: Int32Array;
+  readonly stateIndices: Uint32Array;
+  /** Full schematic region bounds, including empty layers. */
+  readonly bounds: LitematicPreviewBounds | null;
+  readonly totalBlockCount: number;
+  readonly sampledBlockCount: number;
+  readonly truncated: boolean;
+}
+
 export type LitematicWarningCode =
   | "MISSING_FORMAT_VERSION"
   | "UNKNOWN_FORMAT_VERSION"
@@ -93,6 +111,7 @@ export interface LitematicParseResult {
   readonly regions: readonly LitematicRegion[];
   /** Counts include air. Filtering belongs to the material conversion layer. */
   readonly blockStateCounts: readonly BlockStateCount[];
+  readonly preview: LitematicPreview;
   readonly warnings: readonly LitematicWarning[];
   readonly stats: LitematicParseStats;
 }
@@ -103,6 +122,8 @@ export interface LitematicParseOptions {
   readonly nbt?: NbtParseOptions;
   readonly maxRegionVolume?: number;
   readonly maxTotalVolume?: number;
+  /** Maximum number of non-air positions retained for preview, capped at 200,000. */
+  readonly maxPreviewBlocks?: number;
   readonly supportedFormatVersions?: readonly number[];
 }
 

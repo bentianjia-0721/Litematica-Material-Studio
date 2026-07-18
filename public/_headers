@@ -10,3 +10,9 @@
 
 /data/*
   Cache-Control: public, max-age=3600, must-revalidate
+
+/minecraft-assets/*
+  Cache-Control: public, max-age=86400, must-revalidate
+
+/resource-packs/*
+  Cache-Control: public, max-age=86400, must-revalidate

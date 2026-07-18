@@ -2,12 +2,16 @@
 
 一个在浏览器本地解析 `.litematic` 文件、识别 Minecraft Java Edition 版本并生成材料清单与 Excel 的静态 Web 应用。
 
+> 正式入口是 <https://litematica.bentianjia.com/>；<https://litematica.bentianjia.com/test/> 用于 `test` 分支的预发布验收。两者共享同一套核心功能，正式构建不会显示 `TEST` 标识。
+
 > 当前版本适合检查受支持版本的数据和常见原版方块材料，不应视为“所有 Litematica / Minecraft 历史版本均已完整验证”的转换器。准确的数据覆盖与限制见[支持状态](#支持状态)和[已知限制](#已知限制)。
 
 ## 功能
 
 - 拖拽、点击或键盘选择 `.litematic` 文件，上传入口限制为 128 MiB。
 - 使用 Web Worker 在浏览器内完成 gzip 解压、NBT 解析、版本识别和材料统计，可取消正在进行的任务。
+- 使用内置 Minecraft 1.21.11 纹理与方块状态模型提供预览：鼠标旋转、缩放和平移，并可切换全部、单层或连续多层显示。
+- 预览提供默认关闭的“启用 XK 红显”开关；开启后按原理图中的完整方块状态优先套用 XK 红显 v3.3，缺失、损坏或不匹配的状态逐项回退原版 1.21.11，最后才使用彩色占位。
 - NBT 解析支持全部标准 Tag、Java 有符号 `Long` / `LongArray`、BigInt，以及深度、长度、总 Tag 数和解压体积限制。
 - 读取 Metadata、多 Region、Position、正负 Size、方块状态调色板和位压缩 `BlockStates`；支持跨 64 位 Long 边界的条目。
 - 只按投影内的 `MinecraftDataVersion` / `DataVersion` 自动识别版本；没有精确本地数据时自动选取同一版本系列中最近的数据并明确标记兼容推断，不提供手动切换，也不会静默套用最新版本。
@@ -49,7 +53,10 @@ File API
 | `src/lib/stack/`、`src/lib/progress/` | 堆叠拆分和可复用进度计算                                     |
 | `src/lib/storage/`                    | 文件哈希，以及 IndexedDB → localStorage → 内存的可复用存储层 |
 | `src/lib/excel/`                      | Excel 工作簿、公式、样式、校验与下载                         |
+| `src/features/schematic-preview/`     | 内置 1.21.11 资源按需读取、方块模型烘焙、分层预览与视角控制  |
+| `public/resource-packs/`              | 原样提供的可选 XK 红显 v3.3 预览覆盖包                       |
 | `src/features/`                       | 上传、进度、投影摘要和材料表 UI                              |
+| `cloudflare/`                         | `/test` 到 Pages Preview 分支别名的 Worker 路由              |
 | `src/data/minecraft/`                 | 本地版本数据、DataVersion 映射、兼容矩阵和生成报告           |
 | `scripts/`                            | 版本研究、Minecraft 数据生成和一致性验证                     |
 | `tests/`                              | 解析、真实格式生成夹具、材料/UI 与 Excel 测试                |
@@ -78,6 +85,8 @@ npm run format:check    # 检查 Prettier 格式
 npm run format          # 写入 Prettier 格式
 npm run build           # typecheck 后由 Vite 构建到 dist/
 npm run preview         # 本地预览 dist/
+npm run build:test      # 以 /test/ 为 base 构建到 dist-test/
+npm run preview:test    # 在 /test/ 下本地预览 dist-test/
 ```
 
 `npm run build` 不会自动执行 ESLint 或 Vitest；发布前建议依次运行 `typecheck`、`lint`、`test`、`format:check` 和 `build`。
@@ -92,10 +101,11 @@ npm run preview         # 本地预览 dist/
 4. 以大端序读取 NBT。Compound 使用无原型对象并拒绝重复键，集合、字符串、深度、总 Tag 数和输入字节数均有限制。
 5. 读取根级格式版本、子版本和 Minecraft DataVersion，再读取 Metadata 与全部 Regions。
 6. Region Size 的每个轴取绝对值计算体积；调色板索引按 Litematica 连续位数组解码，支持一个条目横跨两个有符号 Long。
-7. 聚合各 Region 的完整方块状态。解析层保留空气，材料层再统一过滤 `air`、`cave_air` 和 `void_air`。
-8. 材料层应用与 Litematica 一致的 Pick Block、空物品栈过滤、状态倍数和最大堆叠数量；未知 Mod 项保留原始 ID 与警告。
+7. 按 `x → z → y` 索引顺序，从 Region 最小角生成全局预览坐标；有符号 Size 只用于推导边界，预览只略过三种空气，传送门、流体和技术方块仍可见。
+8. 聚合各 Region 的完整方块状态。解析层保留空气，材料层再统一过滤 `air`、`cave_air` 和 `void_air`。
+9. 材料层应用与 Litematica 一致的 Pick Block、空物品栈过滤、状态倍数和最大堆叠数量；未知 Mod 项保留原始 ID 与警告。
 
-默认安全上限包括 128 MiB 上传、512 MiB 解压 NBT、单 Region 50,000,000 个位置、全部 Region 合计 100,000,000 个位置。它们是浏览器安全边界，不是格式能力声明。
+默认安全上限包括 128 MiB 上传、512 MiB 解压 NBT、单 Region 50,000,000 个位置、全部 Region 合计 100,000,000 个位置，以及最多保留 200,000 个非空气体素用于 3D 预览。它们是浏览器安全边界，不是格式能力声明；预览截断不影响完整材料统计与 Region 边界。
 
 ## 版本识别
 
@@ -182,19 +192,24 @@ Minecraft Wiki 的文件页将这些游戏图标标记为 Mojang 内容；从 Wi
 
 关键上游的声明如下；最终应以各依赖随包提供的许可证文件为准：
 
-| 项目                         | 用途                  | 上游声明或适用条款                            |
-| ---------------------------- | --------------------- | --------------------------------------------- |
-| Litematica                   | 格式与版本研究参考    | LGPL-3.0                                      |
-| minecraft-data 3.111.0       | 生成版本化注册表数据  | MIT                                           |
-| Mojang 版本化 zh-CN 语言资产 | 中文名称              | Minecraft EULA / 使用规范                     |
-| Minecraft Wiki Invicon       | 构建期物品栏图标      | 文件页标记为 Mojang 内容；适用 Minecraft 条款 |
-| React / React DOM            | UI                    | MIT                                           |
-| pako                         | gzip                  | MIT AND Zlib                                  |
-| ExcelJS                      | `.xlsx` 生成          | MIT                                           |
-| idb                          | IndexedDB 封装        | ISC                                           |
-| JSZip                        | 本地 Mod ZIP/JAR 解析 | MIT                                           |
-| Vite / Vitest                | 构建与测试            | MIT                                           |
-| Wrangler                     | Cloudflare 部署工具   | MIT OR Apache-2.0                             |
+| 项目                                                                                   | 用途                   | 上游声明或适用条款                            |
+| -------------------------------------------------------------------------------------- | ---------------------- | --------------------------------------------- |
+| Litematica                                                                             | 格式与版本研究参考     | LGPL-3.0                                      |
+| minecraft-data 3.111.0                                                                 | 生成版本化注册表数据   | MIT                                           |
+| Mojang 版本化 zh-CN 语言资产                                                           | 中文名称               | Minecraft EULA / 使用规范                     |
+| Minecraft Wiki Invicon                                                                 | 构建期物品栏图标       | 文件页标记为 Mojang 内容；适用 Minecraft 条款 |
+| Minecraft 1.21.11 预览资源子集                                                         | 3D 预览方块模型与纹理  | Minecraft EULA / 使用规范                     |
+| [XK 红显 v3.3](https://www.planetminecraft.com/texture-pack/redstone-display-5793327/) | 可选红石状态显示覆盖包 | Xe_Kr，CC BY-NC-ND 4.0                        |
+| React / React DOM                                                                      | UI                     | MIT                                           |
+| pako                                                                                   | gzip                   | MIT AND Zlib                                  |
+| ExcelJS                                                                                | `.xlsx` 生成           | MIT                                           |
+| idb                                                                                    | IndexedDB 封装         | ISC                                           |
+| JSZip                                                                                  | 本地 Mod ZIP/JAR 解析  | MIT                                           |
+| zip.js                                                                                 | 内置预览 ZIP 按需读取  | BSD-3-Clause                                  |
+| mc-assets                                                                              | 方块状态/模型解析器    | MIT                                           |
+| Three.js                                                                               | 3D 模型预览            | MIT                                           |
+| Vite / Vitest                                                                          | 构建与测试             | MIT                                           |
+| Wrangler                                                                               | Cloudflare 部署工具    | MIT OR Apache-2.0                             |
 
 Mojang / Microsoft 的语言内容不因 `minecraft-data` 的 MIT 许可证而变成 MIT 内容；使用与再分发时应另行遵守 [Minecraft EULA](https://www.minecraft.net/en-us/eula)和[Minecraft 使用规范](https://www.minecraft.net/en-us/usage-guidelines)。
 
@@ -215,16 +230,21 @@ Mojang / Microsoft 的语言内容不因 `minecraft-data` 的 MIT 许可证而�
 
 - 用户选择的 `.litematic` 内容由 File API 读取并转移到本地 Web Worker；应用代码不会把文件上传到 Cloudflare 或其他服务器。
 - 用户选择的 Mod `.jar` / 资源包 `.zip` 同样只在当前浏览器页面内解压；不上传、不执行其中的代码，也不保存压缩包或解析出的图片。
-- 解析、材料换算、进度计算和 Excel 生成均在浏览器内完成；运行时版本 JSON 从同一静态站点按需加载。
+- 解析、材料换算、进度计算和 Excel 生成均在浏览器内完成；运行时物品版本 JSON 从同一静态站点按需加载。
+- 3D 预览固定读取随站点部署的 `public/minecraft-assets/minecraft-1.21.11-preview.zip`；页面启动后会在后台预加载一次，上传投影后复用浏览器缓存，不会在运行时访问 Mojang 版本清单或客户端地址。
+- XK 红显默认关闭；只有用户打开开关时才读取同源的 XK 红显 v3.3 ZIP。该 ZIP 按作者的 CC BY-NC-ND 4.0 条款原样提供，未改动包内文件。
 - 当前 UI 只在 `localStorage` 保存文件内容哈希、文件名、已拥有数量、手动堆叠上限和时间戳，不保存版本选择或原始投影二进制。
 - 清除站点数据、使用隐私模式或更换浏览器会丢失本地进度；页面没有账号、云同步或多人协作。
-- `public/_headers` 设置了同源连接 CSP、禁止嵌入和摄像头/麦克风/定位等权限。托管平台仍会像任何静态网站一样接收正常的页面与资源 HTTP 请求，这与上传投影文件是两回事。
+- `public/_headers` 的 CSP 只允许同源连接，并禁止嵌入和摄像头/麦克风/定位等权限。托管平台仍会像任何静态网站一样接收正常的页面与资源 HTTP 请求，这与上传投影文件是两回事。
 
-## Cloudflare Pages Direct Upload
+## Cloudflare 部署与维护
 
-该项目是纯静态 Vite 构建，没有 Pages Functions，也没有 `wrangler.toml` / `wrangler.jsonc`。Vite 输出目录是 `dist/`；`public/_headers` 和 `public/_redirects` 会复制到构建结果，用于安全响应头、长期静态资源缓存和 SPA 回退。
+| 环境     | Git 分支 | 构建目录     | 地址                                      | 用途                   |
+| -------- | -------- | ------------ | ----------------------------------------- | ---------------------- |
+| 正式环境 | `main`   | `dist/`      | <https://litematica.bentianjia.com/>      | 面向用户的稳定版本     |
+| 预发布   | `test`   | `dist-test/` | <https://litematica.bentianjia.com/test/> | 新功能上线前的独立验收 |
 
-当前生产项目为 `litematica-material-studio`，生产分支为 `main`，正式地址是 <https://litematica.bentianjia.com/>，`pages.dev` 地址仅作为托管平台回退入口。自定义域名当前已通过 Cloudflare Pages 验证，DNS 与 SSL 状态均为 `active`。
+该项目是纯静态 Vite 构建，没有 Pages Functions。生产项目为 `litematica-material-studio`，`pages.dev` 地址仅作为托管平台回退入口；自定义域名已通过 Cloudflare Pages 验证，DNS 与 SSL 状态均为 `active`。`public/_headers` 和 `public/_redirects` 会复制到构建结果，用于安全响应头、静态资源缓存和 SPA 回退。同一域名下的 `/test/` 由 `wrangler.test-router.jsonc` 发布的 Cloudflare Worker 转发到 `test` 分支 Pages Preview；投影解析、材料统计和 Excel 导出仍在浏览器本地完成。
 
 先完成本地验证和构建：
 
@@ -255,15 +275,28 @@ npx wrangler pages project create litematica-material-studio --production-branch
 npx wrangler pages deploy dist --project-name litematica-material-studio --branch main
 ```
 
-若实际创建时采用了其他名称，把命令中的名称同步替换。预览分支部署示例：
+`test` 分支先构建并作为 Pages Preview 部署，再发布路径 Worker：
 
 ```bash
-npx wrangler pages deploy dist --project-name=litematica-material-studio --branch=preview
+npm run build:test
+npx wrangler pages deploy dist-test --project-name=litematica-material-studio --branch=test
+npx wrangler deploy --config wrangler.test-router.jsonc
 ```
+
+该 Preview 的稳定源站别名是 `test.litematica-material-studio.pages.dev`。Worker 只为 `/test` 做尾斜杠跳转，并把 `/test/…` 去前缀后转发到该别名；生产根路径不会进入 Worker。
 
 部署后至少实测：首页和静态资源、拖拽/选择、Worker、真实 `.litematic`、版本识别、材料编辑、本地进度与 Excel 下载。
 
 Cloudflare 当前文档说明 Direct Upload 项目创建后不能原地切换为 Git integration；如果之后要改用 Git 自动部署，需要新建对应项目。命令与限制以 [Cloudflare Pages Direct Upload 官方文档](https://developers.cloudflare.com/pages/get-started/direct-upload/)为准。
+
+## 鸣谢
+
+- [Cloudflare Pages](https://pages.cloudflare.com/) 与 [Cloudflare Workers](https://workers.cloudflare.com/)：提供正式站点、Preview 分支托管和 `/test/` 路由。
+- [Litematica](https://github.com/maruohon/litematica) 与作者 Masa / maruohon：提供原理图格式和材料清单逻辑的实现参考。
+- [PrismarineJS/minecraft-data](https://github.com/PrismarineJS/minecraft-data)：提供版本化的 Minecraft 注册表、方块和物品基础数据。
+- [Minecraft Wiki](https://minecraft.wiki/) 社区：提供物品栏图标文件页和资料索引。
+- [XeKr / XK 红显](https://www.planetminecraft.com/texture-pack/redstone-display-5793327/)：提供可选的红石状态显示资源包；本站按原包许可原样使用 v3.3。
+- Mojang Studios 与 Microsoft：Minecraft 名称、方块模型、纹理及其他游戏素材的权利归其权利人所有；本项目是非官方工具，与其不存在隶属或认可关系。
 
 ## 已知限制
 
@@ -275,6 +308,8 @@ Cloudflare 当前文档说明 Direct Upload 项目创建后不能原地切换为
 - 真实 Litematica 生成样本覆盖不足；测试以生成式 gzip NBT 夹具为主，不能据此宣称全历史兼容。
 - 材料转换规则不是完整 Minecraft 模拟：容器内容、方块实体库存、实体、掉落概率、红石/流体更新、相邻方块合并和资源复用不会被完整推演。
 - 多 Region 按各自内容求和；重叠 Region 不做空间去重，可能导致重叠位置重复计数。
+- 3D 预览还原标准 blockstate `variants` / `multipart`、模型继承、元素、朝向、UV、透明纹理和 tint；需要客户端代码或方块实体数据的动态特效，以及非标准 Mod model loader 会明确降级。超出 200,000 个非空气方块时仍使用确定性蓄水池保留代表性位置。
+- 3D 预览当前只显示方块，不解析或渲染原理图 `Entities` 中的生物、盔甲架、物品展示框等实体。
 - Mod 方块会保留 ID；导入包含标准资源目录的 Mod JAR / 资源包后可补全当前材料的名称和 PNG 图标，但应用不会执行 Mod 代码，也无法从静态资源可靠推断方块到物品的非标准转换或运行时最大堆叠数量，后者需手动填写。
 - 导入的 Mod 名称与图标只保留在当前页面会话中；刷新页面、重置项目或重新打开投影后需要重新导入资源。
 - 大文件同时受上传、解压 NBT、集合长度和 Region 体积限制；在低内存移动设备上仍可能失败。
@@ -294,6 +329,7 @@ npm install --save-dev minecraft-data@<已核实版本>
 
 ```bash
 npm run update:minecraft-data
+npm run generate:minecraft-preview-assets
 npm run research:litematica-versions
 npm run validate:version-data
 npm run typecheck
@@ -303,6 +339,7 @@ npm run build
 ```
 
 - `update:minecraft-data` 联网读取 Mojang 版本清单、各版本 `zh_cn` 语言资产，以及 Minecraft Wiki Invicon 文件元数据和图片；随后重建 17 个（或修改后的目标集合）版本 JSON、图标目录、`versions.json`、`data-version-map.json` 和 Minecraft 数据报告。必须同时检查 `localization.updateWarnings` 与 `iconData.downloadWarnings`。
+- `generate:minecraft-preview-assets` 下载固定的 Minecraft 1.21.11 客户端，严格校验 SHA-1 `ba2df812c2d12e0219c489c4cd9a5e1f0760f5bd`，再确定性生成仅含 blockstates、block models、block/colormap 纹理及模型引用 item 纹理的同源预览 ZIP 和 SHA-256 清单。该资源包含 Mojang / Microsoft 内容，重新生成或部署前必须审阅 Minecraft EULA 与使用规范。
 - `research:litematica-versions` 联网读取原作者 Modrinth 发布记录、官方 Git refs 和选定源码证据，重建兼容矩阵与研究报告。网络失败时脚本可能保留已有矩阵，因此必须检查报告 `generatedAt`、`errors` 和实际 diff，不能只看进程退出码。
 - `validate:version-data` 检查文件、DataVersion、来源 URL、最大堆叠数量和 fully-supported 条件，并生成 `version-data-validation-report.json`。
 

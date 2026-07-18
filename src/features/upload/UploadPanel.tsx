@@ -129,7 +129,10 @@ export function UploadPanel({
           </div>
           <div>
             <strong>你的建筑，不离开浏览器</strong>
-            <p>文件不会上传到服务器；解析、材料统计和 Excel 生成均在本地完成。</p>
+            <p>
+              文件不会上传到服务器；解析、统计和导出均在本地完成，3D 预览直接读取站点内置的
+              Minecraft 1.21.11 模型与纹理。
+            </p>
           </div>
         </div>
       </section>

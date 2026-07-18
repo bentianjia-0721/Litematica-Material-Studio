@@ -19,5 +19,5 @@
     "exactOptionalPropertyTypes": true,
     "types": ["vite/client", "vitest/globals"]
   },
-  "include": ["src", "tests", "scripts", "vite.config.ts", "eslint.config.js"]
+  "include": ["src", "tests", "scripts", "cloudflare", "vite.config.ts", "eslint.config.js"]
 }

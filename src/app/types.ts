@@ -1,3 +1,5 @@
+import type { LitematicPreview } from "../lib/litematic/types";
+
 export type ProcessingStage =
   | "读取文件"
   | "解压 gzip"
@@ -57,6 +59,7 @@ export interface StudioProject {
   detectedVersion: string | null;
   dataVersion: string | null;
   matchType: "exact" | "compatible" | "inferred" | "unknown";
+  preview: LitematicPreview;
   materials: StudioMaterial[];
   warnings: string[];
 }

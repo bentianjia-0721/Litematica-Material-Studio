@@ -10,23 +10,29 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "build": "npm run typecheck && vite build",
+    "build:test": "npm run typecheck && vite build --base=/test/ --outDir=dist-test",
     "preview": "vite preview",
+    "preview:test": "vite preview --base=/test/ --outDir=dist-test",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "research:litematica-versions": "tsx scripts/research-litematica-versions.ts",
     "update:minecraft-data": "tsx scripts/update-minecraft-data.ts",
+    "generate:minecraft-preview-assets": "tsx scripts/generate-minecraft-preview-assets.ts",
     "validate:version-data": "tsx scripts/validate-version-data.ts"
   },
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
+    "@zip.js/zip.js": "^2.8.31",
     "exceljs": "^4.4.0",
     "idb": "^8.0.3",
     "jszip": "^3.10.1",
+    "mc-assets": "^0.2.83",
     "pako": "^3.0.1",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -37,6 +43,7 @@
     "@types/pako": "^2.0.4",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.185.1",
     "@vitejs/plugin-react": "^6.0.3",
     "@vitest/coverage-v8": "^4.1.10",
     "eslint": "^10.7.0",

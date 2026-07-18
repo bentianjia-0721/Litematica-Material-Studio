@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Brand } from "./components/Brand";
 import type { ProcessingStage, StudioMaterial, StudioMetadata, StudioProject } from "./app/types";
+import { useScrollToPageTop } from "./app/use-scroll-to-page-top";
 import { UploadPanel } from "./features/upload/UploadPanel";
 import { readFileAsArrayBuffer } from "./features/upload/read-file";
 import { ProcessingPanel } from "./features/progress/ProcessingPanel";
@@ -16,6 +17,16 @@ import { fileHash } from "./lib/storage";
 import type { WorkerResponse } from "./workers/protocol";
 import type { LitematicMetadata, LitematicParseResult } from "./lib/litematic";
 import type { ModMaterialResource, ModResourceImportResult } from "./lib/mod-resources";
+
+const SchematicPreview = lazy(() =>
+  import("./features/schematic-preview/SchematicPreview").then((module) => ({
+    default: module.SchematicPreview,
+  })),
+);
+
+const environmentLabel = import.meta.env.BASE_URL.startsWith("/test/")
+  ? "TEST · 3D PREVIEW"
+  : "3D PREVIEW";
 
 type Phase = "upload" | "processing" | "results";
 
@@ -211,6 +222,8 @@ export function App() {
   const abortRef = useRef<AbortController | null>(null);
   const batchHistory = useRef<StudioMaterial[][]>([]);
 
+  useScrollToPageTop(phase === "results");
+
   useEffect(() => {
     if (!project) return;
     const timer = window.setTimeout(() => {
@@ -278,7 +291,7 @@ export function App() {
     selectedFileName: string,
     selectedFileSize: number,
   ) => {
-    const parsed = response.result as LitematicParseResult;
+    const parsed = response.result;
     const match = response.versionMatch as VersionMatchWire;
     const saved = loadSavedProgress(projectId);
     const rows = response.materials as MaterialWire[];
@@ -299,6 +312,7 @@ export function App() {
       detectedVersion,
       dataVersion,
       matchType: match.matchType ?? match.type ?? "unknown",
+      preview: parsed.preview,
       materials: normalizeMaterials(rows, saved?.owned, saved?.maxStackOverrides),
       warnings,
     });
@@ -564,7 +578,7 @@ export function App() {
         <Brand />
         <div className="header-meta">
           <i />
-          <span>Local-only processing</span>
+          <span>{environmentLabel}</span>
         </div>
       </header>
 
@@ -600,6 +614,15 @@ export function App() {
               </ul>
             </details>
           ) : null}
+          <Suspense
+            fallback={
+              <section className="schematic-preview schematic-preview--loading" aria-busy="true">
+                正在加载 3D 预览器…
+              </section>
+            }
+          >
+            <SchematicPreview key={project.projectId} preview={project.preview} />
+          </Suspense>
           <section className="results-actions" aria-label="项目操作">
             <button className="action-button" type="button" onClick={clearSavedProgress}>
               清除本地进度

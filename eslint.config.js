@@ -5,7 +5,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist", "coverage", "node_modules", "src/data/minecraft/java"] },
+  { ignores: ["dist", "dist-test", "coverage", "node_modules", "src/data/minecraft/java"] },
   {
     ...js.configs.recommended,
     files: ["**/*.{js,mjs,cjs}"],
