@@ -891,11 +891,11 @@ a {
     transform 0.16s;
 }
 .preview-resource-toggle input:checked + .preview-resource-toggle__track {
-  border-color: #ff7f78;
-  background: rgba(255, 85, 76, 0.24);
+  border-color: var(--accent);
+  background: rgba(126, 235, 178, 0.22);
 }
 .preview-resource-toggle input:checked + .preview-resource-toggle__track > span {
-  background: #ff7f78;
+  background: var(--accent);
   transform: translateX(16px);
 }
 .preview-resource-toggle input:focus-visible + .preview-resource-toggle__track {

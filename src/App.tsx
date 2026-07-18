@@ -26,7 +26,7 @@ const SchematicPreview = lazy(() =>
 
 const environmentLabel = import.meta.env.BASE_URL.startsWith("/test/")
   ? "TEST · 3D PREVIEW"
-  : "Local-only processing";
+  : "3D PREVIEW";
 
 type Phase = "upload" | "processing" | "results";
 

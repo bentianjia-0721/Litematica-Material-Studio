@@ -20,6 +20,8 @@ describe("schematic preview controls", () => {
     const user = userEvent.setup();
     const { container } = render(<SchematicPreview preview={emptyPreview} />);
 
+    expect(screen.getByText("SCHEMATIC VIEWER")).toBeInTheDocument();
+    expect(screen.queryByText("TEST · SCHEMATIC VIEWER")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "全部" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByRole("button", { name: "单层" })).toHaveAttribute("aria-pressed", "false");
 

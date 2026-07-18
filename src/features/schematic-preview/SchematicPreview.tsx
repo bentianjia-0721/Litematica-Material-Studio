@@ -46,6 +46,10 @@ interface SchematicPreviewProps {
   preview: LitematicPreview;
 }
 
+const previewEnvironmentLabel = import.meta.env.BASE_URL.startsWith("/test/")
+  ? "TEST · SCHEMATIC VIEWER"
+  : "SCHEMATIC VIEWER";
+
 interface PreviewMeshGroup {
   readonly mesh: InstancedMesh;
 }
@@ -521,7 +525,7 @@ export function SchematicPreview({ preview }: SchematicPreviewProps) {
     <section className="schematic-preview" aria-labelledby="schematic-preview-title">
       <div className="schematic-preview__heading">
         <div>
-          <span className="eyebrow">TEST · SCHEMATIC VIEWER</span>
+          <span className="eyebrow">{previewEnvironmentLabel}</span>
           <h2 id="schematic-preview-title">原理图方块模型预览</h2>
           <p>左键旋转 · 滚轮缩放 · 右键平移；可查看全部、单层或任意连续多层。</p>
         </div>
