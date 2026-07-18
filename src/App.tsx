@@ -5,7 +5,6 @@ import { UploadPanel } from "./features/upload/UploadPanel";
 import { readFileAsArrayBuffer } from "./features/upload/read-file";
 import { ProcessingPanel } from "./features/progress/ProcessingPanel";
 import { SchematicHeader } from "./features/schematic-info/SchematicHeader";
-import { VersionSelector } from "./features/version-selector/VersionSelector";
 import { MaterialTable } from "./features/material-table/MaterialTable";
 import { ModResourceImporter } from "./features/mod-resources/ModResourceImporter";
 import {
@@ -14,12 +13,6 @@ import {
   type MaterialSort,
 } from "./features/material-table/MaterialToolbar";
 import { fileHash } from "./lib/storage";
-import {
-  detectMinecraftVersion,
-  listMinecraftVersions,
-  loadMinecraftVersionData,
-} from "./lib/minecraft-data";
-import { convertBlockStateCounts } from "./lib/materials";
 import type { WorkerResponse } from "./workers/protocol";
 import type { LitematicMetadata, LitematicParseResult } from "./lib/litematic";
 import type { ModMaterialResource, ModResourceImportResult } from "./lib/mod-resources";
@@ -40,7 +33,6 @@ interface MaterialWire {
 
 interface VersionMatchWire {
   originalDetectedVersion: string | null;
-  selectedVersion: string | null;
   minecraftVersion: string | null;
   matchType: StudioProject["matchType"];
   type: StudioProject["matchType"];
@@ -50,7 +42,6 @@ interface VersionMatchWire {
 interface SavedProgress {
   schemaVersion: 1;
   fileName: string;
-  selectedVersion: string | null;
   owned: Record<string, number>;
   maxStackOverrides?: Record<string, number>;
   savedAt: number;
@@ -168,10 +159,6 @@ function normalizeMaterials(
     .sort((a, b) => b.required - a.required || a.id.localeCompare(b.id));
 }
 
-function getVersionStrings() {
-  return [...listMinecraftVersions()].map((entry) => entry.version).reverse();
-}
-
 function isModMaterialId(id: string) {
   const separator = id.indexOf(":");
   return separator > 0 && id.slice(0, separator) !== "minecraft";
@@ -222,9 +209,7 @@ export function App() {
   const [modResources, setModResources] = useState<Record<string, ModMaterialResource>>({});
   const workerRef = useRef<Worker | null>(null);
   const abortRef = useRef<AbortController | null>(null);
-  const rawCountsRef = useRef<Parameters<typeof convertBlockStateCounts>[0] | null>(null);
   const batchHistory = useRef<StudioMaterial[][]>([]);
-  const versions = useMemo(() => getVersionStrings(), []);
 
   useEffect(() => {
     if (!project) return;
@@ -232,7 +217,6 @@ export function App() {
       const saved: SavedProgress = {
         schemaVersion: 1,
         fileName: project.fileName,
-        selectedVersion: project.selectedVersion,
         owned: Object.fromEntries(
           project.materials.map((material) => [material.id, material.owned]),
         ),
@@ -275,7 +259,6 @@ export function App() {
     workerRef.current = null;
     abortRef.current?.abort();
     abortRef.current = null;
-    rawCountsRef.current = null;
     batchHistory.current = [];
     setBatchHistoryCount(0);
     setModResources({});
@@ -289,7 +272,7 @@ export function App() {
     setPhase("upload");
   };
 
-  const finishWorkerResult = async (
+  const finishWorkerResult = (
     response: Extract<WorkerResponse, { type: "result" }>,
     projectId: string,
     selectedFileName: string,
@@ -298,25 +281,15 @@ export function App() {
     const parsed = response.result as LitematicParseResult;
     const match = response.versionMatch as VersionMatchWire;
     const saved = loadSavedProgress(projectId);
-    rawCountsRef.current = parsed.blockStateCounts;
-    let rows = response.materials as MaterialWire[];
-    let selectedVersion: string | null = null;
-
-    if (saved?.selectedVersion) {
-      try {
-        const data = await loadMinecraftVersionData(saved.selectedVersion);
-        rows = convertBlockStateCounts(parsed.blockStateCounts, data);
-        selectedVersion = saved.selectedVersion;
-      } catch {
-        // A removed or unavailable historical dataset should not prevent opening the file.
-      }
-    }
+    const rows = response.materials as MaterialWire[];
 
     const detectedVersion = match.originalDetectedVersion ?? match.minecraftVersion ?? null;
+    const dataVersion = match.minecraftVersion ?? null;
     const warnings = [
       ...parsed.warnings.map((warning) => warning.message),
       ...(match.warnings ?? []),
       ...(detectedVersion ? [] : ["无法识别 Minecraft 版本；材料以原始方块 ID 保留。"]),
+      ...(dataVersion ? [] : ["没有可自动匹配的本地物品数据；材料以原始方块 ID 保留。"]),
     ];
     setProject({
       projectId,
@@ -324,8 +297,8 @@ export function App() {
       fileSize: selectedFileSize,
       metadata: metadataFromParsed(parsed),
       detectedVersion,
-      selectedVersion,
-      matchType: selectedVersion ? "manual" : (match.matchType ?? match.type ?? "unknown"),
+      dataVersion,
+      matchType: match.matchType ?? match.type ?? "unknown",
       materials: normalizeMaterials(rows, saved?.owned, saved?.maxStackOverrides),
       warnings,
     });
@@ -371,12 +344,12 @@ export function App() {
           reset();
           setError(response.message);
         } else {
-          void finishWorkerResult(response, projectId, file.name, file.size).catch(
-            (reason: unknown) => {
-              reset();
-              setError(reason instanceof Error ? reason.message : "生成材料清单失败");
-            },
-          );
+          try {
+            finishWorkerResult(response, projectId, file.name, file.size);
+          } catch (reason) {
+            reset();
+            setError(reason instanceof Error ? reason.message : "生成材料清单失败");
+          }
         }
       };
       worker.onerror = (event) => {
@@ -467,51 +440,6 @@ export function App() {
     setToast("已撤销最近一次批量操作");
   };
 
-  const changeVersion = async (version: string | null) => {
-    if (!project || !rawCountsRef.current) return;
-    const target = version ?? project.detectedVersion;
-    if (!target) {
-      setToast("投影没有可恢复的自动识别版本");
-      return;
-    }
-    try {
-      setToast(`正在加载 Minecraft ${target} 数据…`);
-      const data = await loadMinecraftVersionData(target);
-      const rows = convertBlockStateCounts(rawCountsRef.current, data) as MaterialWire[];
-      const owned = Object.fromEntries(
-        project.materials.map((material) => [material.id, material.owned]),
-      );
-      const maxStackOverrides = Object.fromEntries(
-        project.materials.flatMap((material) =>
-          material.status === "用户设置" && material.maxStackSize !== null
-            ? [[material.id, material.maxStackSize]]
-            : [],
-        ),
-      );
-      setProject((current) =>
-        current
-          ? {
-              ...current,
-              selectedVersion: version,
-              matchType: version
-                ? "manual"
-                : detectMinecraftVersion(current.metadata.minecraftDataVersion, {
-                    formatVersion: current.metadata.formatVersion,
-                    subVersion: current.metadata.subVersion,
-                  }).type,
-              materials: applyModResources(
-                normalizeMaterials(rows, owned, maxStackOverrides),
-                modResources,
-              ),
-            }
-          : current,
-      );
-      setToast(version ? `已切换到 Minecraft ${version}` : `已恢复自动识别版本 ${target}`);
-    } catch (reason) {
-      setToast(reason instanceof Error ? reason.message : "版本数据加载失败");
-    }
-  };
-
   const exportExcel = async () => {
     if (!project) return;
     try {
@@ -540,7 +468,7 @@ export function App() {
           ).length,
           warnings: project.warnings,
         },
-        minecraftVersion: project.selectedVersion ?? project.detectedVersion ?? "未知",
+        minecraftVersion: project.dataVersion ?? project.detectedVersion ?? "未知",
         materials: project.materials.map((material) => ({
           itemName: material.displayName,
           minecraftId: material.id,
@@ -569,7 +497,6 @@ export function App() {
       current
         ? {
             ...current,
-            selectedVersion: null,
             materials: current.materials.map((material) => ({
               ...material,
               owned: 0,
@@ -674,12 +601,6 @@ export function App() {
             </details>
           ) : null}
           <section className="results-actions" aria-label="项目操作">
-            <VersionSelector
-              detectedVersion={project.detectedVersion}
-              selectedVersion={project.selectedVersion}
-              versions={versions}
-              onChange={(version) => void changeVersion(version)}
-            />
             <button className="action-button" type="button" onClick={clearSavedProgress}>
               清除本地进度
             </button>

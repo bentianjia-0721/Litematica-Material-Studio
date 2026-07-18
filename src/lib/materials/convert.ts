@@ -45,64 +45,75 @@ export function convertBlockStateCounts(
 
   for (const state of normalizeBlockStateCounts(counts)) {
     const conversion = convertBlockState(state, versionData);
-    if (conversion.status === "ignored" || !conversion.itemId || !conversion.itemMultiplier) {
-      continue;
-    }
-    const itemId = normalizeMinecraftId(conversion.itemId);
-    const [quantity, overflowed] = safeMultiply(state.count, conversion.itemMultiplier, ceiling);
-    if (quantity === 0) continue;
-    const item = getItemData(versionData, itemId);
-    const nameEn = item?.displayNameEn ?? itemId;
-    const displayName = item?.displayNameZhCn ?? nameEn ?? itemId;
-    const warnings = [...conversion.warnings];
-    if (overflowed) warnings.push(`数量超过安全上限，已限制为 ${ceiling}`);
-    const override = options.maxStackOverrides?.[itemId];
-    if (
-      override !== undefined &&
-      override !== null &&
-      (!Number.isSafeInteger(override) || override < 1)
-    ) {
-      warnings.push(`忽略无效的手动堆叠上限 ${String(override)}`);
-    }
+    if (conversion.status === "ignored") continue;
+    const convertedItems = [
+      ...(conversion.itemId && conversion.itemMultiplier
+        ? [{ itemId: conversion.itemId, itemMultiplier: conversion.itemMultiplier }]
+        : []),
+      ...(conversion.additionalItems ?? []),
+    ];
 
-    const existing = rows.get(itemId);
-    if (existing) {
-      const [required, sumOverflowed] = safeMultiply(1, existing.required + quantity, ceiling);
-      existing.required = required;
-      existing.status = worseStatus(existing.status, conversion.status);
-      existing.warnings = [
-        ...new Set([
-          ...existing.warnings,
-          ...warnings,
-          ...(sumOverflowed ? [`合计数量超过安全上限，已限制为 ${ceiling}`] : []),
-        ]),
-      ];
-      const firstWarning = existing.warnings[0];
-      if (firstWarning) existing.warning = firstWarning;
-      else delete existing.warning;
-      if (!existing.sourceBlockIds.includes(conversion.blockId)) {
-        existing.sourceBlockIds.push(conversion.blockId);
+    for (const convertedItem of convertedItems) {
+      const itemId = normalizeMinecraftId(convertedItem.itemId);
+      const [quantity, overflowed] = safeMultiply(
+        state.count,
+        convertedItem.itemMultiplier,
+        ceiling,
+      );
+      if (quantity === 0) continue;
+      const item = getItemData(versionData, itemId);
+      const nameEn = item?.displayNameEn ?? itemId;
+      const displayName = item?.displayNameZhCn ?? nameEn ?? itemId;
+      const warnings = [...conversion.warnings];
+      if (overflowed) warnings.push(`数量超过安全上限，已限制为 ${ceiling}`);
+      const override = options.maxStackOverrides?.[itemId];
+      if (
+        override !== undefined &&
+        override !== null &&
+        (!Number.isSafeInteger(override) || override < 1)
+      ) {
+        warnings.push(`忽略无效的手动堆叠上限 ${String(override)}`);
       }
-      continue;
-    }
 
-    const status = conversion.status;
-    const maxStackSize = resolveMaxStackSize(versionData, itemId, override);
-    rows.set(itemId, {
-      id: itemId,
-      name: displayName,
-      ...(item?.displayNameZhCn ? { nameZhCn: item.displayNameZhCn } : {}),
-      nameEn,
-      displayName,
-      displayNameEn: nameEn,
-      ...(item?.iconPath ? { iconPath: item.iconPath } : {}),
-      maxStackSize,
-      status,
-      required: quantity,
-      warnings,
-      ...(warnings[0] ? { warning: warnings[0] } : {}),
-      sourceBlockIds: [conversion.blockId],
-    });
+      const existing = rows.get(itemId);
+      if (existing) {
+        const [required, sumOverflowed] = safeMultiply(1, existing.required + quantity, ceiling);
+        existing.required = required;
+        existing.status = worseStatus(existing.status, conversion.status);
+        existing.warnings = [
+          ...new Set([
+            ...existing.warnings,
+            ...warnings,
+            ...(sumOverflowed ? [`合计数量超过安全上限，已限制为 ${ceiling}`] : []),
+          ]),
+        ];
+        const firstWarning = existing.warnings[0];
+        if (firstWarning) existing.warning = firstWarning;
+        else delete existing.warning;
+        if (!existing.sourceBlockIds.includes(conversion.blockId)) {
+          existing.sourceBlockIds.push(conversion.blockId);
+        }
+        continue;
+      }
+
+      const status = conversion.status;
+      const maxStackSize = resolveMaxStackSize(versionData, itemId, override);
+      rows.set(itemId, {
+        id: itemId,
+        name: displayName,
+        ...(item?.displayNameZhCn ? { nameZhCn: item.displayNameZhCn } : {}),
+        nameEn,
+        displayName,
+        displayNameEn: nameEn,
+        ...(item?.iconPath ? { iconPath: item.iconPath } : {}),
+        maxStackSize,
+        status,
+        required: quantity,
+        warnings,
+        ...(warnings[0] ? { warning: warnings[0] } : {}),
+        sourceBlockIds: [conversion.blockId],
+      });
+    }
   }
 
   return [...rows.values()].sort(

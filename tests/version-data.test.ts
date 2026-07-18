@@ -1,13 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
-  applyManualVersion,
   detectMinecraftVersion,
   getItemData,
   hasMinecraftVersionData,
   listMinecraftVersions,
   loadMinecraftVersionData,
-  restoreAutomaticVersion,
 } from "../src/lib/minecraft-data";
+import { convertBlockStateCounts } from "../src/lib/materials";
 
 describe("versioned Minecraft data", () => {
   it("lists only generated, exactly addressable data files", () => {
@@ -85,16 +84,24 @@ describe("Minecraft version detection", () => {
     const match = detectMinecraftVersion(null, { metadataVersion: "1.19.4" });
     expect(match.type).toBe("inferred");
     expect(match.version).toBe("1.19.4");
+    const compatible = detectMinecraftVersion(null, { metadataVersion: "1.20.3" });
+    expect(compatible.type).toBe("compatible");
+    expect(compatible.originalDetectedVersion).toBe("1.20.3");
+    expect(compatible.minecraftVersion).toBe("1.20.4");
   });
 
-  it("keeps original detection separate across manual selection and restore", () => {
-    const automatic = detectMinecraftVersion(3465);
-    const manual = applyManualVersion(automatic, "1.12.2");
-    expect(manual.type).toBe("manual");
-    expect(manual.originalDetectedVersion).toBe("1.20.1");
-    expect(manual.selectedVersion).toBe("1.12.2");
-    const restored = restoreAutomaticVersion(manual);
-    expect(restored.type).toBe("exact");
-    expect(restored.selectedVersion).toBe("1.20.1");
+  it("automatically loads the nearest same-series data for a recognized patch", async () => {
+    const match = detectMinecraftVersion(3698);
+    expect(match.type).toBe("compatible");
+    expect(match.originalDetectedVersion).toBe("1.20.3");
+    expect(match.selectedVersion).toBe("1.20.4");
+    expect(match.warnings.join(" ")).toContain("自动使用同系列 1.20.4 数据");
+    const data = await loadMinecraftVersionData(match.minecraftVersion ?? "");
+    expect(data.minecraftVersion).toBe("1.20.4");
+    expect(Object.keys(data.blocks).length).toBeGreaterThan(900);
+    const materials = convertBlockStateCounts({ "minecraft:cherry_planks": 12 }, data);
+    expect(materials).toMatchObject([
+      { id: "minecraft:cherry_planks", required: 12, status: "verified" },
+    ]);
   });
 });

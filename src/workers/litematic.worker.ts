@@ -84,7 +84,6 @@ async function runParse(request: Extract<WorkerRequest, { type: "parse" }>) {
       type: "result",
       result,
       versionMatch,
-      versionData,
       materials,
     };
     context.postMessage(response);

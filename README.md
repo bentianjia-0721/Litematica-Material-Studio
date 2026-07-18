@@ -10,14 +10,14 @@
 - 使用 Web Worker 在浏览器内完成 gzip 解压、NBT 解析、版本识别和材料统计，可取消正在进行的任务。
 - NBT 解析支持全部标准 Tag、Java 有符号 `Long` / `LongArray`、BigInt，以及深度、长度、总 Tag 数和解压体积限制。
 - 读取 Metadata、多 Region、Position、正负 Size、方块状态调色板和位压缩 `BlockStates`；支持跨 64 位 Long 边界的条目。
-- 优先按 `MinecraftDataVersion` / `DataVersion` 识别版本；无法精确匹配时明确标记兼容推断或要求手动选择，不会静默套用最新版本。
-- 按版本动态加载本地物品数据，转换空气、门/床/双层植物、双层台阶、蜡烛、雪层、海泡菜等常见特殊状态。
-- 材料清单按投影识别版本加载物品名、堆叠上限与方块到物品映射，并随手动版本切换同步更新。
+- 只按投影内的 `MinecraftDataVersion` / `DataVersion` 自动识别版本；没有精确本地数据时自动选取同一版本系列中最近的数据并明确标记兼容推断，不提供手动切换，也不会静默套用最新版本。
+- 按 Litematica 的 Pick Block 材料逻辑转换方块：忽略传送门、活塞头、气泡柱等无建造物品的技术方块，仅统计源流体，并处理门/床/双层植物、盆栽、多面方块、双层台阶、蜡烛、雪层、海泡菜等特殊状态。
+- 材料清单始终按投影自动识别出的版本加载对应物品名、堆叠上限与方块到物品映射。
 - 材料清单使用构建期从 Minecraft Wiki 下载并内容哈希去重的 `Invicon` 物品栏图标；缺少图标时才回退统一占位图。
 - 未知或 Mod 命名空间不会被静默丢弃；保留原始 ID，并标记未知堆叠上限或转换警告。
 - 检测到 Mod 材料时可导入本机模组 `.jar` 或资源包 `.zip`，在浏览器内读取标准 `zh_cn` / `en_us` 语言文件、物品模型和 PNG 纹理，补全当前投影用到的模组物品名称与图标。
 - 材料表支持搜索、状态筛选、排序、每页 50 项、编辑“总共需要 / 已经拥有 / 剩余需要”、批量完成/清零与撤销。
-- 按文件内容哈希保存本地进度；再次选择同一文件时恢复已有数量和手动版本选择。
+- 按文件内容哈希保存本地进度；再次选择同一文件时恢复已有数量，版本仍由投影内容重新自动识别。
 - 导出 `.xlsx`：包含“材料清单”和“投影信息”两个工作表、堆叠拆分、完成度公式、筛选、冻结表头、数据校验和未知材料提示。
 - 响应式中文界面，并提供上传、输入、分页和状态提示所需的基础无障碍语义。
 
@@ -49,7 +49,7 @@ File API
 | `src/lib/stack/`、`src/lib/progress/` | 堆叠拆分和可复用进度计算                                     |
 | `src/lib/storage/`                    | 文件哈希，以及 IndexedDB → localStorage → 内存的可复用存储层 |
 | `src/lib/excel/`                      | Excel 工作簿、公式、样式、校验与下载                         |
-| `src/features/`                       | 上传、进度、投影摘要、版本选择和材料表 UI                    |
+| `src/features/`                       | 上传、进度、投影摘要和材料表 UI                              |
 | `src/data/minecraft/`                 | 本地版本数据、DataVersion 映射、兼容矩阵和生成报告           |
 | `scripts/`                            | 版本研究、Minecraft 数据生成和一致性验证                     |
 | `tests/`                              | 解析、真实格式生成夹具、材料/UI 与 Excel 测试                |
@@ -93,19 +93,19 @@ npm run preview         # 本地预览 dist/
 5. 读取根级格式版本、子版本和 Minecraft DataVersion，再读取 Metadata 与全部 Regions。
 6. Region Size 的每个轴取绝对值计算体积；调色板索引按 Litematica 连续位数组解码，支持一个条目横跨两个有符号 Long。
 7. 聚合各 Region 的完整方块状态。解析层保留空气，材料层再统一过滤 `air`、`cave_air` 和 `void_air`。
-8. 材料层应用版本化方块到物品映射、状态倍数和最大堆叠数量；未知项保留原始 ID 与警告。
+8. 材料层应用与 Litematica 一致的 Pick Block、空物品栈过滤、状态倍数和最大堆叠数量；未知 Mod 项保留原始 ID 与警告。
 
 默认安全上限包括 128 MiB 上传、512 MiB 解压 NBT、单 Region 50,000,000 个位置、全部 Region 合计 100,000,000 个位置。它们是浏览器安全边界，不是格式能力声明。
 
 ## 版本识别
 
-当前实现的选择顺序为：
+当前实现的自动匹配顺序为：
 
 1. 精确匹配 DataVersion；若精确记录对应本地数据，则加载该版本。
-2. 没有精确记录时，仅在 DataVersion 距离不超过 64、且属于同一 Minecraft 主数据系列时选择最近的本地数据，并标记为兼容推断。
-3. Litematic 格式版本只用于给出有本地数据的候选，不会据此自动套用“最新版本”。
-4. 用户可从 17 个本地数据版本中手动选择，并可恢复自动识别结果。
-5. 识别到没有本地数据的 Minecraft 版本时，保留识别结果但不冒充已有对应物品数据。
+2. 能精确识别投影版本、但没有该补丁版本的本地数据时，自动加载同一 Minecraft 版本系列中 DataVersion 最近的本地数据，并标记为兼容推断。
+3. 没有精确记录时，仅在 DataVersion 距离不超过 64、且属于同一 Minecraft 主数据系列时自动选择最近的本地数据。
+4. 缺少 DataVersion 时可使用 Metadata 中的明确 Minecraft 版本，并按相同规则自动加载精确或同系列数据。
+5. Litematic 格式版本本身不足以确定 Minecraft 版本，只用于给出诊断候选；页面不提供手动版本切换，也不会自动套用最新版本。
 
 每个版本 JSON 通过 `import.meta.glob` 按需加载；页面不会一次性解析全部版本数据。
 
@@ -165,7 +165,7 @@ npm run preview         # 本地预览 dist/
 
 ### 数据来源
 
-- Litematica 发布和格式证据：[Masa / maruohon 的 Litematica 官方源码仓库](https://github.com/maruohon/litematica)与[原作者控制的 Modrinth 项目](https://modrinth.com/mod/litematica)。本项目与 Litematica、Masa 或 Mojang 无隶属关系。
+- Litematica 发布、格式与材料换算证据：[Masa / maruohon 的 Litematica 官方源码仓库](https://github.com/maruohon/litematica)（包括 `MaterialListUtils` / `MaterialCache`）与[原作者控制的 Modrinth 项目](https://modrinth.com/mod/litematica)。本项目与 Litematica、Masa 或 Mojang 无隶属关系。
 - Minecraft 注册表、物品堆叠数量、方块和 DataVersion 基础数据：[PrismarineJS/minecraft-data](https://github.com/PrismarineJS/minecraft-data)，当前锁定生成版本为 `3.111.0`。
 - 中文名称来自 Mojang 官方版本清单、各版本 asset index 和对应 `minecraft/lang/zh_cn` 资产；生成文件保留具体元数据、索引和资源 URL。语言资产无法匹配时才使用少量人工稳定名称，然后回退英文或 ID。
 - 每个生成数据文件和兼容矩阵条目均保存来源 URL；研究置信度分为 `verified`、`cross-checked` 和 `inferred`。
@@ -216,7 +216,7 @@ Mojang / Microsoft 的语言内容不因 `minecraft-data` 的 MIT 许可证而�
 - 用户选择的 `.litematic` 内容由 File API 读取并转移到本地 Web Worker；应用代码不会把文件上传到 Cloudflare 或其他服务器。
 - 用户选择的 Mod `.jar` / 资源包 `.zip` 同样只在当前浏览器页面内解压；不上传、不执行其中的代码，也不保存压缩包或解析出的图片。
 - 解析、材料换算、进度计算和 Excel 生成均在浏览器内完成；运行时版本 JSON 从同一静态站点按需加载。
-- 当前 UI 只在 `localStorage` 保存文件内容哈希、文件名、已拥有数量、手动版本和时间戳，不保存原始投影二进制。
+- 当前 UI 只在 `localStorage` 保存文件内容哈希、文件名、已拥有数量、手动堆叠上限和时间戳，不保存版本选择或原始投影二进制。
 - 清除站点数据、使用隐私模式或更换浏览器会丢失本地进度；页面没有账号、云同步或多人协作。
 - `public/_headers` 设置了同源连接 CSP、禁止嵌入和摄像头/麦克风/定位等权限。托管平台仍会像任何静态网站一样接收正常的页面与资源 HTTP 请求，这与上传投影文件是两回事。
 
@@ -268,7 +268,7 @@ Cloudflare 当前文档说明 Direct Upload 项目创建后不能原地切换为
 ## 已知限制
 
 - 正式入口只接受 `.litematic`；不支持旧 `.schematic`、Sponge `.schem` 或结构方块 `.nbt`。
-- 只有上述 17 个本地 Minecraft 数据版本；其他精确版本即使能从 DataVersion 识别，也可能只能给出候选、兼容推断或原始方块 ID。
+- 只有上述 17 个本地 Minecraft 数据版本；其他精确版本会优先自动使用同系列最近数据并标为兼容推断，无法建立可靠同系列关系时才保留原始方块 ID。
 - 当前研究矩阵出现的 `26.1`、`26.1.1`、`26.1.2`、`26.2` 均没有 `minecraft-data@3.111.0` 的精确本地物品数据，不能输出有版本依据的完整材料清单。
 - 中文名覆盖为 19,412 / 19,444（缺失 0.16%），仍不完整；英文名称和 Minecraft ID 是必要回退。Wiki 图标覆盖为 19,125 / 19,444（98.36%）；这些是 Wiki 当前 Invicon，不是全部历史补丁版本的逐像素归档。
 - 兼容矩阵含推断条目，报告明确指出旧 Modrinth 导入记录的发布日期可能不是原始发布日期，分支格式常量也不能证明该版本的每个发布包都写出相同子版本。

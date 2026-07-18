@@ -1,4 +1,5 @@
 import {
+  getBlockData,
   getItemData,
   normalizeMinecraftId,
   resolveBlockItemId,
@@ -16,16 +17,58 @@ const DOUBLE_HEIGHT_BLOCKS = new Set([
   "minecraft:large_fern",
   "minecraft:small_dripleaf",
   "minecraft:pitcher_plant",
+  "minecraft:pitcher_crop",
+  "minecraft:tall_seagrass",
   "minecraft:double_plant",
+]);
+
+/** Blocks whose vanilla Pick Block result is empty, matching Litematica's material cache. */
+const EMPTY_PICK_STACK_IDS = new Set([
+  "minecraft:piston_head",
+  "minecraft:moving_piston",
+  "minecraft:piston_extension",
+  "minecraft:nether_portal",
+  "minecraft:portal",
+  "minecraft:end_portal",
+  "minecraft:end_gateway",
+  "minecraft:bubble_column",
+  "minecraft:fire",
+  "minecraft:soul_fire",
+  "minecraft:frosted_ice",
+]);
+
+const MULTIFACE_GROWTH_BLOCKS = new Set([
+  "minecraft:glow_lichen",
+  "minecraft:sculk_vein",
+  "minecraft:resin_clump",
 ]);
 
 const explicitAliases: Record<string, string> = {
   "minecraft:redstone_wire": "minecraft:redstone",
   "minecraft:tripwire": "minecraft:string",
-  "minecraft:water": "minecraft:water_bucket",
-  "minecraft:flowing_water": "minecraft:water_bucket",
-  "minecraft:lava": "minecraft:lava_bucket",
-  "minecraft:flowing_lava": "minecraft:lava_bucket",
+  "minecraft:farmland": "minecraft:dirt",
+  "minecraft:tall_seagrass": "minecraft:seagrass",
+  "minecraft:sweet_berry_bush": "minecraft:sweet_berries",
+  "minecraft:weeping_vines_plant": "minecraft:weeping_vines",
+  "minecraft:twisting_vines_plant": "minecraft:twisting_vines",
+  "minecraft:powder_snow": "minecraft:powder_snow_bucket",
+  "minecraft:cave_vines": "minecraft:glow_berries",
+  "minecraft:cave_vines_plant": "minecraft:glow_berries",
+  "minecraft:pumpkin_stem": "minecraft:pumpkin_seeds",
+  "minecraft:attached_pumpkin_stem": "minecraft:pumpkin_seeds",
+  "minecraft:melon_stem": "minecraft:melon_seeds",
+  "minecraft:attached_melon_stem": "minecraft:melon_seeds",
+  "minecraft:carrots": "minecraft:carrot",
+  "minecraft:potatoes": "minecraft:potato",
+  "minecraft:beetroots": "minecraft:beetroot_seeds",
+  "minecraft:daylight_detector_inverted": "minecraft:daylight_detector",
+  "minecraft:water_cauldron": "minecraft:cauldron",
+  "minecraft:lava_cauldron": "minecraft:cauldron",
+  "minecraft:powder_snow_cauldron": "minecraft:cauldron",
+  "minecraft:kelp_plant": "minecraft:kelp",
+  "minecraft:bamboo_sapling": "minecraft:bamboo",
+  "minecraft:big_dripleaf_stem": "minecraft:big_dripleaf",
+  "minecraft:torchflower_crop": "minecraft:torchflower_seeds",
   "minecraft:snow_layer": "minecraft:snow",
   "minecraft:standing_sign": "minecraft:sign",
   "minecraft:wall_sign": "minecraft:sign",
@@ -33,6 +76,25 @@ const explicitAliases: Record<string, string> = {
   "minecraft:wall_banner": "minecraft:banner",
   "minecraft:double_stone_slab": "minecraft:stone_slab",
   "minecraft:double_wooden_slab": "minecraft:wooden_slab",
+};
+
+const LEGACY_POTTED_ITEM_ALIASES: Record<string, string> = {
+  dandelion: "minecraft:yellow_flower",
+  poppy: "minecraft:red_flower",
+  blue_orchid: "minecraft:red_flower",
+  allium: "minecraft:red_flower",
+  azure_bluet: "minecraft:red_flower",
+  red_tulip: "minecraft:red_flower",
+  orange_tulip: "minecraft:red_flower",
+  white_tulip: "minecraft:red_flower",
+  pink_tulip: "minecraft:red_flower",
+  oxeye_daisy: "minecraft:red_flower",
+  rose: "minecraft:red_flower",
+  houstonia: "minecraft:red_flower",
+  fern: "minecraft:tallgrass",
+  dead_bush: "minecraft:deadbush",
+  mushroom_red: "minecraft:red_mushroom",
+  mushroom_brown: "minecraft:brown_mushroom",
 };
 
 function wallVariantItem(blockId: string): string | null {
@@ -81,10 +143,56 @@ function isSecondaryBedPart(state: NormalizedBlockStateCount): boolean {
   return state.properties.part === "head";
 }
 
-function inferKnownAlias(blockId: string): string | null {
+function inferKnownAlias(blockId: string, versionData: MinecraftVersionData): string | null {
   if (blockId.endsWith("_door")) return blockId;
   if (blockId.endsWith("_bed")) return blockId;
+  if (blockId === "minecraft:grass_path" && versionData.minecraftVersion.startsWith("1.12")) {
+    return "minecraft:grass";
+  }
+  if (blockId === "minecraft:cocoa" && getItemData(versionData, "minecraft:cocoa_beans")) {
+    return "minecraft:cocoa_beans";
+  }
+  if (blockId === "minecraft:candle_cake") return "minecraft:candle";
+  if (blockId.endsWith("_candle_cake")) return blockId.slice(0, -"_cake".length);
   return explicitAliases[blockId] ?? wallVariantItem(blockId);
+}
+
+function fluidItem(blockId: string, properties: Readonly<Record<string, string>>): string | null {
+  if (blockId === "minecraft:flowing_water" || blockId === "minecraft:flowing_lava") return null;
+  const level = Number.parseInt(properties.level ?? "0", 10);
+  if (Number.isInteger(level) && level !== 0) return null;
+  return blockId === "minecraft:water" ? "minecraft:water_bucket" : "minecraft:lava_bucket";
+}
+
+function countEnabledFaces(properties: Readonly<Record<string, string>>): number {
+  return ["up", "down", "north", "south", "east", "west"].filter(
+    (direction) => properties[direction] === "true",
+  ).length;
+}
+
+function resolvePottedPlantItem(
+  blockId: string,
+  properties: Readonly<Record<string, string>>,
+  versionData: MinecraftVersionData,
+): string | null {
+  const suffix = blockId.startsWith("minecraft:potted_")
+    ? blockId.slice("minecraft:potted_".length)
+    : blockId === "minecraft:flower_pot" && properties.contents !== "empty"
+      ? properties.contents
+      : undefined;
+  if (!suffix) return null;
+  const modernSuffix =
+    suffix === "azalea_bush"
+      ? "azalea"
+      : suffix === "flowering_azalea_bush"
+        ? "flowering_azalea"
+        : suffix;
+  const candidates = [
+    `minecraft:${modernSuffix}`,
+    ...(suffix.endsWith("_sapling") ? ["minecraft:sapling"] : []),
+    ...(LEGACY_POTTED_ITEM_ALIASES[suffix] ? [LEGACY_POTTED_ITEM_ALIASES[suffix]] : []),
+  ];
+  return candidates.find((candidate) => getItemData(versionData, candidate)) ?? null;
 }
 
 export function convertBlockState(
@@ -93,6 +201,9 @@ export function convertBlockState(
 ): BlockMaterialConversion {
   const blockId = normalizeMinecraftId(state.name);
   if (AIR_IDS.has(blockId)) return ignored(blockId, "空气不属于需准备材料");
+  if (EMPTY_PICK_STACK_IDS.has(blockId)) {
+    return ignored(blockId, "该技术方块的取方块物品为空，不属于需准备材料");
+  }
 
   if ((blockId.endsWith("_door") || DOUBLE_HEIGHT_BLOCKS.has(blockId)) && isUpperHalf(state)) {
     return ignored(blockId, "上半部分由一个物品放置自动生成");
@@ -103,7 +214,7 @@ export function convertBlockState(
 
   let multiplier = 1;
   const warnings: string[] = [];
-  let status: BlockMaterialConversion["status"] = "verified";
+  const status: BlockMaterialConversion["status"] = "verified";
   if (blockId === "minecraft:snow" || blockId === "minecraft:snow_layer") {
     multiplier = positiveProperty(state.properties, "layers", 1, 8);
   } else if (blockId.endsWith("_candle") || blockId === "minecraft:candle") {
@@ -114,6 +225,8 @@ export function convertBlockState(
     multiplier = positiveProperty(state.properties, "eggs", 1, 4);
   } else if (blockId === "minecraft:pink_petals") {
     multiplier = positiveProperty(state.properties, "flower_amount", 1, 4);
+  } else if (MULTIFACE_GROWTH_BLOCKS.has(blockId)) {
+    multiplier = Math.max(1, countEnabledFaces(state.properties));
   } else if (
     state.properties.type === "double" ||
     (blockId.includes("double_") && blockId.endsWith("_slab"))
@@ -121,20 +234,38 @@ export function convertBlockState(
     multiplier = 2;
   }
 
-  if (
+  const isFluid =
     blockId === "minecraft:water" ||
     blockId === "minecraft:flowing_water" ||
     blockId === "minecraft:lava" ||
-    blockId === "minecraft:flowing_lava"
-  ) {
-    status = "inferred";
-    warnings.push("流体方块按每个方块一次桶装流体近似；流动、无限水源和容器复用会使实际准备量不同");
+    blockId === "minecraft:flowing_lava";
+  if (isFluid) {
+    const itemId = fluidItem(blockId, state.properties);
+    if (!itemId) return ignored(blockId, "Litematica 仅把源流体计入材料，流动流体不会生成物品");
+    return { blockId, itemId, itemMultiplier: 1, status, warnings };
   }
 
-  const alias = inferKnownAlias(blockId);
+  if (blockId.startsWith("minecraft:potted_") || blockId === "minecraft:flower_pot") {
+    const plantItemId = resolvePottedPlantItem(blockId, state.properties, versionData);
+    if (plantItemId) {
+      return {
+        blockId,
+        itemId: "minecraft:flower_pot",
+        itemMultiplier: 1,
+        additionalItems: [{ itemId: plantItemId, itemMultiplier: 1 }],
+        status,
+        warnings,
+      };
+    }
+  }
+
+  const alias = inferKnownAlias(blockId, versionData);
   const mapped = alias ?? resolveBlockItemId(versionData, blockId);
   if (mapped) {
     const itemId = normalizeMinecraftId(mapped);
+    if (itemId === "minecraft:air") {
+      return ignored(blockId, "该方块的取方块物品为空，不属于需准备材料");
+    }
     if (getItemData(versionData, itemId)) {
       return { blockId, itemId, itemMultiplier: multiplier, status, warnings };
     }
@@ -149,6 +280,9 @@ export function convertBlockState(
   }
 
   const namespace = blockId.split(":", 1)[0] ?? "minecraft";
+  if (namespace === "minecraft" && getBlockData(versionData, blockId)) {
+    return ignored(blockId, "该版本中此原版方块没有可准备的取方块物品");
+  }
   warnings.push(
     namespace === "minecraft"
       ? `无法可靠确定 ${blockId} 对应的生存材料；已保留原始方块 ID`

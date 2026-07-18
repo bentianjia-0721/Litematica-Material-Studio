@@ -25,7 +25,6 @@ export interface ParseResultResponse {
   type: "result";
   result: unknown;
   versionMatch: unknown;
-  versionData: unknown;
   materials: unknown[];
 }
 

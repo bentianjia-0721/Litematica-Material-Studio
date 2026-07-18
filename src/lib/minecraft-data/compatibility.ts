@@ -46,7 +46,6 @@ function buildMatch(
     confidence,
     candidates,
     warnings,
-    isManual: matchType === "manual",
     detectionHints: {
       formatVersion: options.formatVersion ?? null,
       subVersion: options.subVersion ?? null,
@@ -79,27 +78,31 @@ function nearestReleaseEntry(dataVersion: number): DataVersionEntry | undefined 
     }, undefined);
 }
 
+function nearestLocalVersionInSeries(target: DataVersionEntry) {
+  return summaries
+    .map((summary) => ({
+      summary,
+      map: dataVersionEntries.find(
+        (entry) => entry.minecraftVersion === summary.version && entry.releaseType === "release",
+      ),
+    }))
+    .filter(
+      (entry): entry is { summary: (typeof summaries)[number]; map: DataVersionEntry } =>
+        Boolean(entry.map) && entry.map?.majorVersion === target.majorVersion,
+    )
+    .sort(
+      (left, right) =>
+        Math.abs(left.map.dataVersion - target.dataVersion) -
+        Math.abs(right.map.dataVersion - target.dataVersion),
+    )[0];
+}
+
 export function detectMinecraftVersion(
   dataVersion: number | null | undefined,
   options: VersionDetectionOptions = {},
 ): VersionMatch {
   const normalizedDataVersion =
     typeof dataVersion === "number" && Number.isSafeInteger(dataVersion) ? dataVersion : null;
-
-  if (options.manualVersion) {
-    return buildMatch(
-      normalizedDataVersion,
-      null,
-      options.manualVersion,
-      "manual",
-      "verified",
-      [candidateFor(options.manualVersion, "用户手动选择")],
-      hasMinecraftVersionData(options.manualVersion)
-        ? []
-        : [`手动选择的版本 ${options.manualVersion} 没有本地物品数据`],
-      options,
-    );
-  }
 
   if (normalizedDataVersion !== null) {
     const exactEntries = dataVersionEntries.filter(
@@ -115,6 +118,25 @@ export function detectMinecraftVersion(
         exactEntries[0];
       if (!exact) throw new Error("Unreachable empty exact DataVersion result");
       const available = hasMinecraftVersionData(exact.minecraftVersion);
+      const compatible = available ? undefined : nearestLocalVersionInSeries(exact);
+      if (compatible) {
+        const dataVersion = compatible.summary.version;
+        return buildMatch(
+          normalizedDataVersion,
+          exact.minecraftVersion,
+          dataVersion,
+          "compatible",
+          "inferred",
+          [
+            candidateFor(exact.minecraftVersion, "DataVersion 精确识别的投影版本"),
+            candidateFor(dataVersion, `同一 ${exact.majorVersion} 系列的最近本地物品数据`),
+          ],
+          [
+            `已自动识别 Minecraft ${exact.minecraftVersion}；本地没有该补丁版本的精确物品数据，自动使用同系列 ${dataVersion} 数据`,
+          ],
+          options,
+        );
+      }
       return buildMatch(
         normalizedDataVersion,
         exact.minecraftVersion,
@@ -132,23 +154,10 @@ export function detectMinecraftVersion(
     const nearest = nearestReleaseEntry(normalizedDataVersion);
     const maxDistance = Math.max(0, options.compatibleDistance ?? 64);
     if (nearest && Math.abs(nearest.dataVersion - normalizedDataVersion) <= maxDistance) {
-      const localSameMajor = summaries
-        .map((summary) => ({
-          summary,
-          map: dataVersionEntries.find(
-            (entry) =>
-              entry.minecraftVersion === summary.version && entry.releaseType === "release",
-          ),
-        }))
-        .filter(
-          (entry): entry is { summary: (typeof summaries)[number]; map: DataVersionEntry } =>
-            Boolean(entry.map) && entry.map?.majorVersion === nearest.majorVersion,
-        )
-        .sort(
-          (left, right) =>
-            Math.abs(left.map.dataVersion - normalizedDataVersion) -
-            Math.abs(right.map.dataVersion - normalizedDataVersion),
-        )[0];
+      const localSameMajor = nearestLocalVersionInSeries({
+        ...nearest,
+        dataVersion: normalizedDataVersion,
+      });
       if (localSameMajor) {
         const version = localSameMajor.summary.version;
         return buildMatch(
@@ -180,11 +189,33 @@ export function detectMinecraftVersion(
       options,
     );
   }
+  if (metadataVersion) {
+    const metadataEntry = dataVersionEntries.find(
+      (entry) => entry.minecraftVersion === metadataVersion && entry.releaseType === "release",
+    );
+    const compatible = metadataEntry ? nearestLocalVersionInSeries(metadataEntry) : undefined;
+    if (metadataEntry && compatible) {
+      return buildMatch(
+        normalizedDataVersion,
+        metadataVersion,
+        compatible.summary.version,
+        "compatible",
+        "inferred",
+        [candidateFor(compatible.summary.version, "Metadata 版本的同系列本地物品数据")],
+        [
+          `已从 Metadata 自动识别 Minecraft ${metadataVersion}；自动使用同系列 ${compatible.summary.version} 数据`,
+        ],
+        options,
+      );
+    }
+  }
 
   const fromFormat = formatCandidates(options.formatVersion);
   const generalCandidates = fromFormat.length
     ? fromFormat
-    : summaries.slice(-8).map((entry) => candidateFor(entry.version, "可手动选择的本地数据版本"));
+    : summaries
+        .slice(-8)
+        .map((entry) => candidateFor(entry.version, "可用于自动兼容判断的本地数据版本"));
   return buildMatch(
     normalizedDataVersion,
     null,
@@ -199,28 +230,6 @@ export function detectMinecraftVersion(
     ],
     options,
   );
-}
-
-export function applyManualVersion(match: VersionMatch, version: string): VersionMatch {
-  const warnings = hasMinecraftVersionData(version)
-    ? match.warnings
-    : [...match.warnings, `手动选择的版本 ${version} 没有本地物品数据`];
-  return {
-    ...match,
-    selectedVersion: version,
-    version,
-    minecraftVersion: version,
-    matchType: "manual",
-    type: "manual",
-    confidence: "verified",
-    candidates: [candidateFor(version, "用户手动选择"), ...match.candidates],
-    warnings,
-    isManual: true,
-  };
-}
-
-export function restoreAutomaticVersion(match: VersionMatch): VersionMatch {
-  return detectMinecraftVersion(match.originalDataVersion, match.detectionHints);
 }
 
 export function getLitematicaCompatibilityEntries(): readonly LitematicaCompatibilityEntry[] {

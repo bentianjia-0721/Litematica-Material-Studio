@@ -8,7 +8,6 @@ import { MaterialTable } from "../src/features/material-table/MaterialTable";
 import { MaterialToolbar } from "../src/features/material-table/MaterialToolbar";
 import { ModResourceImporter } from "../src/features/mod-resources/ModResourceImporter";
 import { UploadPanel } from "../src/features/upload/UploadPanel";
-import { VersionSelector } from "../src/features/version-selector/VersionSelector";
 import type { ModResourceImportResult } from "../src/lib/mod-resources";
 
 afterEach(() => {
@@ -280,28 +279,5 @@ describe("ItemCatalog", () => {
     expect(screen.getByText("石头", { selector: ".catalog-card__body strong" })).toBeVisible();
     expect(screen.queryByText("钻石剑", { selector: ".catalog-card__body strong" })).toBeNull();
     expect(screen.getByText("投影需要 ×129")).toBeVisible();
-  });
-});
-
-describe("VersionSelector", () => {
-  it("列出可用版本，并把手动选择和恢复自动识别传回应用", async () => {
-    const user = userEvent.setup();
-    const onChange = vi.fn();
-    render(
-      <VersionSelector
-        detectedVersion="1.21.1"
-        selectedVersion={null}
-        versions={["1.21.11", "1.21.1", "1.12.2"]}
-        onChange={onChange}
-      />,
-    );
-    const selector = screen.getByRole("combobox", {
-      name: /物品数据版本.*DataVersion 精确匹配/u,
-    });
-    expect(screen.getByRole("option", { name: "Minecraft Java 1.12.2" })).toBeVisible();
-    await user.selectOptions(selector, "1.12.2");
-    expect(onChange).toHaveBeenLastCalledWith("1.12.2");
-    await user.selectOptions(selector, "__auto__");
-    expect(onChange).toHaveBeenLastCalledWith(null);
   });
 });

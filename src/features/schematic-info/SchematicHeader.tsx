@@ -100,7 +100,7 @@ export function SchematicHeader({ project }: SchematicHeaderProps) {
           </div>
           <div>
             <dt>物品数据版本</dt>
-            <dd>{project.selectedVersion ?? project.detectedVersion ?? "未加载"}</dd>
+            <dd>{project.dataVersion ?? "未加载"}</dd>
           </div>
           <div>
             <dt>版本匹配方式</dt>

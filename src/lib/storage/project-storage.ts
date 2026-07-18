@@ -8,7 +8,6 @@ export interface ProjectProgressRecord {
   fileName?: string;
   fileSize?: number;
   owned: Record<string, number>;
-  selectedVersion?: string | null;
   createdAt?: string;
   updatedAt: string;
 }

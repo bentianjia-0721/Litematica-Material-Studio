@@ -1,6 +1,6 @@
 export type DataConfidence = "verified" | "cross-checked" | "inferred";
 
-export type VersionMatchType = "exact" | "compatible" | "inferred" | "manual" | "unknown";
+export type VersionMatchType = "exact" | "compatible" | "inferred" | "unknown";
 
 export type VersionSupportStatus =
   "fully-supported" | "partially-supported" | "unverified" | "unsupported";
@@ -75,7 +75,6 @@ export interface VersionDetectionOptions {
   formatVersion?: number | null;
   subVersion?: number | null;
   metadataVersion?: string | null;
-  manualVersion?: string | null;
   /** Maximum DataVersion distance accepted for a compatible suggestion. */
   compatibleDistance?: number;
 }
@@ -90,6 +89,7 @@ export interface VersionCandidate {
 export interface VersionMatch {
   originalDataVersion: number | null;
   originalDetectedVersion: string | null;
+  /** Automatically resolved local data version; never a user-selected override. */
   selectedVersion: string | null;
   /** Compatibility aliases of selectedVersion/matchType. */
   version: string | null;
@@ -99,7 +99,6 @@ export interface VersionMatch {
   confidence: DataConfidence | "unknown";
   candidates: VersionCandidate[];
   warnings: string[];
-  isManual: boolean;
   detectionHints: {
     formatVersion: number | null;
     subVersion: number | null;

@@ -7,7 +7,6 @@ const record = {
   fileName: "castle.litematic",
   fileSize: 123,
   owned: { "minecraft:stone": 12 },
-  selectedVersion: "1.20.1",
   updatedAt: "2026-07-16T00:00:00.000Z",
 };
 

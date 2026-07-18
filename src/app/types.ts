@@ -55,8 +55,8 @@ export interface StudioProject {
   fileSize: number;
   metadata: StudioMetadata;
   detectedVersion: string | null;
-  selectedVersion: string | null;
-  matchType: "exact" | "compatible" | "inferred" | "manual" | "unknown";
+  dataVersion: string | null;
+  matchType: "exact" | "compatible" | "inferred" | "unknown";
   materials: StudioMaterial[];
   warnings: string[];
 }

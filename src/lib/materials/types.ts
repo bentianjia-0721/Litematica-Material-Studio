@@ -23,6 +23,10 @@ export interface BlockMaterialConversion {
   blockId: string;
   itemId: string | null;
   itemMultiplier: number | null;
+  additionalItems?: ReadonlyArray<{
+    itemId: string;
+    itemMultiplier: number;
+  }>;
   status: MaterialStatus;
   warnings: string[];
   ignoredReason?: string;
