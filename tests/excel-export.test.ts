@@ -155,12 +155,37 @@ describe("Excel 材料清单导出", () => {
     });
   });
 
-  it("生成安全且稳定的下载文件名", () => {
-    expect(createMaterialWorkbookFileName(input)).toBe("海底基地-材料清单-2026-07-16.xlsx");
+  it("沿用用户上传的文件名并把 litematic 扩展名替换为 xlsx", () => {
+    expect(createMaterialWorkbookFileName(input)).toBe("ocean-base.xlsx");
     expect(
       createMaterialWorkbookFileName({
         ...input,
-        metadata: { ...input.metadata, name: 'bad:/\\name*?"' },
+        metadata: { ...input.metadata, originalFileName: "红石.城堡.LITEMATIC" },
+      }),
+    ).toBe("红石.城堡.xlsx");
+    expect(
+      createMaterialWorkbookFileName({
+        ...input,
+        metadata: { ...input.metadata, originalFileName: 'bad:/\\name*?".litematic' },
+      }),
+    ).toBe("bad---name---.xlsx");
+  });
+
+  it("原上传文件名不可用时回退到安全且稳定的投影名称", () => {
+    expect(
+      createMaterialWorkbookFileName({
+        ...input,
+        metadata: { ...input.metadata, originalFileName: null },
+      }),
+    ).toBe("海底基地-材料清单-2026-07-16.xlsx");
+    expect(
+      createMaterialWorkbookFileName({
+        ...input,
+        metadata: {
+          ...input.metadata,
+          originalFileName: ".litematic",
+          name: 'bad:/\\name*?"',
+        },
       }),
     ).toBe("bad---name----材料清单-2026-07-16.xlsx");
   });
